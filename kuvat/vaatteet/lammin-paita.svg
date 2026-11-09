@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="128" height="128"><rect width="64" height="64" rx="10" fill="#f4f8fd"/><path d="M22 8 L8 16 L4 46 L12 48 L18 26 V56 H46 V26 L52 48 L60 46 L56 16 L42 8 C40 13 24 13 22 8Z" fill="#9a8cf0" stroke="#1d2a3a" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="128" height="128" role="img"><title>Lämmin paita. Kun on viileää.</title><rect width="64" height="64" rx="10" fill="#f4f8fd"/><path d="M22 8 L8 16 L4 46 L12 48 L18 26 V56 H46 V26 L52 48 L60 46 L56 16 L42 8 C40 13 24 13 22 8Z" fill="#9a8cf0" stroke="#1d2a3a" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
 <path d="M22 9 C22 0 42 0 42 9 C40 16 24 16 22 9Z" fill="#7d6ee0" stroke="#1d2a3a" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
 <path d="M24 42 H40 L43 51 H21Z" fill="#7d6ee0" stroke="#1d2a3a" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
 <path d="M29 14 V24 M35 14 V24" fill="none" stroke="#1d2a3a" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/></svg>

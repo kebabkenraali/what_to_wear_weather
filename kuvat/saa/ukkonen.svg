@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 140" width="240" height="280">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 140" width="240" height="280" role="img"><title>Ukkonen. Pilvi ja salama tarkoittavat ukkosta.</title>
 <rect width="120" height="140" rx="20" fill="#fff1c9"/>
 <ellipse cx="60" cy="134" rx="30" ry="4" fill="rgba(0,0,0,.12)"/>
 <path d="M4 16 C4 6 16 4 20 10 C24 2 40 4 40 14 C48 14 48 26 40 26 H10 C2 26 0 18 4 16Z" fill="#8894a6" stroke="#1d2a3a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>

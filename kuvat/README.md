@@ -14,16 +14,17 @@ Tämän kansion kuvat ovat kopioita katselua varten.
 ## Vaatteet
 
 Jokaisella vaatteella on kuva ja nimi.
+Nimen alla lukee, milloin vaate puetaan.
 
 ### Alusvaatteet
 
 <table>
 <tr>
-<td align="center" width="140"><img src="vaatteet/alushousut.svg" width="96" alt="Alushousut"><br>Alushousut</td>
-<td align="center" width="140"><img src="vaatteet/pitkat-alushousut.svg" width="96" alt="Pitkät alushousut"><br>Pitkät alushousut</td>
-<td align="center" width="140"><img src="vaatteet/sukat.svg" width="96" alt="Sukat"><br>Sukat</td>
-<td align="center" width="140"><img src="vaatteet/lampimat-sukat.svg" width="96" alt="Lämpimät sukat"><br>Lämpimät sukat</td>
-<td align="center" width="140"><img src="vaatteet/pitka-aluspaita.svg" width="96" alt="Pitkä aluspaita"><br>Pitkä aluspaita</td>
+<td align="center" valign="top" width="156"><img src="vaatteet/alushousut.svg" width="96" alt="Alushousut. Aina."><br><b>Alushousut</b><br>Aina.</td>
+<td align="center" valign="top" width="156"><img src="vaatteet/pitkat-alushousut.svg" width="96" alt="Pitkät alushousut. Kun on kova pakkanen."><br><b>Pitkät alushousut</b><br>Kun on kova pakkanen.</td>
+<td align="center" valign="top" width="156"><img src="vaatteet/sukat.svg" width="96" alt="Sukat. Melkein aina."><br><b>Sukat</b><br>Melkein aina.</td>
+<td align="center" valign="top" width="156"><img src="vaatteet/lampimat-sukat.svg" width="96" alt="Lämpimät sukat. Kun on pakkasta."><br><b>Lämpimät sukat</b><br>Kun on pakkasta.</td>
+<td align="center" valign="top" width="156"><img src="vaatteet/pitka-aluspaita.svg" width="96" alt="Pitkä aluspaita. Kun on kova pakkanen."><br><b>Pitkä aluspaita</b><br>Kun on kova pakkanen.</td>
 </tr>
 </table>
 
@@ -31,11 +32,11 @@ Jokaisella vaatteella on kuva ja nimi.
 
 <table>
 <tr>
-<td align="center" width="140"><img src="vaatteet/hihaton-paita.svg" width="96" alt="Hihaton paita"><br>Hihaton paita</td>
-<td align="center" width="140"><img src="vaatteet/t-paita.svg" width="96" alt="T-paita"><br>T-paita</td>
-<td align="center" width="140"><img src="vaatteet/pitkahihainen-paita.svg" width="96" alt="Pitkähihainen paita"><br>Pitkähihainen paita</td>
-<td align="center" width="140"><img src="vaatteet/lammin-paita.svg" width="96" alt="Lämmin paita"><br>Lämmin paita</td>
-<td align="center" width="140"><img src="vaatteet/villapaita.svg" width="96" alt="Villapaita"><br>Villapaita</td>
+<td align="center" valign="top" width="156"><img src="vaatteet/hihaton-paita.svg" width="96" alt="Hihaton paita. Kun on helle."><br><b>Hihaton paita</b><br>Kun on helle.</td>
+<td align="center" valign="top" width="156"><img src="vaatteet/t-paita.svg" width="96" alt="T-paita. Kun on lämmin."><br><b>T-paita</b><br>Kun on lämmin.</td>
+<td align="center" valign="top" width="156"><img src="vaatteet/pitkahihainen-paita.svg" width="96" alt="Pitkähihainen paita. Kun on vähän viileää."><br><b>Pitkähihainen paita</b><br>Kun on vähän viileää.</td>
+<td align="center" valign="top" width="156"><img src="vaatteet/lammin-paita.svg" width="96" alt="Lämmin paita. Kun on viileää."><br><b>Lämmin paita</b><br>Kun on viileää.</td>
+<td align="center" valign="top" width="156"><img src="vaatteet/villapaita.svg" width="96" alt="Villapaita. Kun on kylmä."><br><b>Villapaita</b><br>Kun on kylmä.</td>
 </tr>
 </table>
 
@@ -43,14 +44,14 @@ Jokaisella vaatteella on kuva ja nimi.
 
 <table>
 <tr>
-<td align="center" width="140"><img src="vaatteet/liivi.svg" width="96" alt="Liivi"><br>Liivi</td>
-<td align="center" width="140"><img src="vaatteet/tuulitakki.svg" width="96" alt="Tuulitakki"><br>Tuulitakki</td>
-<td align="center" width="140"><img src="vaatteet/takki.svg" width="96" alt="Takki"><br>Takki</td>
-<td align="center" width="140"><img src="vaatteet/sadetakki.svg" width="96" alt="Sadetakki"><br>Sadetakki</td>
-<td align="center" width="140"><img src="vaatteet/talvitakki.svg" width="96" alt="Talvitakki"><br>Talvitakki</td>
+<td align="center" valign="top" width="156"><img src="vaatteet/liivi.svg" width="96" alt="Liivi. Kun on melkein lämmin."><br><b>Liivi</b><br>Kun on melkein lämmin.</td>
+<td align="center" valign="top" width="156"><img src="vaatteet/tuulitakki.svg" width="96" alt="Tuulitakki. Kun tuulee."><br><b>Tuulitakki</b><br>Kun tuulee.</td>
+<td align="center" valign="top" width="156"><img src="vaatteet/takki.svg" width="96" alt="Takki. Kun on viileää."><br><b>Takki</b><br>Kun on viileää.</td>
+<td align="center" valign="top" width="156"><img src="vaatteet/sadetakki.svg" width="96" alt="Sadetakki. Kun sataa."><br><b>Sadetakki</b><br>Kun sataa.</td>
+<td align="center" valign="top" width="156"><img src="vaatteet/talvitakki.svg" width="96" alt="Talvitakki. Kun on kylmä."><br><b>Talvitakki</b><br>Kun on kylmä.</td>
 </tr>
 <tr>
-<td align="center" width="140"><img src="vaatteet/paksu-talvitakki.svg" width="96" alt="Paksu talvitakki"><br>Paksu talvitakki</td>
+<td align="center" valign="top" width="156"><img src="vaatteet/paksu-talvitakki.svg" width="96" alt="Paksu talvitakki. Kun on kova pakkanen."><br><b>Paksu talvitakki</b><br>Kun on kova pakkanen.</td>
 </tr>
 </table>
 
@@ -58,10 +59,10 @@ Jokaisella vaatteella on kuva ja nimi.
 
 <table>
 <tr>
-<td align="center" width="140"><img src="vaatteet/shortsit.svg" width="96" alt="Shortsit"><br>Shortsit</td>
-<td align="center" width="140"><img src="vaatteet/pitkat-housut.svg" width="96" alt="Pitkät housut"><br>Pitkät housut</td>
-<td align="center" width="140"><img src="vaatteet/sadehousut.svg" width="96" alt="Sadehousut"><br>Sadehousut</td>
-<td align="center" width="140"><img src="vaatteet/lampimat-housut.svg" width="96" alt="Lämpimät housut"><br>Lämpimät housut</td>
+<td align="center" valign="top" width="156"><img src="vaatteet/shortsit.svg" width="96" alt="Shortsit. Kun on kuuma."><br><b>Shortsit</b><br>Kun on kuuma.</td>
+<td align="center" valign="top" width="156"><img src="vaatteet/pitkat-housut.svg" width="96" alt="Pitkät housut. Melkein aina."><br><b>Pitkät housut</b><br>Melkein aina.</td>
+<td align="center" valign="top" width="156"><img src="vaatteet/sadehousut.svg" width="96" alt="Sadehousut. Kun sataa paljon."><br><b>Sadehousut</b><br>Kun sataa paljon.</td>
+<td align="center" valign="top" width="156"><img src="vaatteet/lampimat-housut.svg" width="96" alt="Lämpimät housut. Kun on pakkasta."><br><b>Lämpimät housut</b><br>Kun on pakkasta.</td>
 </tr>
 </table>
 
@@ -69,14 +70,14 @@ Jokaisella vaatteella on kuva ja nimi.
 
 <table>
 <tr>
-<td align="center" width="140"><img src="vaatteet/sandaalit.svg" width="96" alt="Sandaalit"><br>Sandaalit</td>
-<td align="center" width="140"><img src="vaatteet/lenkkarit.svg" width="96" alt="Lenkkarit"><br>Lenkkarit</td>
-<td align="center" width="140"><img src="vaatteet/paksut-kengat.svg" width="96" alt="Paksut kengät"><br>Paksut kengät</td>
-<td align="center" width="140"><img src="vaatteet/kumisaappaat.svg" width="96" alt="Kumisaappaat"><br>Kumisaappaat</td>
-<td align="center" width="140"><img src="vaatteet/talvikengat.svg" width="96" alt="Talvikengät"><br>Talvikengät</td>
+<td align="center" valign="top" width="156"><img src="vaatteet/sandaalit.svg" width="96" alt="Sandaalit. Kun on kuuma ja kuivaa."><br><b>Sandaalit</b><br>Kun on kuuma ja kuivaa.</td>
+<td align="center" valign="top" width="156"><img src="vaatteet/lenkkarit.svg" width="96" alt="Lenkkarit. Kun on kuivaa."><br><b>Lenkkarit</b><br>Kun on kuivaa.</td>
+<td align="center" valign="top" width="156"><img src="vaatteet/paksut-kengat.svg" width="96" alt="Paksut kengät. Kun on viileää."><br><b>Paksut kengät</b><br>Kun on viileää.</td>
+<td align="center" valign="top" width="156"><img src="vaatteet/kumisaappaat.svg" width="96" alt="Kumisaappaat. Kun sataa tai on loskaa."><br><b>Kumisaappaat</b><br>Kun sataa tai on loskaa.</td>
+<td align="center" valign="top" width="156"><img src="vaatteet/talvikengat.svg" width="96" alt="Talvikengät. Kun on lunta tai pakkasta."><br><b>Talvikengät</b><br>Kun on lunta tai pakkasta.</td>
 </tr>
 <tr>
-<td align="center" width="140"><img src="vaatteet/liukuesteet-kenkiin.svg" width="96" alt="Liukuesteet kenkiin"><br>Liukuesteet kenkiin</td>
+<td align="center" valign="top" width="156"><img src="vaatteet/liukuesteet-kenkiin.svg" width="96" alt="Liukuesteet kenkiin. Kun on liukasta."><br><b>Liukuesteet kenkiin</b><br>Kun on liukasta.</td>
 </tr>
 </table>
 
@@ -84,14 +85,14 @@ Jokaisella vaatteella on kuva ja nimi.
 
 <table>
 <tr>
-<td align="center" width="140"><img src="vaatteet/lippalakki.svg" width="96" alt="Lippalakki"><br>Lippalakki</td>
-<td align="center" width="140"><img src="vaatteet/aurinkohattu.svg" width="96" alt="Aurinkohattu"><br>Aurinkohattu</td>
-<td align="center" width="140"><img src="vaatteet/sadehattu.svg" width="96" alt="Sadehattu"><br>Sadehattu</td>
-<td align="center" width="140"><img src="vaatteet/ohut-pipo.svg" width="96" alt="Ohut pipo"><br>Ohut pipo</td>
-<td align="center" width="140"><img src="vaatteet/pipo.svg" width="96" alt="Pipo"><br>Pipo</td>
+<td align="center" valign="top" width="156"><img src="vaatteet/lippalakki.svg" width="96" alt="Lippalakki. Keväällä ja kesällä."><br><b>Lippalakki</b><br>Keväällä ja kesällä.</td>
+<td align="center" valign="top" width="156"><img src="vaatteet/aurinkohattu.svg" width="96" alt="Aurinkohattu. Kun aurinko paistaa kovaa."><br><b>Aurinkohattu</b><br>Kun aurinko paistaa kovaa.</td>
+<td align="center" valign="top" width="156"><img src="vaatteet/sadehattu.svg" width="96" alt="Sadehattu. Kun sataa ja tuulee kovaa."><br><b>Sadehattu</b><br>Kun sataa ja tuulee kovaa.</td>
+<td align="center" valign="top" width="156"><img src="vaatteet/ohut-pipo.svg" width="96" alt="Ohut pipo. Kun on viileää."><br><b>Ohut pipo</b><br>Kun on viileää.</td>
+<td align="center" valign="top" width="156"><img src="vaatteet/pipo.svg" width="96" alt="Pipo. Kun on kylmä."><br><b>Pipo</b><br>Kun on kylmä.</td>
 </tr>
 <tr>
-<td align="center" width="140"><img src="vaatteet/karvahattu.svg" width="96" alt="Karvahattu"><br>Karvahattu</td>
+<td align="center" valign="top" width="156"><img src="vaatteet/karvahattu.svg" width="96" alt="Karvahattu. Kun on kova pakkanen."><br><b>Karvahattu</b><br>Kun on kova pakkanen.</td>
 </tr>
 </table>
 
@@ -99,9 +100,9 @@ Jokaisella vaatteella on kuva ja nimi.
 
 <table>
 <tr>
-<td align="center" width="140"><img src="vaatteet/hanskat.svg" width="96" alt="Hanskat"><br>Hanskat</td>
-<td align="center" width="140"><img src="vaatteet/lapaset.svg" width="96" alt="Lapaset"><br>Lapaset</td>
-<td align="center" width="140"><img src="vaatteet/kaulahuivi.svg" width="96" alt="Kaulahuivi"><br>Kaulahuivi</td>
+<td align="center" valign="top" width="156"><img src="vaatteet/hanskat.svg" width="96" alt="Hanskat. Kun on kylmä."><br><b>Hanskat</b><br>Kun on kylmä.</td>
+<td align="center" valign="top" width="156"><img src="vaatteet/lapaset.svg" width="96" alt="Lapaset. Kun on pakkasta."><br><b>Lapaset</b><br>Kun on pakkasta.</td>
+<td align="center" valign="top" width="156"><img src="vaatteet/kaulahuivi.svg" width="96" alt="Kaulahuivi. Kun on kylmä tai tuulee."><br><b>Kaulahuivi</b><br>Kun on kylmä tai tuulee.</td>
 </tr>
 </table>
 
@@ -109,14 +110,14 @@ Jokaisella vaatteella on kuva ja nimi.
 
 <table>
 <tr>
-<td align="center" width="140"><img src="vaatteet/sateenvarjo.svg" width="96" alt="Sateenvarjo"><br>Sateenvarjo</td>
-<td align="center" width="140"><img src="vaatteet/aurinkolasit.svg" width="96" alt="Aurinkolasit"><br>Aurinkolasit</td>
-<td align="center" width="140"><img src="vaatteet/aurinkorasva.svg" width="96" alt="Aurinkorasva"><br>Aurinkorasva</td>
-<td align="center" width="140"><img src="vaatteet/vesipullo.svg" width="96" alt="Vesipullo"><br>Vesipullo</td>
-<td align="center" width="140"><img src="vaatteet/hyttyssuoja.svg" width="96" alt="Hyttyssuoja"><br>Hyttyssuoja</td>
+<td align="center" valign="top" width="156"><img src="vaatteet/sateenvarjo.svg" width="96" alt="Sateenvarjo. Kun sataa."><br><b>Sateenvarjo</b><br>Kun sataa.</td>
+<td align="center" valign="top" width="156"><img src="vaatteet/aurinkolasit.svg" width="96" alt="Aurinkolasit. Kun aurinko paistaa."><br><b>Aurinkolasit</b><br>Kun aurinko paistaa.</td>
+<td align="center" valign="top" width="156"><img src="vaatteet/aurinkorasva.svg" width="96" alt="Aurinkorasva. Kun aurinko paistaa kovaa."><br><b>Aurinkorasva</b><br>Kun aurinko paistaa kovaa.</td>
+<td align="center" valign="top" width="156"><img src="vaatteet/vesipullo.svg" width="96" alt="Vesipullo. Kun on helle."><br><b>Vesipullo</b><br>Kun on helle.</td>
+<td align="center" valign="top" width="156"><img src="vaatteet/hyttyssuoja.svg" width="96" alt="Hyttyssuoja. Kesällä, kun on hyttysiä."><br><b>Hyttyssuoja</b><br>Kesällä, kun on hyttysiä.</td>
 </tr>
 <tr>
-<td align="center" width="140"><img src="vaatteet/heijastin.svg" width="96" alt="Heijastin"><br>Heijastin</td>
+<td align="center" valign="top" width="156"><img src="vaatteet/heijastin.svg" width="96" alt="Heijastin. Kun on pimeää."><br><b>Heijastin</b><br>Kun on pimeää.</td>
 </tr>
 </table>
 
@@ -127,11 +128,11 @@ Taustan väri kertoo saman asian.
 
 <table>
 <tr>
-<td align="center" width="170"><img src="ukko/kova-pakkanen.svg" width="130" alt="Kova pakkanen"><br><b>Kova pakkanen</b><br>Ukko tärisee.</td>
-<td align="center" width="170"><img src="ukko/kylma.svg" width="130" alt="Kylmä"><br><b>Kylmä</b><br>Ukolla on pipo. Suu on suora.</td>
-<td align="center" width="170"><img src="ukko/viilea.svg" width="130" alt="Viileä"><br><b>Viileä</b><br>Ukko seisoo rauhassa.</td>
-<td align="center" width="170"><img src="ukko/lammin.svg" width="130" alt="Lämmin"><br><b>Lämmin</b><br>Ukko hymyilee. Kädet ovat ylhäällä.</td>
-<td align="center" width="170"><img src="ukko/kuuma.svg" width="130" alt="Kuuma"><br><b>Kuuma</b><br>Ukko on punainen ja hikoilee.</td>
+<td align="center" valign="top" width="190"><img src="ukko/kova-pakkanen.svg" width="130" alt="Kova pakkanen. Ukko tärisee."><br><b>Kova pakkanen</b><br>Ukko tärisee.</td>
+<td align="center" valign="top" width="190"><img src="ukko/kylma.svg" width="130" alt="Kylmä. Ukolla on pipo. Suu on suora."><br><b>Kylmä</b><br>Ukolla on pipo. Suu on suora.</td>
+<td align="center" valign="top" width="190"><img src="ukko/viilea.svg" width="130" alt="Viileä. Ukko seisoo rauhassa."><br><b>Viileä</b><br>Ukko seisoo rauhassa.</td>
+<td align="center" valign="top" width="190"><img src="ukko/lammin.svg" width="130" alt="Lämmin. Ukko hymyilee. Kädet ovat ylhäällä."><br><b>Lämmin</b><br>Ukko hymyilee. Kädet ovat ylhäällä.</td>
+<td align="center" valign="top" width="190"><img src="ukko/kuuma.svg" width="130" alt="Kuuma. Ukko on punainen ja hikoilee."><br><b>Kuuma</b><br>Ukko on punainen ja hikoilee.</td>
 </tr>
 </table>
 
@@ -141,15 +142,15 @@ Ukon kuvassa näkyy myös sää.
 
 <table>
 <tr>
-<td align="center" width="170"><img src="saa/tuuli.svg" width="130" alt="Tuuli"><br><b>Tuuli</b><br>Viivat tarkoittavat tuulta. Ukko nojaa tuulessa.</td>
-<td align="center" width="170"><img src="saa/sade.svg" width="130" alt="Sade"><br><b>Sade</b><br>Siniset pisarat tarkoittavat sadetta.</td>
-<td align="center" width="170"><img src="saa/lumi.svg" width="130" alt="Lumi"><br><b>Lumi</b><br>Valkoiset pallot tarkoittavat lunta.</td>
-<td align="center" width="170"><img src="saa/ukkonen.svg" width="130" alt="Ukkonen"><br><b>Ukkonen</b><br>Pilvi ja salama tarkoittavat ukkosta.</td>
+<td align="center" valign="top" width="190"><img src="saa/tuuli.svg" width="130" alt="Tuuli. Viivat tarkoittavat tuulta. Ukko nojaa tuulessa."><br><b>Tuuli</b><br>Viivat tarkoittavat tuulta. Ukko nojaa tuulessa.</td>
+<td align="center" valign="top" width="190"><img src="saa/sade.svg" width="130" alt="Sade. Siniset pisarat tarkoittavat sadetta."><br><b>Sade</b><br>Siniset pisarat tarkoittavat sadetta.</td>
+<td align="center" valign="top" width="190"><img src="saa/lumi.svg" width="130" alt="Lumi. Valkoiset pallot tarkoittavat lunta."><br><b>Lumi</b><br>Valkoiset pallot tarkoittavat lunta.</td>
+<td align="center" valign="top" width="190"><img src="saa/ukkonen.svg" width="130" alt="Ukkonen. Pilvi ja salama tarkoittavat ukkosta."><br><b>Ukkonen</b><br>Pilvi ja salama tarkoittavat ukkosta.</td>
 </tr>
 <tr>
-<td align="center" width="170"><img src="saa/sumu.svg" width="130" alt="Sumu"><br><b>Sumu</b><br>Vaaleat raidat tarkoittavat sumua.</td>
-<td align="center" width="170"><img src="saa/aurinko.svg" width="130" alt="Aurinko"><br><b>Aurinko</b><br>Aurinko tarkoittaa, että aurinko paistaa.</td>
-<td align="center" width="170"><img src="saa/pimea.svg" width="130" alt="Pimeä"><br><b>Pimeä</b><br>Kuu ja tähdet tarkoittavat, että ulkona on pimeää.</td>
+<td align="center" valign="top" width="190"><img src="saa/sumu.svg" width="130" alt="Sumu. Vaaleat raidat tarkoittavat sumua."><br><b>Sumu</b><br>Vaaleat raidat tarkoittavat sumua.</td>
+<td align="center" valign="top" width="190"><img src="saa/aurinko.svg" width="130" alt="Aurinko. Aurinko tarkoittaa, että aurinko paistaa."><br><b>Aurinko</b><br>Aurinko tarkoittaa, että aurinko paistaa.</td>
+<td align="center" valign="top" width="190"><img src="saa/pimea.svg" width="130" alt="Pimeä. Kuu ja tähdet tarkoittavat, että ulkona on pimeää."><br><b>Pimeä</b><br>Kuu ja tähdet tarkoittavat, että ulkona on pimeää.</td>
 </tr>
 </table>
 
@@ -160,22 +161,24 @@ Säät ovat esimerkkejä. Ne eivät ole oikea sääennuste.
 
 <table>
 <tr>
-<td align="center" width="170"><img src="kuukaudet/01-tammikuu.svg" width="130" alt="Tammikuu"><br><b>Tammikuu</b><br>−18 astetta</td>
-<td align="center" width="170"><img src="kuukaudet/02-helmikuu.svg" width="130" alt="Helmikuu"><br><b>Helmikuu</b><br>−7 astetta</td>
-<td align="center" width="170"><img src="kuukaudet/03-maaliskuu.svg" width="130" alt="Maaliskuu"><br><b>Maaliskuu</b><br>0 astetta</td>
-<td align="center" width="170"><img src="kuukaudet/04-huhtikuu.svg" width="130" alt="Huhtikuu"><br><b>Huhtikuu</b><br>+6 astetta</td>
+<td align="center" valign="top" width="190"><img src="kuukaudet/01-tammikuu.svg" width="130" alt="Tammikuu. −18 astetta. Hyvin kylmä. Taivas on selkeä. On pimeää. Ukolla on: paksu talvitakki, lämpimät housut, talvikengät, karvahattu, lapaset, kaulahuivi, heijastin."><br><b>Tammikuu</b><br>−18 astetta. Hyvin kylmä. Taivas on selkeä. On pimeää.<br>Ukolla on: paksu talvitakki, lämpimät housut, talvikengät, karvahattu, lapaset, kaulahuivi, heijastin.</td>
+<td align="center" valign="top" width="190"><img src="kuukaudet/02-helmikuu.svg" width="130" alt="Helmikuu. −7 astetta. Kylmä. Aurinko paistaa. Ukolla on: talvitakki, lämpimät housut, talvikengät, pipo, lapaset, kaulahuivi, aurinkolasit."><br><b>Helmikuu</b><br>−7 astetta. Kylmä. Aurinko paistaa.<br>Ukolla on: talvitakki, lämpimät housut, talvikengät, pipo, lapaset, kaulahuivi, aurinkolasit.</td>
+<td align="center" valign="top" width="190"><img src="kuukaudet/03-maaliskuu.svg" width="130" alt="Maaliskuu. 0 astetta. Kylmä. Sataa lunta. Ukolla on: talvitakki, pitkät housut, talvikengät, pipo, hanskat, kaulahuivi."><br><b>Maaliskuu</b><br>0 astetta. Kylmä. Sataa lunta.<br>Ukolla on: talvitakki, pitkät housut, talvikengät, pipo, hanskat, kaulahuivi.</td>
 </tr>
 <tr>
-<td align="center" width="170"><img src="kuukaudet/05-toukokuu.svg" width="130" alt="Toukokuu"><br><b>Toukokuu</b><br>+14 astetta</td>
-<td align="center" width="170"><img src="kuukaudet/06-kesakuu.svg" width="130" alt="Kesäkuu"><br><b>Kesäkuu</b><br>+19 astetta</td>
-<td align="center" width="170"><img src="kuukaudet/07-heinakuu.svg" width="130" alt="Heinäkuu"><br><b>Heinäkuu</b><br>+27 astetta</td>
-<td align="center" width="170"><img src="kuukaudet/08-elokuu.svg" width="130" alt="Elokuu"><br><b>Elokuu</b><br>+20 astetta</td>
+<td align="center" valign="top" width="190"><img src="kuukaudet/04-huhtikuu.svg" width="130" alt="Huhtikuu. +6 astetta. Kylmä. On pilvistä. Tuulee. Ukolla on: takki, pitkät housut, paksut kengät, pipo, hanskat, kaulahuivi, aurinkolasit."><br><b>Huhtikuu</b><br>+6 astetta. Kylmä. On pilvistä. Tuulee.<br>Ukolla on: takki, pitkät housut, paksut kengät, pipo, hanskat, kaulahuivi, aurinkolasit.</td>
+<td align="center" valign="top" width="190"><img src="kuukaudet/05-toukokuu.svg" width="130" alt="Toukokuu. +14 astetta. Viileä. Aurinko paistaa. Ukolla on: ohut takki, pitkät housut, lenkkarit, lippalakki, aurinkolasit."><br><b>Toukokuu</b><br>+14 astetta. Viileä. Aurinko paistaa.<br>Ukolla on: ohut takki, pitkät housut, lenkkarit, lippalakki, aurinkolasit.</td>
+<td align="center" valign="top" width="190"><img src="kuukaudet/06-kesakuu.svg" width="130" alt="Kesäkuu. +19 astetta. Lämmin. On pilvistä. Ukolla on: pitkähihainen paita, pitkät housut, lenkkarit, aurinkohattu, aurinkolasit."><br><b>Kesäkuu</b><br>+19 astetta. Lämmin. On pilvistä.<br>Ukolla on: pitkähihainen paita, pitkät housut, lenkkarit, aurinkohattu, aurinkolasit.</td>
 </tr>
 <tr>
-<td align="center" width="170"><img src="kuukaudet/09-syyskuu.svg" width="130" alt="Syyskuu"><br><b>Syyskuu</b><br>+12 astetta</td>
-<td align="center" width="170"><img src="kuukaudet/10-lokakuu.svg" width="130" alt="Lokakuu"><br><b>Lokakuu</b><br>+6 astetta</td>
-<td align="center" width="170"><img src="kuukaudet/11-marraskuu.svg" width="130" alt="Marraskuu"><br><b>Marraskuu</b><br>+1 astetta</td>
-<td align="center" width="170"><img src="kuukaudet/12-joulukuu.svg" width="130" alt="Joulukuu"><br><b>Joulukuu</b><br>−4 astetta</td>
+<td align="center" valign="top" width="190"><img src="kuukaudet/07-heinakuu.svg" width="130" alt="Heinäkuu. +27 astetta. Kuuma. Aurinko paistaa. Ukolla on: hihaton paita, shortsit, sandaalit, aurinkohattu, aurinkolasit."><br><b>Heinäkuu</b><br>+27 astetta. Kuuma. Aurinko paistaa.<br>Ukolla on: hihaton paita, shortsit, sandaalit, aurinkohattu, aurinkolasit.</td>
+<td align="center" valign="top" width="190"><img src="kuukaudet/08-elokuu.svg" width="130" alt="Elokuu. +20 astetta. Lämmin. Ukkostaa. Ukolla on: sadetakki, pitkät housut, sadehousut, kumisaappaat, lippalakki."><br><b>Elokuu</b><br>+20 astetta. Lämmin. Ukkostaa.<br>Ukolla on: sadetakki, pitkät housut, sadehousut, kumisaappaat, lippalakki.</td>
+<td align="center" valign="top" width="190"><img src="kuukaudet/09-syyskuu.svg" width="130" alt="Syyskuu. +12 astetta. Viileä. Sataa. Ukolla on: sadetakki, pitkät housut, kumisaappaat, sateenvarjo."><br><b>Syyskuu</b><br>+12 astetta. Viileä. Sataa.<br>Ukolla on: sadetakki, pitkät housut, kumisaappaat, sateenvarjo.</td>
+</tr>
+<tr>
+<td align="center" valign="top" width="190"><img src="kuukaudet/10-lokakuu.svg" width="130" alt="Lokakuu. +6 astetta. Kylmä. On sumua. On pimeää. Ukolla on: takki, pitkät housut, paksut kengät, pipo, hanskat, heijastin."><br><b>Lokakuu</b><br>+6 astetta. Kylmä. On sumua. On pimeää.<br>Ukolla on: takki, pitkät housut, paksut kengät, pipo, hanskat, heijastin.</td>
+<td align="center" valign="top" width="190"><img src="kuukaudet/11-marraskuu.svg" width="130" alt="Marraskuu. +1 astetta. Kylmä. Sataa lunta. On pimeää. Ukolla on: talvitakki, pitkät housut, kumisaappaat, pipo, hanskat, kaulahuivi, heijastin."><br><b>Marraskuu</b><br>+1 astetta. Kylmä. Sataa lunta. On pimeää.<br>Ukolla on: talvitakki, pitkät housut, kumisaappaat, pipo, hanskat, kaulahuivi, heijastin.</td>
+<td align="center" valign="top" width="190"><img src="kuukaudet/12-joulukuu.svg" width="130" alt="Joulukuu. −4 astetta. Kylmä. Sataa lunta. On pimeää. Ukolla on: talvitakki, lämpimät housut, talvikengät, pipo, lapaset, kaulahuivi, heijastin."><br><b>Joulukuu</b><br>−4 astetta. Kylmä. Sataa lunta. On pimeää.<br>Ukolla on: talvitakki, lämpimät housut, talvikengät, pipo, lapaset, kaulahuivi, heijastin.</td>
 </tr>
 </table>
 
