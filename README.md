@@ -92,39 +92,64 @@ Ylhäällä on kaksi nappia:
 
 Sovellus muistaa paikan seuraavalla kerralla.
 
-Jos sovellus ei saa tietää, missä olet, se näyttää Helsingin sään.
+### Jos selain ei anna lupaa
+
+Sovellus toimii silti.
+Se arvaa paikan verkkoyhteydestäsi.
+
+Arvattu paikka näkyy näin: ≈ Tampere.
+Merkki ≈ tarkoittaa: noin.
+
+Arvaus voi olla väärä kaupunki.
+Näin käy usein, kun käytät puhelimen omaa nettiä.
+
+Jos paikka on väärä, paina 🔍 ja kirjoita oikea paikka.
 
 ## Jos sovellus sanoo: Paikannus on estetty
 
 Tämä tarkoittaa, että selain ei anna sovelluksen katsoa, missä olet.
 
-Voit antaa luvan vain tälle sovellukselle.
-Muut sivut eivät saa lupaa samalla.
+Sovellus ei voi ohittaa estoa.
+Vain sinä voit antaa luvan.
 
 Voit pyytää apua toiselta ihmiseltä.
 Lupa annetaan vain yhden kerran.
 
 Valikoiden nimet voivat olla puhelimessasi vähän erilaiset.
 
-### Chrome Android-puhelimessa
+### Vaihe 1: Anna selaimelle lupa puhelimen asetuksista
 
-1. Avaa sovellus Chromessa.
-2. Katso osoiteriviä ylhäällä. Paina sen vasemmassa reunassa olevaa pientä kuvaa.
-3. Paina: Käyttöoikeudet.
+Tee tämä ensin.
+Jos selaimella ei ole tätä lupaa, selain ei edes kysy sinulta mitään.
+
+1. Avaa puhelimen Asetukset.
+2. Paina: Sovellukset.
+3. Valitse selain: Chrome tai Edge.
+4. Paina: Käyttöoikeudet tai Luvat.
+5. Paina: Sijainti.
+6. Valitse: Salli vain sovelluksen käytön aikana.
+
+Katso myös, että puhelimen sijainti on päällä.
+Vedä sormella näytön yläreunasta alas.
+Katso, että Sijainti-nappi on päällä.
+
+Avaa sitten sovellus uudelleen ja paina 📍.
+Jos selain kysyy lupaa, vastaa: Salli.
+
+### Vaihe 2: Poista sivun esto selaimen asetuksista
+
+Tee tämä, jos vaihe 1 ei auttanut.
+
+**Chrome:**
+
+1. Paina kolmea pistettä Chromen yläreunassa.
+2. Paina: Asetukset.
+3. Paina: Sivustoasetukset.
 4. Paina: Sijainti.
-5. Valitse: Salli.
-6. Palaa sovellukseen ja paina 📍.
+5. Etsi kohdasta Estetty osoite `kebabkenraali.github.io`. Paina sitä.
+6. Valitse: Salli.
 
-### Edge Android-puhelimessa
-
-1. Avaa sovellus Edgessä.
-2. Katso osoiteriviä. Paina sen vasemmassa reunassa olevaa lukon kuvaa.
-3. Paina: Käyttöoikeudet.
-4. Paina: Sijainti.
-5. Valitse: Salli.
-6. Palaa sovellukseen ja paina 📍.
-
-Jos et löydä lukon kuvaa, tee näin:
+**Edge:**
 
 1. Paina Edgen valikkoa. Se on kolme viivaa tai kolme pistettä alareunassa.
 2. Paina: Asetukset.
@@ -133,6 +158,8 @@ Jos et löydä lukon kuvaa, tee näin:
 5. Paina: Sijainti.
 6. Etsi listasta `kebabkenraali.github.io` ja valitse: Salli.
 
+Avaa sitten sovellus uudelleen ja paina 📍.
+
 ### Edge tai Chrome tietokoneessa
 
 1. Avaa sovellus.
@@ -140,23 +167,6 @@ Jos et löydä lukon kuvaa, tee näin:
 3. Etsi kohta: Sijainti.
 4. Valitse: Salli.
 5. Lataa sivu uudelleen.
-
-### Jos lupa ei vieläkään toimi
-
-Tarkista kaksi asiaa puhelimen asetuksista.
-
-**1. Puhelimen sijainti on päällä.**
-Vedä sormella näytön yläreunasta alas.
-Katso, että Sijainti-nappi on päällä.
-
-**2. Selaimella on lupa käyttää sijaintia.**
-
-1. Avaa puhelimen Asetukset.
-2. Paina: Sovellukset.
-3. Valitse selain: Chrome tai Edge.
-4. Paina: Käyttöoikeudet.
-5. Paina: Sijainti.
-6. Valitse: Salli vain sovelluksen käytön aikana.
 
 ### Jos et halua antaa lupaa
 
@@ -198,7 +208,7 @@ Sovellus muistaa paikan vain omassa laitteessasi.
 Sovellus lähettää paikan kahteen palveluun:
 
 - [Open-Meteo](https://open-meteo.com/) antaa sääennusteen.
-- [BigDataCloud](https://www.bigdatacloud.com/) kertoo paikan nimen.
+- [BigDataCloud](https://www.bigdatacloud.com/) kertoo paikan nimen. Se myös arvaa paikan verkkoyhteydestä, jos selain ei anna lupaa.
 
 ## Ohje tekijälle
 

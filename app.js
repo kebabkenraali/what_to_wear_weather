@@ -367,8 +367,20 @@ async function getJson(url) {
 function setLocation(loc) {
   state.loc = loc;
   saveLoc(loc);
-  $('locName').textContent = loc.name;
+  // "≈" kertoo, että paikka on arvio verkkoyhteyden perusteella.
+  $('locName').textContent = (loc.mode === 'ip' ? '≈ ' : '') + loc.name;
   loadWeather();
+}
+
+// Arvioitu paikka verkkoyhteyden (IP-osoitteen) perusteella. Ei tarvitse selaimen sijaintilupaa,
+// mutta on tarkka vain kaupungin tasolla ja voi mobiiliverkossa osua väärään kaupunkiin.
+async function ipLocation() {
+  const d = await getJson('https://api.bigdatacloud.net/data/reverse-geocode-client?localityLanguage=fi');
+  if (typeof d.latitude !== 'number' || typeof d.longitude !== 'number') throw new Error('Ei arviota');
+  return {
+    name: d.city || d.locality || d.principalSubdivision || d.countryName || 'Arvioitu paikka',
+    lat: +d.latitude.toFixed(2), lon: +d.longitude.toFixed(2), mode: 'ip',
+  };
 }
 
 function getPosition() {
@@ -397,11 +409,16 @@ async function useGps(silent = false) {
     setLocation({ name, lat, lon, mode: 'gps' });
     return true;
   } catch (e) {
+    // Varatapa: arvioidaan paikka verkkoyhteydestä, jos tarkkaa sijaintia ei saada.
+    let approx = null;
+    try { approx = await ipLocation(); } catch {}
+    if (approx) setLocation(approx);
     if (!silent) {
       const denied = e && e.code === 1;
-      msg($('locMsg'), denied
-        ? 'Paikannus on estetty. Voit myös painaa 🔍 ja kirjoittaa paikan. '
-        : 'Sijaintia ei saatu. Paina 🔍 ja kirjoita paikka. ', true);
+      const why = denied ? 'Paikannus on estetty. ' : 'Tarkkaa sijaintia ei saatu. ';
+      msg($('locMsg'), why + (approx
+        ? `Näytetään arvioitu paikka: ${approx.name}. Jos se on väärä, paina 🔍 ja kirjoita paikka. `
+        : 'Paina 🔍 ja kirjoita paikka. '), !approx);
       if (denied) {
         const a = document.createElement('a');
         a.href = HELP_URL;
@@ -412,7 +429,7 @@ async function useGps(silent = false) {
       }
       queueFit();
     }
-    return false;
+    return !!approx;
   } finally {
     btn.disabled = false;
   }
@@ -817,7 +834,7 @@ let lastRefresh = Date.now();
 function refresh() {
   if (!state.loc || document.hidden) return;
   lastRefresh = Date.now();
-  if (state.loc.mode === 'gps') useGps(true).then((ok) => { if (!ok) loadWeather(); });
+  if (state.loc.mode !== 'manual') useGps(true).then((ok) => { if (!ok) loadWeather(); });
   else loadWeather();
 }
 setInterval(refresh, 30 * 60 * 1000);
