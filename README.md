@@ -399,6 +399,25 @@ Vaihda kohtaan OMA-NIMESI oma GitHub-nimesi.
 Vaatteiden säännöt ovat tiedostossa `app.js` kohdassa `outfit`.
 Vaatteiden nimet ovat samassa tiedostossa kohdassa `NAMES`.
 
+### Saako sovellusta kopioida?
+
+Saa.
+
+Sovelluksella on MIT-lisenssi.
+Se tarkoittaa:
+
+- Saat käyttää sovellusta ilmaiseksi.
+- Saat kopioida sovelluksen.
+- Saat muuttaa sovellusta.
+
+Yksi asia pitää muistaa:
+Pidä tiedosto `LICENSE` mukana omassa kopiossasi.
+
+Sovelluksella ei ole takuuta.
+Tekijä ei vastaa, jos sovellus neuvoo väärin.
+
+Lisenssin koko teksti on tiedostossa [LICENSE](LICENSE). Teksti on englanniksi.
+
 ### Muista nämä asiat
 
 - Sääpalvelu Open-Meteo on ilmainen vain, jos et ansaitse sivulla rahaa.
