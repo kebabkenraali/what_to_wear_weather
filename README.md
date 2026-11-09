@@ -87,15 +87,15 @@ Se tarkoittaa: sää ei ole aivan uusi.
 Sovellus osaa puhua.
 
 - Paina vaatteen kuvaa. Sovellus sanoo vaatteen nimen.
-- Paina kaiuttimen kuvaa. Sovellus kertoo sään ja kaikki vaatteet.
-- Paina ukkoa. Sovellus kertoo saman.
+- Paina ukkoa. Sovellus kertoo sään. Se kertoo myös, miten kannattaa pukeutua. Esimerkiksi: Ulkona on kylmä. Pue lämpimät vaatteet.
+- Paina kaiuttimen kuvaa. Sovellus kertoo saman.
 
 Jos sovellus ei puhu, puhelimessa ei ole suomen kielen ääntä.
 Pyydä apua toiselta ihmiseltä.
 
 ## Pue yksi vaate kerrallaan
 
-Paina vihreää nuolta.
+Paina nappia, jossa on paita ja vihreä nuoli.
 
 Sovellus näyttää yhden vaatteen isona kuvana.
 Sovellus sanoo vaatteen nimen.
@@ -393,7 +393,9 @@ Päivitys kestää noin minuutin.
 
 ## Versio
 
-Uusin versio on 1.1.1.
+Uusin versio on 1.1.2.
+
+Versiossa 1.1.2 ukko kertoo, miten kannattaa pukeutua. Se ei enää luettele kaikkia vaatteita.
 
 Versio 1.1.1 korjasi vian: päivityksen jälkeen sivu saattoi jäädä tyhjäksi.
 

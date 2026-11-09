@@ -364,7 +364,9 @@ const UI = {
   calendar: svg(`<rect x="8" y="12" width="48" height="44" rx="7" fill="#ffffff" ${S}/><path d="M8 26 V19 a7 7 0 0 1 7 -7 H49 a7 7 0 0 1 7 7 V26Z" fill="#e2574c" ${S}/>
     <path d="M20 6 V16 M44 6 V16" ${LS} stroke-width="4"/><path d="M19 36 h4 M30 36 h4 M41 36 h4 M19 46 h4 M30 46 h4" ${LS} stroke-width="4"/>`),
   speaker: svg(`<path d="M8 24 H19 L35 10 V54 L19 40 H8Z" fill="#4a6fa5" ${S}/><path d="M43 23 q7 9 0 18 M50 15 q13 17 0 34" ${LS} stroke-width="4"/>`),
-  play: svg(`<path d="M20 10 L54 32 L20 54Z" fill="#3fae6a" ${S}/>`),
+  // Pukeminen yksi vaate kerrallaan: paita ja vihreä nuoli seuraavaan.
+  dress: svg(`<path transform="translate(-4 -2) scale(.86)" d="M22 8 L8 16 L13 27 L19 24 V56 H45 V24 L51 27 L56 16 L42 8 C40 13 24 13 22 8Z" fill="#4fb6e8" stroke="var(--ink)" stroke-width="3.2" stroke-linejoin="round"/>
+    <circle cx="46" cy="46" r="16" fill="#3fae6a" ${S}/><path d="M38 46 H54 M47.5 38.5 L55 46 L47.5 53.5" fill="none" stroke="#ffffff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>`),
   gear: svg(`<path d="M32 6 V14 M32 50 V58 M6 32 H14 M50 32 H58 M13.6 13.6 L19.3 19.3 M44.7 44.7 L50.4 50.4 M13.6 50.4 L19.3 44.7 M44.7 19.3 L50.4 13.6" ${LS} stroke-width="6"/>
     <circle cx="32" cy="32" r="15" fill="#c9d3df" ${S}/><circle cx="32" cy="32" r="5.5" fill="#ffffff" ${S}/>`),
   check: svg(`<path d="M12 34 L26 48 L52 16" fill="none" stroke="#2a8a50" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>`),
@@ -446,12 +448,33 @@ const FEEL_SAY = {
 };
 function sayTemp(t) {
   const n = Math.round(t);
-  return n === 0 ? 'Nolla astetta' : n < 0 ? `${-n} astetta pakkasta` : `${n} astetta`;
+  if (n === 0) return 'Nolla astetta';
+  const amount = Math.abs(n) === 1 ? 'Yksi aste' : `${Math.abs(n)} astetta`;
+  return n < 0 ? `${amount} pakkasta` : amount;
 }
+// Miten kannattaa pukeutua, sanottuna yhdellä lauseella.
+const DRESS_SAY = {
+  freezing: 'Pue todella lämpimästi. Suojaa kädet, pää ja kasvot',
+  cold: 'Pue lämpimät vaatteet',
+  cool: 'Pue vähän lämmintä päälle',
+  warm: 'Kevyet vaatteet riittävät',
+  hot: 'Pue ohuet ja kevyet vaatteet. Juo vettä',
+};
+// Ukkoa tai kaiutinta painamalla kuultava teksti: sää ja miten sen mukaan pukeudutaan.
+// Vaatteita ei luetella; yksittäisen vaatteen nimen kuulee painamalla sen kuvaa.
 function summaryText(v) {
-  const sky = [v.fx.thunder && 'Ukkostaa', v.fx.snow && 'Sataa lunta', v.fx.rain && !v.fx.thunder && 'Sataa',
-    v.fx.fog && 'On sumua', v.fx.wind && 'Tuulee', v.fx.night && 'On pimeää'].filter(Boolean);
-  return [FEEL_SAY[v.feel], sayTemp(v.temp), ...sky, 'Pue päälle: ' + v.wear.map((i) => i.name).join(', ')].join('. ') + '.';
+  const s = v.s;
+  const has = (...keys) => v.wear.some((i) => keys.includes(i.icon));
+  const parts = [FEEL_SAY[v.feel], sayTemp(v.temp), DRESS_SAY[v.dress]];
+  if (s.thunder) parts.push('Ukkostaa. Pysy sisällä, jos voit');
+  if (s.snowy) parts.push('Sataa lunta. Pue lämpimät kengät');
+  else if (s.rainy) parts.push('Sataa. Pue sadevaatteet');
+  if (s.foggy) parts.push('On sumua');
+  if (s.windy) parts.push('Tuulee. Pue takki, joka suojaa tuulelta');
+  if (s.icy) parts.push('On liukasta. Kävele varovasti');
+  if (has('sunscreen', 'sunhat')) parts.push('Aurinko paistaa. Suojaa iho ja pää');
+  if (has('reflector')) parts.push('On pimeää. Laita heijastin');
+  return parts.join('. ') + '.';
 }
 // "Pue pipo", "Ota mukaan sateenvarjo", "Laita aurinkorasva".
 function sayItem(it) {
@@ -862,7 +885,9 @@ function render() {
     night: !c.is_day,
   };
   drawScene('now', feel, fx, skyIcon(c.weather_code, !!c.is_day), c.temperature_2m, wearNow);
-  state.view = { feel, fx, temp: c.temperature_2m, wear: wearNow };
+  // dress = kuinka lämpimästi pukeudutaan (sama luku, jolla vaatteet valitaan)
+  const dress = feelCat((sNow.feelsMin + sNow.feelsAvg) / 2 - settings.chill);
+  state.view = { feel, fx, temp: c.temperature_2m, wear: wearNow, s: sNow, dress };
   $('staleBadge').hidden = !state.stale;
 
   $('clothes').replaceChildren(...clothesEls(wearNow));
@@ -1182,10 +1207,11 @@ function refresh() {
   // Nappien kuvat
   const icons = {
     gpsBtn: UI.pin, searchToggle: UI.search, searchGo: UI.search, calLink: UI.calendar, backLink: UI.left, gearBtn: UI.gear,
-    speakBtn: UI.speaker, stepBtn: UI.play, stepClose: UI.close, stepPrev: UI.left, stepNext: UI.check,
+    speakBtn: UI.speaker, stepBtn: UI.dress, stepClose: UI.close, stepPrev: UI.left, stepNext: UI.check,
     retryBtn: UI.retry, offlinePic: UI.offline, staleBadge: UI.offline,
   };
   for (const [id, pic] of Object.entries(icons)) $(id).innerHTML = pic;
+  $('stepBtn').insertAdjacentHTML('beforeend', '<span>Pue vaatteet</span>'); // seliteteksti pukemisnappiin
 
   // Tapahtumat
   $('gpsBtn').addEventListener('click', () => useGps());

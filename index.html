@@ -9,7 +9,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="icons/icon-192.png">
-  <link rel="stylesheet" href="style.css?v=1.1.1">
+  <link rel="stylesheet" href="style.css?v=1.1.2">
 </head>
 <body>
   <main>
@@ -34,10 +34,11 @@
       <div class="reading">
         <div id="nowIcon" class="sky"></div>
         <div class="temp"><span id="nowThermo" class="thermo"></span><span id="nowTemp"></span></div>
-        <div class="acts">
-          <button id="speakBtn" class="round" type="button" aria-label="Kuuntele" title="Kuuntele"></button>
-          <button id="stepBtn" class="round go" type="button" aria-label="Pue yksi vaate kerrallaan" title="Pue yksi vaate kerrallaan"></button>
-        </div>
+      </div>
+      <!-- Toiminnot: kuuntele ja pue vaatteet yksi kerrallaan -->
+      <div class="acts">
+        <button id="speakBtn" class="round" type="button" aria-label="Kuuntele" title="Kuuntele"></button>
+        <button id="stepBtn" class="round go" type="button" aria-label="Pue yksi vaate kerrallaan" title="Pue yksi vaate kerrallaan"></button>
       </div>
     </section>
 
@@ -116,6 +117,6 @@
     </form>
   </dialog>
 
-  <script src="app.js?v=1.1.1"></script>
+  <script src="app.js?v=1.1.2"></script>
 </body>
 </html>
