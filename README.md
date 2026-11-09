@@ -19,20 +19,22 @@ Vaatteiden nimet on kirjoitettu lyhyesti ja selkeästi.
 
 ## Näin käytät sovellusta
 
-1. Avaa sovellus puhelimella tai tietokoneella.
+1. Avaa sovellus puhelimella, tabletilla tai tietokoneella.
 2. Sovellus kysyy, saako se katsoa, missä olet. Vastaa: Salli.
 3. Katso ukkoa. Ukko näyttää, miltä sää tuntuu.
 4. Katso vaatteiden kuvat. Pue ne päälle.
 
-Sovellus toimii, kun puhelin on pystyssä.
-Sovellus toimii myös, kun puhelin on vaakatasossa.
+Sovellus toimii Android-puhelimessa, iPhonessa ja iPadissa.
+
+Sovellus toimii, kun laite on pystyssä.
+Sovellus toimii myös, kun laite on vaakatasossa.
 
 Kaikki mahtuu ruudulle.
 Sinun ei tarvitse vierittää sivua.
 
-## Tee sovelluksesta oma kuvake puhelimeen
+## Tee sovelluksesta oma kuvake puhelimeen tai tablettiin
 
-Voit lisätä sovelluksen puhelimen aloitusnäyttöön.
+Voit lisätä sovelluksen puhelimen tai tabletin aloitusnäyttöön.
 Silloin se on siellä muiden sovellusten joukossa.
 
 Kuvakkeessa on iloinen ukko, jolla on punainen pipo.
@@ -42,7 +44,7 @@ Kuvakkeessa on iloinen ukko, jolla on punainen pipo.
 Kun avaat sovelluksen kuvakkeesta, se täyttää koko ruudun.
 Selaimen osoiterivi ei näy.
 
-Valikon sanat voivat olla puhelimessasi vähän erilaiset.
+Valikon sanat voivat olla laitteessasi vähän erilaiset.
 
 ### Android-puhelin ja Chrome
 
@@ -65,14 +67,19 @@ Valikon sanat voivat olla puhelimessasi vähän erilaiset.
 3. Paina: Lisää sivu kohteeseen.
 4. Paina: Alkunäyttö.
 
-### iPhone ja Safari
+### iPhone ja iPad
+
+Käytä Safaria.
+Applen laitteissa kuvakkeen voi tehdä vain Safarilla.
 
 1. Avaa sovellus Safarissa.
 2. Paina Jaa-nappia. Se on neliö, josta nousee nuoli ylös.
-3. Paina: Lisää Koti-valikkoon.
-4. Paina: Lisää.
+   iPhonessa nappi on alareunassa. iPadissa nappi on yläreunassa.
+3. Vieritä listaa alaspäin.
+4. Paina: Lisää Koti-valikkoon.
+5. Paina: Lisää.
 
-Nyt sovelluksen kuvake on puhelimen aloitusnäytössä.
+Nyt sovelluksen kuvake on aloitusnäytössä.
 
 ### Sovellus toimii myös ilman nettiä
 
@@ -90,8 +97,15 @@ Sovellus osaa puhua.
 - Paina ukkoa. Sovellus kertoo sään. Se kertoo myös, miten kannattaa pukeutua. Esimerkiksi: Ulkona on kylmä. Pue lämpimät vaatteet.
 - Paina kaiuttimen kuvaa. Sovellus kertoo saman.
 
-Jos sovellus ei puhu, puhelimessa ei ole suomen kielen ääntä.
-Pyydä apua toiselta ihmiseltä.
+iPhonessa ja iPadissa suomen kielen ääni on yleensä valmiina.
+
+Jos sovellus ei puhu, tarkista nämä asiat:
+
+- Onko laitteen ääni päällä?
+- Onko iPhonen sivussa oleva äänetön-kytkin pois päältä?
+- Onko laitteessa suomen kielen ääni?
+
+Pyydä apua toiselta ihmiseltä, jos et saa ääntä kuulumaan.
 
 ## Pue yksi vaate kerrallaan
 
@@ -209,11 +223,11 @@ Vain sinä voit antaa luvan.
 Voit pyytää apua toiselta ihmiseltä.
 Lupa annetaan vain yhden kerran.
 
-Valikoiden nimet voivat olla puhelimessasi vähän erilaiset.
+Valikoiden nimet voivat olla laitteessasi vähän erilaiset.
 
-### Vaihe 1: Anna selaimelle lupa puhelimen asetuksista
+### Android-puhelin
 
-Tee tämä ensin.
+Anna selaimelle lupa puhelimen asetuksista.
 Jos selaimella ei ole tätä lupaa, selain ei edes kysy sinulta mitään.
 
 1. Avaa puhelimen Asetukset.
@@ -230,29 +244,22 @@ Katso, että Sijainti-nappi on päällä.
 Avaa sitten sovellus uudelleen ja paina 📍.
 Jos selain kysyy lupaa, vastaa: Salli.
 
-### Vaihe 2: Poista sivun esto selaimen asetuksista
+### iPhone ja iPad
 
-Tee tämä, jos vaihe 1 ei auttanut.
+Anna Safarille lupa laitteen asetuksista.
 
-**Chrome:**
-
-1. Paina kolmea pistettä Chromen yläreunassa.
-2. Paina: Asetukset.
-3. Paina: Sivustoasetukset.
-4. Paina: Sijainti.
-5. Etsi kohdasta Estetty osoite `kebabkenraali.github.io`. Paina sitä.
-6. Valitse: Salli.
-
-**Edge:**
-
-1. Paina Edgen valikkoa. Se on kolme viivaa tai kolme pistettä alareunassa.
-2. Paina: Asetukset.
-3. Paina: Tietosuoja ja suojaus.
-4. Paina: Sivuston käyttöoikeudet.
-5. Paina: Sijainti.
-6. Etsi listasta `kebabkenraali.github.io` ja valitse: Salli.
+1. Avaa laitteen Asetukset.
+2. Paina: Tietosuoja ja suojaus.
+3. Paina: Sijaintipalvelut.
+4. Katso, että Sijaintipalvelut on päällä.
+5. Etsi listasta: Safari-sivustot. Paina sitä.
+6. Valitse: Appia käytettäessä.
 
 Avaa sitten sovellus uudelleen ja paina 📍.
+Safari kysyy lupaa. Vastaa: Salli.
+
+Jos käytät sovellusta aloitusnäytön kuvakkeesta, laite voi kysyä lupaa uudelleen.
+Vastaa silloinkin: Salli.
 
 ### Edge tai Chrome tietokoneessa
 
@@ -343,6 +350,61 @@ Sovellus lähettää paikan kahteen palveluun:
 - [BigDataCloud](https://www.bigdatacloud.com/) kertoo paikan nimen. Se myös arvaa paikan verkkoyhteydestä, jos selain ei anna lupaa. Palvelu käyttää paikkaa ja verkko-osoitetta oman palvelunsa parantamiseen. Se ei yhdistä niitä sinuun.
 
 Asetukset, omat valokuvat ja viimeksi haettu sää pysyvät omassa laitteessasi.
+
+## Tee oma sivu sovelluksesta
+
+Voit tehdä sovelluksesta oman kopion.
+Omaa kopiota voit muuttaa niin kuin haluat.
+Voit esimerkiksi vaihtaa vaatteiden nimiä tai sääntöjä.
+
+Tarvitset GitHub-tilin.
+Tili on ilmainen.
+
+GitHubin napit ovat englanniksi.
+Ohjeessa on napin oikea nimi.
+
+### 1. Tee kopio
+
+1. Kirjaudu GitHubiin.
+2. Avaa sivu https://github.com/kebabkenraali/what_to_wear_weather
+3. Paina oikeasta yläkulmasta: Fork.
+4. Paina: Create fork.
+
+Nyt sinulla on oma kopio.
+
+### 2. Laita oma sivu päälle
+
+1. Avaa oma kopiosi GitHubissa.
+2. Paina yläreunasta: Settings.
+3. Paina vasemmasta reunasta: Pages.
+4. Kohdassa Branch valitse: main.
+5. Paina: Save.
+6. Odota noin minuutti.
+
+Oma sivusi on nyt valmis.
+Osoite on tällainen:
+
+`https://OMA-NIMESI.github.io/what_to_wear_weather/`
+
+Vaihda kohtaan OMA-NIMESI oma GitHub-nimesi.
+
+### 3. Muuta omaa sivuasi
+
+1. Avaa omassa kopiossasi tiedosto, jota haluat muuttaa. Esimerkiksi `app.js`.
+2. Paina kynän kuvaa.
+3. Tee muutos.
+4. Paina: Commit changes.
+5. Odota noin minuutti. Muutos näkyy sivullasi.
+
+Vaatteiden säännöt ovat tiedostossa `app.js` kohdassa `outfit`.
+Vaatteiden nimet ovat samassa tiedostossa kohdassa `NAMES`.
+
+### Muista nämä asiat
+
+- Sääpalvelu Open-Meteo on ilmainen vain, jos et ansaitse sivulla rahaa.
+- Sivulla ei saa olla mainoksia.
+- Sovelluksen alareunassa pitää näkyä sana Open-Meteo. Älä poista sitä.
+- Tiedostossa `app.js` on rivi `HELP_URL`. Vaihda siihen oman sivusi osoite.
 
 ## Ohje tekijälle
 
