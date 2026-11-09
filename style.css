@@ -125,6 +125,63 @@ footer a { color: inherit; }
   .fx-shake, .fx-wind, .fx-fall, .fx-sweat { animation: none; }
 }
 
+/* Sovitus ruudulle: koko näkymä mahtuu ruudulle ilman vieritystä.
+   app.js (fit) laskee vaateruutujen korkeuden --ts ja sarakemäärän. */
+main { padding-bottom: 10px; }
+.card { margin-bottom: 10px; }
+.location { margin-bottom: 8px; }
+footer { margin-top: 4px; }
+#now .person { flex-basis: min(230px, 26dvh); }
+main:has(#later:not([hidden])) #now .person { flex-basis: min(170px, 19dvh); }
+#clothes { gap: 8px; margin-bottom: 8px; }
+#clothes .item, #laterClothes .item { height: var(--ts, 120px); padding: 4px 3px; gap: 2px; border-radius: 14px; overflow: hidden; }
+#clothes .item svg, #laterClothes .item svg { flex: none; height: 54%; width: auto; max-width: 92%; }
+#clothes .item b, #laterClothes .item b { font-size: var(--fs, 15px); line-height: 1.1; hyphens: manual; overflow-wrap: break-word; }
+#laterClothes .plus { font-size: calc(var(--ts, 80px) * .55); }
+
+/* Iltakortti tiiviinä: nuoli ja kuu, ukko ja sää samalla rivillä */
+.later { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 6px 14px; padding: 10px; }
+.later-head { margin: 0; font-size: 2.2rem; gap: 6px; }
+.later .person { flex-basis: min(110px, 13dvh); }
+.later .sky { font-size: 2.4rem; }
+.later .temp { font-size: 2rem; }
+.later .thermo svg { width: 18px; height: 48px; }
+.clothes.extra { flex-basis: 100%; margin: 0; gap: 6px; grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)); }
+
+/* Puhelin vaaka-asennossa: ukko ja sää vasemmalla, vaatteet oikealla (iltakortti omana sarakkeenaan) */
+@media (orientation: landscape) and (max-height: 540px) {
+  main {
+    max-width: none;
+    display: grid;
+    grid-template-columns: minmax(220px, 34%) 1fr;
+    grid-template-rows: auto auto 1fr;
+    column-gap: 10px;
+    align-items: start;
+    padding: 6px max(10px, env(safe-area-inset-right)) 4px max(10px, env(safe-area-inset-left));
+  }
+  main:has(#later:not([hidden])) { grid-template-columns: minmax(190px, 26%) 1fr minmax(240px, 36%); }
+  main:has(#later:not([hidden])) #now .person { flex-basis: min(190px, 50dvh); }
+  .later { padding: 8px; gap: 4px 8px; }
+  .later-head { font-size: 1.7rem; gap: 2px; }
+  .location { grid-column: 1; grid-row: 1; margin-bottom: 6px; }
+  #now { grid-column: 1; grid-row: 2; margin-bottom: 0; padding: 8px; }
+  #wear { grid-column: 2; grid-row: 1 / span 3; }
+  #later { grid-column: 3; grid-row: 1 / span 3; margin-bottom: 0; }
+  #months, #status, footer { grid-column: 1 / -1; }
+  #status { margin: 0; }
+  button.round { width: 42px; height: 42px; font-size: 1.2rem; }
+  .scene { gap: 8px; }
+  #now .person { flex-basis: min(190px, 50dvh); }
+  .sky { font-size: 2.8rem; }
+  .temp { font-size: 2.1rem; }
+  .thermo svg { width: 20px; height: 54px; }
+  .later .person { flex-basis: min(90px, 26dvh); }
+  .later .sky { font-size: 2rem; }
+  .later .temp { font-size: 1.7rem; }
+  footer { margin-top: 0; font-size: .7rem; }
+  footer .cal { font-size: 1rem; }
+}
+
 @media (max-width: 420px) {
   .scene { gap: 10px; }
   .sky { font-size: 3.6rem; }

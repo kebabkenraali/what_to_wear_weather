@@ -411,6 +411,7 @@ async function useGps(silent = false) {
 function toggleSearch(open) {
   const form = $('searchForm');
   form.hidden = !open;
+  queueFit();
   $('searchToggle').setAttribute('aria-expanded', String(open));
   if (open) $('searchInput').focus();
   else { $('results').hidden = true; $('searchInput').value = ''; }
@@ -633,13 +634,14 @@ function drawScene(prefix, feel, fx, emoji, temp, wear) {
   t.style.color = FEEL[feel].hue;
 }
 
+const HYPHEN = /(Alus|alus|Pitkä|Kumi|Villa|Aurinko|Sateen|Talvi|Liuku|Kaula|Lippa|Hyttys|Karva|Sade|Tuuli|Vesi)(?=[a-zäö]{4,})/g;
 function clothesEls(items) {
   return items.map((it) => {
     const d = document.createElement('div');
     d.className = 'item';
     d.innerHTML = ICONS[it.icon];
     const b = document.createElement('b');
-    b.textContent = it.name;
+    b.textContent = it.name.replace(HYPHEN, '$1­'); // pehmeä tavuviiva yhdyssanan osien väliin
     d.append(b);
     return d;
   });
@@ -693,7 +695,54 @@ function render() {
       later.hidden = false;
     }
   }
+  fit();
 }
+
+// ---------- Sovitus ruudulle ----------
+// Etsii suurimman vaateruudun koon, jolla koko näkymä mahtuu ruudulle ilman vieritystä.
+function fit() {
+  if (!$('clothes').children.length || $('wear').hidden || document.body.classList.contains('months-mode')) return;
+  // [ruudukko, koon kerroin, väli]: illan lisävaatteet ovat hieman pienempiä.
+  const boxes = [[$('clothes'), 1, 8]];
+  if (!$('later').hidden && !$('laterClothes').hidden) boxes.push([$('laterClothes'), 0.8, 6]);
+  const applyBox = ([box, k, gap], s) => {
+    const n = box.children.length;
+    const W = box.clientWidth;
+    const ts = Math.floor(s * k);
+    const cols = Math.max(2, Math.min(n, Math.floor((W + gap) / (ts * 1.1 + gap))));
+    const tileW = (W - gap * (cols - 1)) / cols;
+    const fs = Math.max(9.5, Math.min(17, ts * 0.125, tileW / 5.5));
+    box.style.setProperty('--ts', ts + 'px');
+    box.style.setProperty('--fs', fs + 'px');
+    box.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+  };
+  const fits = () => document.documentElement.scrollHeight <= window.innerHeight + 1;
+  // Suurin koko väliltä lo..hi, jolla sivu mahtuu ruudulle.
+  const grow = (targets, lo, hi) => {
+    const apply = (s) => targets.forEach((b) => applyBox(b, s));
+    apply(lo);
+    if (fits()) {
+      for (let i = 0; i < 8; i++) {
+        const mid = (lo + hi) / 2;
+        apply(mid);
+        if (fits()) lo = mid; else hi = mid;
+      }
+    }
+    apply(lo);
+    return lo;
+  };
+  // 1) Yhteinen koko kaikille ruudukoille (pienin 48; jos sekään ei mahdu, sivua voi vierittää).
+  const base = grow(boxes, 48, 180);
+  // 2) Jos ruudukot ovat vierekkäin (vaaka-asento), kumpikin saa kasvaa omaan tilaansa.
+  if (boxes.length > 1) for (const b of boxes) grow([b], base, 180);
+}
+let fitQueued = false;
+function queueFit() {
+  if (fitQueued) return;
+  fitQueued = true;
+  requestAnimationFrame(() => { fitQueued = false; fit(); });
+}
+window.addEventListener('resize', queueFit);
 
 // ---------- Kuukausien esikatselu (?kuukaudet) ----------
 // Tyypillinen sää Etelä- ja Keski-Suomessa kunakin kuukautena.
