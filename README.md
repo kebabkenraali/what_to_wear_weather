@@ -381,12 +381,21 @@ node tools/vie-kuvat.mjs
 Sama komento tekee kuvakkeen tiedostot `icons/icon.svg` ja `icons/icon-maskable.svg`.
 Jos muutat kuvaketta, tee niistä uudet PNG-kuvat kokoina 192 ja 512.
 
+Kun muutat sovellusta, vaihda versionumero kahdessa paikassa:
+
+- tiedostossa `index.html` kohdissa `style.css?v=` ja `app.js?v=`
+- tiedostossa `sw.js` rivillä `CACHE`.
+
+Näin puhelin hakee varmasti uudet tiedostot.
+
 Kun viet muutoksen GitHubiin, sovellus päivittyy itse.
 Päivitys kestää noin minuutin.
 
 ## Versio
 
-Uusin versio on 1.1.
+Uusin versio on 1.1.1.
+
+Versio 1.1.1 korjasi vian: päivityksen jälkeen sivu saattoi jäädä tyhjäksi.
 
 Versiossa 1.1 tulivat nämä uudet asiat:
 

@@ -1160,6 +1160,25 @@ function refresh() {
 
 // ---------- Käynnistys ----------
 (async function init() {
+  // Päivityksen jälkeen selaimen muistissa voi olla vanha sivu ja uusi koodi. Silloin sivulta puuttuu
+  // osia ja se jäisi tyhjäksi. Ladataan sivu kerran uudelleen ohi muistin; jos sekään ei auta,
+  // näytetään kuva ja nappi, jolla voi yrittää uudelleen.
+  const freshUrl = () => location.pathname + '?v=' + Date.now();
+  if (!$('stepBtn') || !$('settings') || !$('offline')) {
+    let tried = true;
+    try {
+      tried = !!sessionStorage.getItem('wtw.reloaded');
+      sessionStorage.setItem('wtw.reloaded', '1');
+    } catch {}
+    if (!tried) return location.replace(freshUrl());
+    document.body.innerHTML = `<main><section class="card offline"><div class="offline-pic">${UI.offline}</div>`
+      + `<button id="retryBtn" class="big" type="button" aria-label="Yritä uudelleen">${UI.retry}</button>`
+      + '<p class="msg">Sovellus päivittyi. Paina nappia.</p></section></main>';
+    $('retryBtn').addEventListener('click', () => location.replace(freshUrl()));
+    return;
+  }
+  try { sessionStorage.removeItem('wtw.reloaded'); } catch {}
+
   // Nappien kuvat
   const icons = {
     gpsBtn: UI.pin, searchToggle: UI.search, searchGo: UI.search, calLink: UI.calendar, backLink: UI.left, gearBtn: UI.gear,
