@@ -62,6 +62,7 @@ input[type=search] {
 .results small { color: var(--muted); }
 .msg { color: var(--muted); margin: 8px 0 0; font-size: .9rem; text-align: center; }
 .msg.err { color: #d24545; }
+.msg a { display: block; margin-top: 4px; color: var(--accent); font-weight: 600; font-size: 1rem; }
 .msg.err::before { content: "⚠️ "; font-size: 1.4rem; }
 
 /* Ukko + sää + lämpötila */

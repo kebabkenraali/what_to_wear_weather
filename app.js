@@ -347,6 +347,7 @@ const $ = (id) => document.getElementById(id);
 const deg = (n) => `${Math.round(n)}°`;
 const DEFAULT_LOC = { name: 'Helsinki', lat: 60.1699, lon: 24.9384, mode: 'manual' };
 const STORE = 'wtw.location';
+const HELP_URL = 'https://github.com/kebabkenraali/what_to_wear_weather#jos-sovellus-sanoo-paikannus-on-estetty';
 const state = { loc: null, data: null, req: 0 };
 
 function saveLoc(loc) { try { localStorage.setItem(STORE, JSON.stringify(loc)); } catch {} }
@@ -399,8 +400,17 @@ async function useGps(silent = false) {
     if (!silent) {
       const denied = e && e.code === 1;
       msg($('locMsg'), denied
-        ? 'Paikannus on estetty. Salli se selaimessa tai hae paikkakunta 🔍-napista.'
-        : 'Sijaintia ei saatu. Hae paikkakunta 🔍-napista.', true);
+        ? 'Paikannus on estetty. Voit myös painaa 🔍 ja kirjoittaa paikan. '
+        : 'Sijaintia ei saatu. Paina 🔍 ja kirjoita paikka. ', true);
+      if (denied) {
+        const a = document.createElement('a');
+        a.href = HELP_URL;
+        a.target = '_blank';
+        a.rel = 'noopener';
+        a.textContent = 'Katso ohje: näin sallit paikannuksen';
+        $('locMsg').append(a);
+      }
+      queueFit();
     }
     return false;
   } finally {
