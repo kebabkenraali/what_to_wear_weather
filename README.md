@@ -2,6 +2,8 @@
 
 Selaimessa toimiva sovellus, joka hakee paikallisen sääennusteen ja näyttää yksinkertaisilla kuvilla, mitä vaatteita kannattaa pukea päälle.
 
+**Avaa sovellus: https://kebabkenraali.github.io/what_to_wear_weather/**
+
 Sovellus on tehty niin, että sitä voi käyttää myös ihminen, joka ei osaa lukea: sää, lämpötila ja vaatteet näytetään kuvina, ja vaatteiden nimet ovat lyhyitä ja selkokielisiä.
 
 ## Mitä sovellus tekee
@@ -16,9 +18,11 @@ Sovellus on tehty niin, että sitä voi käyttää myös ihminen, joka ei osaa l
 
 ## Käyttö
 
+Helpoimmin sovellusta käyttää osoitteessa https://kebabkenraali.github.io/what_to_wear_weather/. Puhelimessa sivun voi lisätä aloitusnäyttöön selaimen valikosta.
+
 Sovellus on pelkkää HTML:ää, CSS:ää ja JavaScriptiä. Asennusta, rakennusvaihetta tai API-avaimia ei tarvita.
 
-Käynnistä paikallinen palvelin projektin kansiossa:
+Omalla koneella sen saa käyntiin käynnistämällä paikallisen palvelimen projektin kansiossa:
 
 ```bash
 python -m http.server 8767
