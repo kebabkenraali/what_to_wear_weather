@@ -195,8 +195,8 @@ Näin se löytää oikean sään.
 
 Ylhäällä on kaksi nappia:
 
-- 📍 Tämä nappi hakee paikan, jossa olet nyt.
-- 🔍 Tällä napilla voit kirjoittaa paikan nimen itse.
+- Punainen karttaneula 📍. Tämä nappi hakee paikan, jossa olet nyt.
+- Suurennuslasi 🔍. Tällä napilla voit kirjoittaa paikan nimen itse.
 
 Sovellus muistaa paikan seuraavalla kerralla.
 
@@ -312,6 +312,8 @@ Näin käyttäjä ei muuta niitä vahingossa.
 1. Etsi sovelluksen alareunasta pieni ratas.
 2. Paina ratasta ja pidä sormi siinä noin kaksi sekuntia.
 3. Asetukset aukeavat.
+
+Näppäimistöllä: siirry rattaaseen sarkaimella ja paina Enter.
 
 ### Mitä voit valita
 
@@ -474,7 +476,9 @@ Päivitys kestää noin minuutin.
 
 ## Versio
 
-Uusin versio on 1.1.2.
+Uusin versio on 1.1.3.
+
+Versio 1.1.3 paransi saavutettavuutta. Värit erottuvat paremmin. Sovellusta voi käyttää näppäimistöllä ja ruudunlukijalla.
 
 Versiossa 1.1.2 ukko kertoo, miten kannattaa pukeutua. Se ei enää luettele kaikkia vaatteita.
 

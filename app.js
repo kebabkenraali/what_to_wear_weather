@@ -108,13 +108,15 @@ const ICONS = {
 // ---------- Ukko: näyttää miltä sää tuntuu ----------
 const INK = '#1d2a3a';
 const FEEL = {
-  freezing: { label: 'Hyvin kylmä', skin: '#cfe3f7', shirt: '#3f6fd1', bg: '#cfe4ff', hue: '#2468d8' },
-  cold:     { label: 'Kylmä',       skin: '#e6edf5', shirt: '#5b8fd9', bg: '#e1efff', hue: '#3a86e0' },
-  cool:     { label: 'Viileä',      skin: '#f6d7b8', shirt: '#6fb48a', bg: '#e2f3e8', hue: '#2f9e62' },
-  warm:     { label: 'Lämmin',      skin: '#f8cfa4', shirt: '#f0b23c', bg: '#fff1c9', hue: '#e6951a' },
-  hot:      { label: 'Kuuma',       skin: '#f08f73', shirt: '#e86a4a', bg: '#ffd9c9', hue: '#e2452f' },
+  freezing: { label: 'Hyvin kylmä', skin: '#cfe3f7', shirt: '#3f6fd1', bg: '#cfe4ff', hue: '#2468d8', text: '#2468d8', textDark: '#7fb0ff' },
+  cold:     { label: 'Kylmä',       skin: '#e6edf5', shirt: '#5b8fd9', bg: '#e1efff', hue: '#3a86e0', text: '#2a6fc4', textDark: '#86bcf7' },
+  cool:     { label: 'Viileä',      skin: '#f6d7b8', shirt: '#6fb48a', bg: '#e2f3e8', hue: '#2f9e62', text: '#1f7d49', textDark: '#5fd08f' },
+  warm:     { label: 'Lämmin',      skin: '#f8cfa4', shirt: '#f0b23c', bg: '#fff1c9', hue: '#e6951a', text: '#a55f00', textDark: '#f5b041' },
+  hot:      { label: 'Kuuma',       skin: '#f08f73', shirt: '#e86a4a', bg: '#ffd9c9', hue: '#e2452f', text: '#c93523', textDark: '#ff8370' },
 };
 // Värisevä, kärsivä ukko vain kovalla pakkasella; muu talvi on neutraali.
+// Lämpötilan numeron väri CSS-muuttujina: --h vaalealle ja --hd tummalle taustalle.
+const tempVars = (feel) => `--h:${FEEL[feel].text};--hd:${FEEL[feel].textDark}`;
 const feelCat = (f) => (f < -15 ? 'freezing' : f < 7 ? 'cold' : f < 15 ? 'cool' : f < 23 ? 'warm' : 'hot');
 
 // Ukon vaatteet: mitä ehdotetuista vaatteista piirretään ukon päälle ja millä värillä.
@@ -339,6 +341,16 @@ const flakesPic = (xs) => xs.map((x, i) => `<circle cx="${x}" cy="${i % 2 ? 58 :
 const isSnowCode = (c) => (c >= 71 && c <= 77) || c === 85 || c === 86;
 const isRainCode = (c) => (c >= 51 && c <= 67) || (c >= 80 && c <= 82) || c >= 95;
 const isFogCode = (c) => c === 45 || c === 48;
+
+// Sääkoodi (WMO) -> sään nimi ruudunlukijalle.
+function skyName(code) {
+  if (code >= 95) return 'Ukkosta';
+  if (isSnowCode(code)) return 'Lumisadetta';
+  if (code >= 61) return 'Sadetta';
+  if (code >= 51) return 'Tihkusadetta';
+  if (isFogCode(code)) return 'Sumua';
+  return ['Selkeää', 'Enimmäkseen selkeää', 'Puolipilvistä', 'Pilvistä'][code] || 'Pilvistä';
+}
 
 // Sääkoodi (WMO) -> kuva.
 function skyIcon(code, isDay = true) {
@@ -725,13 +737,14 @@ function derive(s) {
 const fxOf = (s) => ({ wind: s.windy, rain: s.rainy, snow: s.snowy, thunder: s.thunder, fog: s.foggy, night: !s.mostlyDay });
 
 function periodSky(s) {
-  if (s.thunder) return skyIcon(95);
-  if (s.snowy) return skyIcon(73);
-  if (s.rainy) return skyIcon(63);
+  const sky = (code, day = true) => ({ pic: skyIcon(code, day), name: skyName(code) });
+  if (s.thunder) return sky(95);
+  if (s.snowy) return sky(73);
+  if (s.rainy) return sky(63);
   const count = {};
   let best = s.codes[0];
   for (const c of s.codes) { count[c] = (count[c] || 0) + 1; if (count[c] > count[best]) best = c; }
-  return skyIcon(best, s.mostlyDay);
+  return sky(best, s.mostlyDay);
 }
 
 // Onko ilta selvästi erilainen kuin nyt?
@@ -828,11 +841,12 @@ function drawScene(prefix, feel, fx, sky, temp, wear) {
     fx.thunder && 'ukkonen', fx.fog && 'sumua', fx.night && 'pimeää'].filter(Boolean);
   p.setAttribute('aria-label', words.join(', '));
   p.title = words.join(', ');
-  $(prefix + 'Icon').innerHTML = sky;
+  $(prefix + 'Icon').innerHTML = sky.pic;
+  $(prefix + 'Icon').setAttribute('aria-label', sky.name);
   $(prefix + 'Thermo').innerHTML = thermometer(temp, feel);
   const t = $(prefix + 'Temp');
   t.textContent = deg(temp);
-  t.style.color = FEEL[feel].hue;
+  t.style.cssText = tempVars(feel);
 }
 
 // Vaatteen kuva: avustajan lisäämä valokuva tai piirros.
@@ -884,11 +898,12 @@ function render() {
     fog: isFogCode(c.weather_code),
     night: !c.is_day,
   };
-  drawScene('now', feel, fx, skyIcon(c.weather_code, !!c.is_day), c.temperature_2m, wearNow);
+  drawScene('now', feel, fx, { pic: skyIcon(c.weather_code, !!c.is_day), name: skyName(c.weather_code) }, c.temperature_2m, wearNow);
   // dress = kuinka lämpimästi pukeudutaan (sama luku, jolla vaatteet valitaan)
   const dress = feelCat((sNow.feelsMin + sNow.feelsAvg) / 2 - settings.chill);
   state.view = { feel, fx, temp: c.temperature_2m, wear: wearNow, s: sNow, dress };
   $('staleBadge').hidden = !state.stale;
+  $('srStatus').textContent = state.stale ? 'Ei yhteyttä. Näytetään aiempi ennuste.' : '';
 
   $('clothes').replaceChildren(...clothesEls(wearNow));
   $('now').hidden = false;
@@ -927,11 +942,11 @@ function openSteps() {
   if (!state.view || !state.view.wear.length) return;
   steps.items = state.view.wear;
   steps.i = 0;
-  $('steps').hidden = false;
+  $('steps').showModal();
   drawStep();
 }
 function closeSteps() {
-  $('steps').hidden = true;
+  if ($('steps').open) $('steps').close();
   if ('speechSynthesis' in window) speechSynthesis.cancel();
 }
 function drawStep() {
@@ -1077,6 +1092,10 @@ function holdToOpen(el, fn, ms = 1200) {
   });
   for (const ev of ['pointerup', 'pointerleave', 'pointercancel']) el.addEventListener(ev, stop);
   el.addEventListener('contextmenu', (e) => e.preventDefault());
+  // Näppäimistöllä: Enter tai välilyönti avaa heti (vahinkopainallusten riski koskee kosketusta).
+  el.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fn(); }
+  });
 }
 
 // ---------- Sovitus ruudulle ----------
@@ -1092,7 +1111,7 @@ function fit() {
     const ts = Math.floor(s * k);
     const cols = Math.max(2, Math.min(n, Math.floor((W + gap) / (ts * 1.1 + gap))));
     const tileW = (W - gap * (cols - 1)) / cols;
-    const fs = Math.max(9.5, Math.min(17, ts * 0.125, tileW / 5.5));
+    const fs = Math.max(11, Math.min(17, ts * 0.125, tileW / 5.5));
     box.style.setProperty('--ts', ts + 'px');
     box.style.setProperty('--fs', fs + 'px');
     box.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
@@ -1164,7 +1183,7 @@ function renderMonths() {
     scene.className = 'scene';
     scene.innerHTML = `<div class="person">${person(feel, { ...fxOf(s), sun: m.day && m.code <= 1 }, wear.map((i) => i.icon))}</div>
       <div class="reading"><div class="sky">${skyIcon(m.code, m.day)}</div>
-      <div class="temp" style="color:${FEEL[feel].hue}"><span class="thermo">${thermometer(m.t, feel)}</span>${deg(m.t)}</div></div>`;
+      <div class="temp" style="${tempVars(feel)}"><span class="thermo">${thermometer(m.t, feel)}</span>${deg(m.t)}</div></div>`;
     const clothes = document.createElement('div');
     clothes.className = 'clothes';
     clothes.append(...clothesEls(wear));
@@ -1189,7 +1208,7 @@ function refresh() {
   // osia ja se jäisi tyhjäksi. Ladataan sivu kerran uudelleen ohi muistin; jos sekään ei auta,
   // näytetään kuva ja nappi, jolla voi yrittää uudelleen.
   const freshUrl = () => location.pathname + '?v=' + Date.now();
-  if (!$('stepBtn') || !$('settings') || !$('offline')) {
+  if (!$('stepBtn') || !$('settings') || !$('offline') || !$('srStatus') || !$('steps').showModal) {
     let tried = true;
     try {
       tried = !!sessionStorage.getItem('wtw.reloaded');
@@ -1226,6 +1245,7 @@ function refresh() {
   $('nowPerson').addEventListener('click', sayAll);
   $('stepBtn').addEventListener('click', openSteps);
   $('stepClose').addEventListener('click', closeSteps);
+  $('steps').addEventListener('close', closeSteps); // myös Esc-näppäin lopettaa puheen
   $('stepPrev').addEventListener('click', () => { if (steps.i > 0) { steps.i--; drawStep(); } });
   $('stepNext').addEventListener('click', () => {
     if (steps.i >= steps.items.length) return closeSteps();
