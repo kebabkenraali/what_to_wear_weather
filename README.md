@@ -30,18 +30,85 @@ Sovellus toimii myös, kun puhelin on vaakatasossa.
 Kaikki mahtuu ruudulle.
 Sinun ei tarvitse vierittää sivua.
 
-## Lisää sovellus puhelimen aloitusnäyttöön
+## Tee sovelluksesta oma kuvake puhelimeen
 
-Näin löydät sovelluksen helposti joka aamu.
+Voit lisätä sovelluksen puhelimen aloitusnäyttöön.
+Silloin se on siellä muiden sovellusten joukossa.
 
-1. Avaa sovellus selaimessa.
-2. Paina selaimen valikkoa. Se on kolme pistettä tai kolme viivaa.
+Kuvakkeessa on iloinen ukko, jolla on punainen pipo.
+
+<img src="icons/icon-192.png" width="96" alt="Sovelluksen kuvake: iloinen ukko, jolla on punainen pipo ja sininen takki">
+
+Kun avaat sovelluksen kuvakkeesta, se täyttää koko ruudun.
+Selaimen osoiterivi ei näy.
+
+Valikon sanat voivat olla puhelimessasi vähän erilaiset.
+
+### Android-puhelin ja Chrome
+
+1. Avaa sovellus Chromessa.
+2. Paina kolmea pistettä oikeassa yläkulmassa.
 3. Paina: Lisää aloitusnäytölle.
+4. Paina: Asenna.
+
+### Android-puhelin ja Edge
+
+1. Avaa sovellus Edgessä.
+2. Paina valikkoa alareunassa. Se on kolme viivaa tai kolme pistettä.
+3. Paina: Lisää puhelimeen.
+4. Paina: Asenna.
+
+### Samsung-puhelin ja Samsung Internet
+
+1. Avaa sovellus Samsung Internet -selaimessa.
+2. Paina kolmea viivaa alareunassa.
+3. Paina: Lisää sivu kohteeseen.
+4. Paina: Alkunäyttö.
+
+### iPhone ja Safari
+
+1. Avaa sovellus Safarissa.
+2. Paina Jaa-nappia. Se on neliö, josta nousee nuoli ylös.
+3. Paina: Lisää Koti-valikkoon.
 4. Paina: Lisää.
 
 Nyt sovelluksen kuvake on puhelimen aloitusnäytössä.
 
-Valikon sanat voivat olla puhelimessasi vähän erilaiset.
+### Sovellus toimii myös ilman nettiä
+
+Kun olet avannut sovelluksen kerran, se aukeaa myös ilman nettiä.
+Silloin se näyttää viimeksi haetun sään.
+
+Kulmassa näkyy pilvi, jonka yli menee punainen viiva.
+Se tarkoittaa: sää ei ole aivan uusi.
+
+## Kuuntele
+
+Sovellus osaa puhua.
+
+- Paina vaatteen kuvaa. Sovellus sanoo vaatteen nimen.
+- Paina kaiuttimen kuvaa. Sovellus kertoo sään ja kaikki vaatteet.
+- Paina ukkoa. Sovellus kertoo saman.
+
+Jos sovellus ei puhu, puhelimessa ei ole suomen kielen ääntä.
+Pyydä apua toiselta ihmiseltä.
+
+## Pue yksi vaate kerrallaan
+
+Paina vihreää nuolta.
+
+Sovellus näyttää yhden vaatteen isona kuvana.
+Sovellus sanoo vaatteen nimen.
+
+1. Pue vaate päälle.
+2. Paina vihreää oikein-merkkiä.
+3. Sovellus näyttää seuraavan vaatteen.
+
+Ylhäällä on pisteitä.
+Vihreä piste tarkoittaa: tämä vaate on jo päällä.
+
+Lopuksi näet iloisen ukon.
+Silloin olet valmis.
 
 ## Mitä kuvat tarkoittavat?
 
@@ -226,6 +293,33 @@ Näet esimerkin jokaisesta kuukaudesta.
 Esimerkit eivät ole oikea sääennuste.
 Ne näyttävät, millainen sää Suomessa yleensä on.
 
+## Ohje avustajalle
+
+Tämä osa on sinulle, joka autat sovelluksen käyttäjää.
+
+Sovelluksessa on asetukset, jotka on piilotettu.
+Näin käyttäjä ei muuta niitä vahingossa.
+
+### Näin avaat asetukset
+
+1. Etsi sovelluksen alareunasta pieni ratas.
+2. Paina ratasta ja pidä sormi siinä noin kaksi sekuntia.
+3. Asetukset aukeavat.
+
+### Mitä voit valita
+
+- **Lukitse näkymä.** Sijainnin, haun ja kalenterin napit piilotetaan. Paikka pysyy samana. Valitse ensin oikea paikka ja lukitse vasta sitten.
+- **Puhe päällä.** Sovellus sanoo vaatteen nimen, kun kuvaa painetaan. Voit ottaa puheen pois.
+- **Lämmön tunne.** Jos käyttäjä palelee helposti, sovellus ehdottaa lämpimämpiä vaatteita. Jos käyttäjälle tulee helposti kuuma, sovellus ehdottaa kevyempiä vaatteita.
+- **Ulkonaoloaika.** Sovellus valitsee vaatteet sen ajan mukaan, kun käyttäjä on ulkona. Esimerkiksi kello 8–16. Muuten sovellus katsoo seuraavat 4 tuntia.
+- **Vaatteet.** Poista rasti, jos jotain vaatetta ei haluta näyttää.
+- **Oma kuva.** Voit vaihtaa piirroksen valokuvaan käyttäjän omasta vaatteesta. Moni tunnistaa oman takkinsa paremmin kuin piirroksen.
+
+Paina lopuksi: Valmis.
+
+Asetukset ja valokuvat tallentuvat vain tähän laitteeseen.
+Niitä ei lähetetä minnekään.
+
 ## Jos sovellus näyttää vanhalta
 
 Sovellusta parannetaan välillä.
@@ -246,17 +340,22 @@ Sovellus muistaa paikan vain omassa laitteessasi.
 Sovellus lähettää paikan kahteen palveluun:
 
 - [Open-Meteo](https://open-meteo.com/) antaa sääennusteen.
-- [BigDataCloud](https://www.bigdatacloud.com/) kertoo paikan nimen. Se myös arvaa paikan verkkoyhteydestä, jos selain ei anna lupaa.
+- [BigDataCloud](https://www.bigdatacloud.com/) kertoo paikan nimen. Se myös arvaa paikan verkkoyhteydestä, jos selain ei anna lupaa. Palvelu käyttää paikkaa ja verkko-osoitetta oman palvelunsa parantamiseen. Se ei yhdistä niitä sinuun.
+
+Asetukset, omat valokuvat ja viimeksi haettu sää pysyvät omassa laitteessasi.
 
 ## Ohje tekijälle
 
 Tämä osa on sinulle, joka haluat muuttaa sovellusta.
 
-Sovelluksessa on kolme tiedostoa:
+Sovelluksessa on nämä tiedostot:
 
 - `index.html` on sivun runko.
 - `style.css` kertoo, miltä sivu näyttää.
 - `app.js` hakee sään, valitsee vaatteet ja piirtää kuvat.
+- `sw.js` tallentaa sovelluksen puhelimeen, jotta se aukeaa ilman nettiä.
+- `manifest.webmanifest` kertoo puhelimelle sovelluksen nimen ja kuvakkeen.
+- Kansiossa `icons` on sovelluksen kuvake.
 
 Sinun ei tarvitse asentaa mitään.
 
@@ -279,14 +378,27 @@ Jos muutat kuvia, tee kansio uudelleen tällä komennolla:
 node tools/vie-kuvat.mjs
 ```
 
+Sama komento tekee kuvakkeen tiedostot `icons/icon.svg` ja `icons/icon-maskable.svg`.
+Jos muutat kuvaketta, tee niistä uudet PNG-kuvat kokoina 192 ja 512.
+
 Kun viet muutoksen GitHubiin, sovellus päivittyy itse.
 Päivitys kestää noin minuutin.
 
 ## Versio
 
-Uusin versio on 1.0.
+Uusin versio on 1.1.
 
-Versiossa 1.0 on nämä asiat:
+Versiossa 1.1 tulivat nämä uudet asiat:
+
+- Sovellus osaa puhua.
+- Voit pukea yhden vaatteen kerrallaan.
+- Sovelluksella on oma kuvake, ja sen voi lisätä puhelimen aloitusnäyttöön.
+- Sovellus aukeaa myös ilman nettiä.
+- Avustaja voi tehdä omat asetukset ja lisätä valokuvia omista vaatteista.
+- Sään kuvat ovat nyt samanlaiset kaikissa puhelimissa.
+- Sovellus huomaa tuulen puuskat ja lumen maassa.
+
+Versiossa 1.0 olivat nämä asiat:
 
 - Sovellus näyttää sään ja vaatteet kuvina.
 - Ukolla on päällä ehdotetut vaatteet.

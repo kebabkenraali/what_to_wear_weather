@@ -188,3 +188,84 @@ main:has(#later:not([hidden])) #now .person { flex-basis: min(170px, 19dvh); }
   .sky { font-size: 3.6rem; }
   .temp { font-size: 2.6rem; }
 }
+
+/* ---------- Omat sääkuvat ja nappien kuvat ---------- */
+.sky svg { display: block; width: 1.25em; height: 1.25em; }
+button.round svg, a.back svg { display: block; width: 62%; height: 62%; margin: auto; }
+button.round { display: grid; place-items: center; }
+footer { display: flex; align-items: center; justify-content: center; gap: 8px; }
+footer .cal, footer .gear { width: 30px; height: 30px; padding: 0; border: 0; background: none; border-radius: 50%; display: inline-grid; place-items: center; }
+footer .cal svg, footer .gear svg { width: 24px; height: 24px; display: block; }
+footer .gear { opacity: .55; touch-action: none; }
+footer .gear.holding { opacity: 1; animation: hold 1.2s linear; }
+@keyframes hold { from { box-shadow: 0 0 0 0 var(--accent); } to { box-shadow: 0 0 0 8px var(--accent); } }
+
+/* ---------- Ukko nappina, kuuntelu ja pukeminen ---------- */
+button.person { border: 0; background: none; padding: 0; border-radius: 20px; }
+.scene { position: relative; }
+.acts { display: flex; gap: 10px; margin-top: 4px; }
+.acts .round.go { background: #e3f6ea; border-color: #3fae6a; }
+.stale { position: absolute; top: 6px; left: 6px; width: 44px; height: 44px; background: var(--card); border: 2px solid #e2452f; border-radius: 50%; display: grid; place-items: center; z-index: 1; }
+.stale svg { width: 30px; height: 30px; }
+
+button.item { font: inherit; color: inherit; cursor: pointer; }
+button.item:active, .step-pic:active { transform: scale(.97); }
+.item img.photo { width: 100%; max-width: 96px; aspect-ratio: 1; object-fit: cover; border-radius: 12px; display: block; }
+#clothes .item img.photo, #laterClothes .item img.photo { flex: none; height: 54%; width: auto; max-width: 92%; }
+
+/* Ei yhteyttä */
+.offline { display: flex; flex-direction: column; align-items: center; gap: 14px; padding: 28px 16px; }
+.offline-pic svg { width: min(200px, 40vw); height: auto; display: block; }
+button.big { width: 96px; height: 96px; border-radius: 50%; padding: 0; display: grid; place-items: center; border-width: 2px; }
+button.big svg { width: 60%; height: 60%; display: block; }
+button.big.ok { background: #e3f6ea; border-color: #3fae6a; }
+button.big:disabled { opacity: .25; cursor: default; }
+
+/* ---------- Pukeminen yksi vaate kerrallaan ---------- */
+.steps {
+  position: fixed; inset: 0; z-index: 20; background: var(--bg);
+  display: flex; flex-direction: column; align-items: center; justify-content: space-between; gap: 10px;
+  padding: 12px max(16px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+}
+.steps-top { width: 100%; display: flex; align-items: center; gap: 10px; }
+.dots { flex: 1; display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+.dot { width: 14px; height: 14px; border-radius: 50%; background: var(--line); }
+.dot.done { background: #3fae6a; }
+.dot.cur { background: var(--accent); transform: scale(1.35); }
+.step-pic {
+  flex: 1 1 0; min-height: 0; width: 100%; max-width: 520px;
+  background: var(--card); border: 1px solid var(--line); border-radius: 28px; padding: 16px;
+  display: grid; place-items: center;
+}
+.step-pic svg, .step-pic img.photo { width: auto; height: 100%; max-width: 100%; max-height: 100%; aspect-ratio: auto; display: block; }
+.step-pic img.photo { aspect-ratio: 1; border-radius: 20px; object-fit: cover; }
+.step-name { font-size: clamp(1.6rem, 6vw, 2.6rem); font-weight: 800; text-align: center; line-height: 1.1; }
+.step-nav { display: flex; gap: 40px; align-items: center; }
+@media (orientation: landscape) and (max-height: 540px) {
+  .steps { flex-direction: row; flex-wrap: wrap; align-content: space-between; }
+  .steps-top { flex-basis: 100%; }
+  .step-pic { flex: 1 1 40%; height: calc(100dvh - 150px); }
+  .step-name { flex: 1 1 30%; }
+  .step-nav { flex-basis: 100%; justify-content: center; }
+  button.big { width: 72px; height: 72px; }
+}
+
+/* ---------- Avustajan asetukset ---------- */
+dialog#settings { border: 1px solid var(--line); border-radius: 18px; padding: 0; width: min(560px, 94vw); max-height: 92dvh; background: var(--card); color: var(--ink); }
+dialog#settings::backdrop { background: rgba(10, 20, 35, .55); }
+.set { margin: 0; padding: 18px; display: flex; flex-direction: column; gap: 12px; }
+.set h2 { margin: 0; font-size: 1.3rem; }
+.set h3 { margin: 6px 0 0; font-size: 1.1rem; }
+.set p { margin: 0; color: var(--muted); font-size: .9rem; text-align: left; }
+.set label { display: flex; gap: 10px; align-items: flex-start; }
+.set label.stack { flex-direction: column; gap: 4px; }
+.set input[type=checkbox] { width: 22px; height: 22px; flex: none; margin: 1px 0 0; }
+.set select { font: inherit; padding: 8px; border-radius: 10px; border: 1px solid var(--line); background: var(--card); color: var(--ink); max-width: 100%; }
+.set .times { padding-left: 32px; }
+.set-row { display: flex; align-items: center; gap: 10px; padding: 6px 0; border-top: 1px solid var(--line); flex-wrap: wrap; }
+.set-row .thumb { width: 44px; height: 44px; flex: none; }
+.set-row .thumb svg, .set-row .thumb img { width: 100%; height: 100%; max-width: none; display: block; }
+.set-row > label { flex: 1; min-width: 150px; align-items: center; }
+.set-row .btn, .set-row button { font-size: .85rem; padding: 6px 10px; border: 1px solid var(--line); border-radius: 10px; background: var(--tile); cursor: pointer; flex: none; }
+.set .primary { background: var(--accent); color: #fff; border-color: var(--accent); font-weight: 700; padding: 12px; position: sticky; bottom: 0; }
+.set-row > label.btn { flex: none; min-width: 0; }

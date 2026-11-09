@@ -321,37 +321,101 @@ function thermometer(temp, feel) {
     <circle cx="12" cy="53" r="9" fill="${col}" stroke="var(--ink)" stroke-width="2"/></svg>`;
 }
 
-// ---------- Sääkoodit (WMO) ----------
-const WMO = {
-  0: ['Selkeää', '☀️'], 1: ['Enimmäkseen selkeää', '🌤️'], 2: ['Puolipilvistä', '⛅'], 3: ['Pilvistä', '☁️'],
-  45: ['Sumua', '🌫️'], 48: ['Huurtuvaa sumua', '🌫️'],
-  51: ['Heikkoa tihkua', '🌦️'], 53: ['Tihkusadetta', '🌦️'], 55: ['Voimakasta tihkua', '🌧️'],
-  56: ['Jäätävää tihkua', '🌧️'], 57: ['Jäätävää tihkua', '🌧️'],
-  61: ['Heikkoa sadetta', '🌦️'], 63: ['Sadetta', '🌧️'], 65: ['Voimakasta sadetta', '🌧️'],
-  66: ['Jäätävää sadetta', '🌧️'], 67: ['Jäätävää sadetta', '🌧️'],
-  71: ['Heikkoa lumisadetta', '🌨️'], 73: ['Lumisadetta', '🌨️'], 75: ['Sakeaa lumisadetta', '❄️'], 77: ['Lumijyväsiä', '🌨️'],
-  80: ['Sadekuuroja', '🌦️'], 81: ['Sadekuuroja', '🌧️'], 82: ['Rankkoja sadekuuroja', '⛈️'],
-  85: ['Lumikuuroja', '🌨️'], 86: ['Voimakkaita lumikuuroja', '❄️'],
-  95: ['Ukkosta', '⛈️'], 96: ['Ukkosta ja rakeita', '⛈️'], 99: ['Ukkosta ja rakeita', '⛈️'],
+//// ---------- Sääkuvat ja nappien kuvat (omat piirrokset: näyttävät samalta joka laitteessa) ----------
+const CLOUD = 'M17 46 C6 46 4 31 15 29 C16 16 35 13 40 24 C51 20 61 31 55 41 C54 44 51 46 48 46Z';
+const sunPic = (cx, cy, r) => {
+  const rays = [0, 45, 90, 135, 180, 225, 270, 315].map((a) => {
+    const x = Math.cos((a * Math.PI) / 180);
+    const y = Math.sin((a * Math.PI) / 180);
+    return `M${(cx + x * (r + 3)).toFixed(1)} ${(cy + y * (r + 3)).toFixed(1)}L${(cx + x * (r + 8)).toFixed(1)} ${(cy + y * (r + 8)).toFixed(1)}`;
+  }).join('');
+  return `<path d="${rays}" fill="none" stroke="#f0a020" stroke-width="3" stroke-linecap="round"/><circle cx="${cx}" cy="${cy}" r="${r}" fill="#ffd23c" stroke="#f0a020" stroke-width="2.5"/>`;
 };
-const wmo = (code, isDay = true) => {
-  const [desc, emoji] = WMO[code] || ['Vaihtelevaa', '🌡️'];
-  return { desc, emoji: !isDay && code <= 1 ? '🌙' : emoji };
-};
+const moonPic = (x, y, k = 1) => `<path transform="translate(${x} ${y}) scale(${k})" d="M14 2 a16 16 0 1 0 13 25 a13 13 0 0 1 -13 -25Z" fill="#ffe08a" ${S}/>`;
+const cloudPic = (fill) => `<path d="${CLOUD}" fill="${fill}" ${S}/>`;
+const dropsPic = (xs) => `<path d="${xs.map((x) => `M${x} 50l-3 9`).join('')}" fill="none" stroke="#2f7fe0" stroke-width="3.5" stroke-linecap="round"/>`;
+const flakesPic = (xs) => xs.map((x, i) => `<circle cx="${x}" cy="${i % 2 ? 58 : 53}" r="3" fill="#ffffff" stroke="#5aa0e6" stroke-width="2"/>`).join('');
+
 const isSnowCode = (c) => (c >= 71 && c <= 77) || c === 85 || c === 86;
 const isRainCode = (c) => (c >= 51 && c <= 67) || (c >= 80 && c <= 82) || c >= 95;
-const WINDY = 8; // m/s
+const isFogCode = (c) => c === 45 || c === 48;
 
-// ---------- Apurit ----------
+// Sääkoodi (WMO) -> kuva.
+function skyIcon(code, isDay = true) {
+  const bigOrb = isDay ? sunPic(32, 32, 13) : moonPic(14, 12);
+  const smallOrb = isDay ? sunPic(45, 18, 8) : moonPic(36, 2, 0.6);
+  if (code === 0) return svg(bigOrb);
+  if (code === 1) return svg(bigOrb + `<g transform="translate(24 28) scale(.6)">${cloudPic('#ffffff')}</g>`);
+  if (code === 2) return svg(smallOrb + cloudPic('#ffffff'));
+  if (code === 3) return svg(cloudPic('#dfe6ee'));
+  if (isFogCode(code)) return svg(cloudPic('#eef1f5') + `<path d="M10 53 H54 M16 60 H48" fill="none" stroke="#9aa7b5" stroke-width="3.5" stroke-linecap="round"/>`);
+  if (code >= 95) return svg(cloudPic('#aab4c0') + dropsPic([18, 50]) + `<path d="M33 44 L25 55 H32 L28 64 L43 51 H35 L39 44Z" fill="#ffd23c" ${S} stroke-width="2"/>`.replace(`stroke-width="2.5" `, ''));
+  if (isSnowCode(code)) return svg(cloudPic('#eef1f5') + flakesPic(code === 75 || code === 86 ? [16, 27, 38, 49] : [21, 33, 45]));
+  if (code === 65 || code === 67 || code === 82) return svg(cloudPic('#aab4c0') + dropsPic([17, 26, 35, 44, 53]));
+  if (code >= 61) return svg(cloudPic('#cfd8e2') + dropsPic([22, 33, 44]));
+  if (code >= 51) return svg(cloudPic('#eef1f5') + dropsPic([27, 40]));
+  return svg(cloudPic('#dfe6ee'));
+}
+
+const LS = 'fill="none" stroke="var(--ink)" stroke-linecap="round" stroke-linejoin="round"';
+const UI = {
+  pin: svg(`<path d="M32 58 C19 41 14 32 14 24 a18 18 0 0 1 36 0 c0 8 -5 17 -18 34Z" fill="#e2574c" ${S}/><circle cx="32" cy="24" r="6.5" fill="#ffffff" ${S}/>`),
+  search: svg(`<path d="M40 40 L56 56" ${LS} stroke-width="7"/><circle cx="27" cy="27" r="16" fill="#bfe3f7" ${S} />`),
+  calendar: svg(`<rect x="8" y="12" width="48" height="44" rx="7" fill="#ffffff" ${S}/><path d="M8 26 V19 a7 7 0 0 1 7 -7 H49 a7 7 0 0 1 7 7 V26Z" fill="#e2574c" ${S}/>
+    <path d="M20 6 V16 M44 6 V16" ${LS} stroke-width="4"/><path d="M19 36 h4 M30 36 h4 M41 36 h4 M19 46 h4 M30 46 h4" ${LS} stroke-width="4"/>`),
+  speaker: svg(`<path d="M8 24 H19 L35 10 V54 L19 40 H8Z" fill="#4a6fa5" ${S}/><path d="M43 23 q7 9 0 18 M50 15 q13 17 0 34" ${LS} stroke-width="4"/>`),
+  play: svg(`<path d="M20 10 L54 32 L20 54Z" fill="#3fae6a" ${S}/>`),
+  gear: svg(`<path d="M32 6 V14 M32 50 V58 M6 32 H14 M50 32 H58 M13.6 13.6 L19.3 19.3 M44.7 44.7 L50.4 50.4 M13.6 50.4 L19.3 44.7 M44.7 19.3 L50.4 13.6" ${LS} stroke-width="6"/>
+    <circle cx="32" cy="32" r="15" fill="#c9d3df" ${S}/><circle cx="32" cy="32" r="5.5" fill="#ffffff" ${S}/>`),
+  check: svg(`<path d="M12 34 L26 48 L52 16" fill="none" stroke="#2a8a50" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>`),
+  left: svg(`<path d="M40 12 L20 32 L40 52" ${LS} stroke-width="8"/>`),
+  right: svg(`<path d="M24 12 L44 32 L24 52" ${LS} stroke-width="8"/>`),
+  close: svg(`<path d="M16 16 L48 48 M48 16 L16 48" ${LS} stroke-width="7"/>`),
+  retry: svg(`<path d="M50 34 a18 18 0 1 1 -7 -15" ${LS} stroke-width="6"/><path d="M46 6 V20 H32" ${LS} stroke-width="6"/>`),
+  offline: svg(cloudPic('#dfe6ee') + `<path d="M12 56 L52 10" fill="none" stroke="#e2452f" stroke-width="6" stroke-linecap="round"/>`),
+};
+
+// ---------- Vaatteiden nimet ----------
+const NAMES = {
+  underpants: 'Alushousut', longjohns: 'Pitkät alushousut', socks: 'Sukat', warmsocks: 'Lämpimät sukat', thermal: 'Pitkä aluspaita',
+  tanktop: 'Hihaton paita', tshirt: 'T-paita', longsleeve: 'Pitkähihainen paita', hoodie: 'Lämmin paita', woolsweater: 'Villapaita',
+  vest: 'Liivi', windbreaker: 'Tuulitakki', jacket: 'Takki', raincoat: 'Sadetakki', wintercoat: 'Talvitakki', parka: 'Paksu talvitakki',
+  shorts: 'Shortsit', trousers: 'Pitkät housut', rainpants: 'Sadehousut', warmtrousers: 'Lämpimät housut',
+  sandals: 'Sandaalit', sneakers: 'Lenkkarit', boots: 'Paksut kengät', rubberboots: 'Kumisaappaat', winterboots: 'Talvikengät', icegrips: 'Liukuesteet kenkiin',
+  cap: 'Lippalakki', sunhat: 'Aurinkohattu', rainhat: 'Sadehattu', thinbeanie: 'Ohut pipo', beanie: 'Pipo', earflap: 'Karvahattu',
+  gloves: 'Hanskat', mittens: 'Lapaset', scarf: 'Kaulahuivi',
+  umbrella: 'Sateenvarjo', sunglasses: 'Aurinkolasit', sunscreen: 'Aurinkorasva', waterbottle: 'Vesipullo', mosquito: 'Hyttyssuoja', reflector: 'Heijastin',
+};
+
+// ---------- Apurit ja tallennus ----------
 const $ = (id) => document.getElementById(id);
 const deg = (n) => `${Math.round(n)}°`;
+const WINDY = 8;       // keskituuli m/s
+const GUSTY = 11;      // puuskat m/s
 const DEFAULT_LOC = { name: 'Helsinki', lat: 60.1699, lon: 24.9384, mode: 'manual' };
-const STORE = 'wtw.location';
 const HELP_URL = 'https://github.com/kebabkenraali/what_to_wear_weather#jos-sovellus-sanoo-paikannus-on-estetty';
-const state = { loc: null, data: null, req: 0 };
 
-function saveLoc(loc) { try { localStorage.setItem(STORE, JSON.stringify(loc)); } catch {} }
-function loadLoc() { try { return JSON.parse(localStorage.getItem(STORE)); } catch { return null; } }
+// Kaikki tallennetaan vain käyttäjän omaan selaimeen.
+const store = {
+  get(key, fallback) {
+    try { const v = JSON.parse(localStorage.getItem(key)); return v ?? fallback; } catch { return fallback; }
+  },
+  set(key, value) {
+    try { localStorage.setItem(key, JSON.stringify(value)); return true; } catch { return false; }
+  },
+};
+const DEFAULT_SETTINGS = {
+  lock: false,   // piilota sijainti-, haku- ja kalenterinappi
+  speak: true,   // puhe päällä
+  chill: 0,      // +3 = palelee helposti, -3 = tulee helposti kuuma
+  hidden: [],    // vaatteet, joita ei näytetä
+  outing: false, // valitse vaatteet ulkonaoloajalle
+  from: 8, to: 16,
+};
+let settings = { ...DEFAULT_SETTINGS, ...store.get('wtw.settings', {}) };
+let photos = store.get('wtw.photos', {}); // omat valokuvat vaatteista: { avain: dataURL }
+const state = { loc: null, data: null, req: 0, stale: false, view: null };
+
 function msg(el, text, err = false) {
   el.textContent = text || '';
   el.hidden = !text;
@@ -363,10 +427,43 @@ async function getJson(url) {
   return r.json();
 }
 
+// ---------- Puhe ----------
+function speak(text) {
+  if (!settings.speak || !('speechSynthesis' in window)) return;
+  try {
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text.replace(/­/g, ''));
+    u.lang = 'fi-FI';
+    const voice = speechSynthesis.getVoices().find((v) => v.lang && v.lang.toLowerCase().startsWith('fi'));
+    if (voice) u.voice = voice;
+    u.rate = 0.9;
+    speechSynthesis.speak(u);
+  } catch {}
+}
+const FEEL_SAY = {
+  freezing: 'Ulkona on kova pakkanen', cold: 'Ulkona on kylmä', cool: 'Ulkona on viileää',
+  warm: 'Ulkona on lämmin', hot: 'Ulkona on kuuma',
+};
+function sayTemp(t) {
+  const n = Math.round(t);
+  return n === 0 ? 'Nolla astetta' : n < 0 ? `${-n} astetta pakkasta` : `${n} astetta`;
+}
+function summaryText(v) {
+  const sky = [v.fx.thunder && 'Ukkostaa', v.fx.snow && 'Sataa lunta', v.fx.rain && !v.fx.thunder && 'Sataa',
+    v.fx.fog && 'On sumua', v.fx.wind && 'Tuulee', v.fx.night && 'On pimeää'].filter(Boolean);
+  return [FEEL_SAY[v.feel], sayTemp(v.temp), ...sky, 'Pue päälle: ' + v.wear.map((i) => i.name).join(', ')].join('. ') + '.';
+}
+// "Pue pipo", "Ota mukaan sateenvarjo", "Laita aurinkorasva".
+function sayItem(it) {
+  const verb = ['umbrella', 'waterbottle'].includes(it.icon) ? 'Ota mukaan'
+    : ['sunscreen', 'mosquito', 'reflector', 'icegrips', 'sunglasses'].includes(it.icon) ? 'Laita' : 'Pue';
+  return `${verb} ${it.name.toLowerCase()}`;
+}
+
 // ---------- Sijainti ----------
 function setLocation(loc) {
   state.loc = loc;
-  saveLoc(loc);
+  store.set('wtw.location', loc);
   // "≈" kertoo, että paikka on arvio verkkoyhteyden perusteella.
   $('locName').textContent = (loc.mode === 'ip' ? '≈ ' : '') + loc.name;
   loadWeather();
@@ -417,8 +514,8 @@ async function useGps(silent = false) {
       const denied = e && e.code === 1;
       const why = denied ? 'Paikannus on estetty. ' : 'Tarkkaa sijaintia ei saatu. ';
       msg($('locMsg'), why + (approx
-        ? `Näytetään arvioitu paikka: ${approx.name}. Jos se on väärä, paina 🔍 ja kirjoita paikka. `
-        : 'Paina 🔍 ja kirjoita paikka. '), !approx);
+        ? `Näytetään arvioitu paikka: ${approx.name}. Jos se on väärä, paina hakunappia ja kirjoita paikka. `
+        : 'Paina hakunappia ja kirjoita paikka. '), !approx);
       if (denied) {
         const a = document.createElement('a');
         a.href = HELP_URL;
@@ -474,45 +571,91 @@ async function searchPlace(q) {
 }
 
 // ---------- Sää ----------
+const CACHE_MAX_AGE = 18 * 3600 * 1000; // vanhaa ennustetta käytetään enintään näin kauan
+
+// Paikan kellonaika tunnin tarkkuudella, esim. "2026-11-09T14". Lasketaan laitteen kellosta,
+// jotta myös muistista ladattu (vanha) ennuste osuu oikeaan tuntiin.
+function localHour(data) {
+  return new Date(Date.now() + (data.utc_offset_seconds || 0) * 1000).toISOString().slice(0, 13);
+}
+function nowIndex(data) {
+  const h = localHour(data);
+  return data.hourly.time.findIndex((x) => x.slice(0, 13) >= h);
+}
+
+function showOffline(on) {
+  $('offline').hidden = !on;
+  if (on) for (const id of ['now', 'wear', 'later']) $(id).hidden = true;
+}
+
 async function loadWeather() {
   const { lat, lon } = state.loc;
   const req = ++state.req;
   try {
     const url = 'https://api.open-meteo.com/v1/forecast'
       + `?latitude=${lat}&longitude=${lon}`
-      + '&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m,is_day'
-      + '&hourly=temperature_2m,apparent_temperature,precipitation_probability,precipitation,snowfall,weather_code,wind_speed_10m,uv_index,is_day'
+      + '&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m,wind_gusts_10m,is_day'
+      + '&hourly=temperature_2m,apparent_temperature,precipitation_probability,precipitation,snowfall,snow_depth,weather_code,wind_speed_10m,wind_gusts_10m,uv_index,is_day'
       + '&wind_speed_unit=ms&timezone=auto&forecast_days=2';
     const data = await getJson(url);
     if (req !== state.req) return;
     state.data = data;
-    msg($('status'), '');
+    state.stale = false;
+    store.set('wtw.forecast', { t: Date.now(), lat, lon, data });
+    showOffline(false);
     $('updated').textContent = '· ' + new Date().toLocaleTimeString('fi-FI', { hour: '2-digit', minute: '2-digit' });
     render();
   } catch {
     if (req !== state.req) return;
-    msg($('status'), 'Sääennusteen haku epäonnistui.', true);
+    // Ei yhteyttä: näytetään viimeksi haettu ennuste, jos se on samalta paikalta ja tarpeeksi tuore.
+    const c = store.get('wtw.forecast', null);
+    const usable = c && c.data && Date.now() - c.t < CACHE_MAX_AGE
+      && Math.abs(c.lat - lat) < 0.3 && Math.abs(c.lon - lon) < 0.3 && nowIndex(c.data) >= 0;
+    if (usable) {
+      state.data = c.data;
+      state.stale = true;
+      showOffline(false);
+      render();
+    } else {
+      state.data = null;
+      showOffline(true);
+    }
   }
 }
 
-// "Nyt" = seuraavat 4 tuntia. "Ilta" = saman päivän klo 18–22, jos se on vielä edessä.
+// "Nyt" = seuraavat 4 tuntia, tai avustajan asettama ulkonaoloaika.
+// "Ilta" = saman päivän klo 18–22, jos se on vielä edessä.
 function windows(data) {
   const t = data.hourly.time;
-  const nowHour = data.current.time.slice(0, 13);
-  const today = data.current.time.slice(0, 10);
-  const start = Math.max(0, t.findIndex((x) => x.slice(0, 13) >= nowHour));
+  const start = nowIndex(data);
+  if (start < 0) return { now: [], evening: [], idx: -1 };
+  const today = localHour(data).slice(0, 10);
   const all = t.map((_, i) => i);
+  const hr = (i) => +t[i].slice(11, 13);
+  if (settings.outing) {
+    const out = all.filter((i) => i >= start && t[i].startsWith(today) && hr(i) >= settings.from && hr(i) <= settings.to);
+    if (out.length) return { now: out, evening: [], idx: start };
+  }
   const now = all.slice(start, start + 4);
-  const evening = all.filter((i) => {
-    const hr = +t[i].slice(11, 13);
-    return i >= start + 4 && t[i].startsWith(today) && hr >= 18 && hr <= 22;
-  });
-  return { now, evening: evening.length >= 2 ? evening : [] };
+  const evening = all.filter((i) => i >= start + 4 && t[i].startsWith(today) && hr(i) >= 18 && hr(i) <= 22);
+  return { now, evening: evening.length >= 2 ? evening : [], idx: start };
+}
+
+// Tämän hetken sää. Vanhasta ennusteesta luetaan kuluvan tunnin arvot.
+function currentOf(data, idx) {
+  if (!state.stale && data.current) return data.current;
+  const h = data.hourly;
+  const pick = (k) => (h[k] ? h[k][idx] : 0) ?? 0;
+  return {
+    temperature_2m: pick('temperature_2m'), apparent_temperature: pick('apparent_temperature'),
+    weather_code: pick('weather_code'), wind_speed_10m: pick('wind_speed_10m'),
+    wind_gusts_10m: pick('wind_gusts_10m'), is_day: pick('is_day'),
+  };
 }
 
 function summarize(data, idx) {
   const h = data.hourly;
-  const pick = (k) => idx.map((i) => h[k][i] ?? 0);
+  const pick = (k) => idx.map((i) => (h[k] ? h[k][i] : 0) ?? 0);
   const sum = (a) => a.reduce((x, y) => x + y, 0);
   const feels = pick('apparent_temperature');
   const temp = pick('temperature_2m');
@@ -525,7 +668,9 @@ function summarize(data, idx) {
     pop: Math.max(...pick('precipitation_probability')),
     precip: sum(pick('precipitation')),
     snow: sum(pick('snowfall')),
+    snowDepth: Math.max(...pick('snow_depth')), // metriä
     wind: Math.max(...pick('wind_speed_10m')),
+    gust: Math.max(...pick('wind_gusts_10m')),
     uv: Math.max(...pick('uv_index')),
     codes,
     daylight: days.some(Boolean),
@@ -535,9 +680,8 @@ function summarize(data, idx) {
   };
   derive(s);
   // Hyttyset: Suomen leveysasteilla kesällä, lämpimällä ja tyynellä poutasäällä.
-  const month = +data.current.time.slice(5, 7);
-  s.month = month;
-  s.mosquito = data.latitude >= 55 && month >= 6 && month <= 8 && s.tAvg >= 12 && !s.rainy && s.wind < 7;
+  s.month = +localHour(data).slice(5, 7);
+  s.mosquito = data.latitude >= 55 && s.month >= 6 && s.month <= 8 && s.tAvg >= 12 && !s.rainy && s.wind < 7;
   return s;
 }
 
@@ -545,23 +689,26 @@ function summarize(data, idx) {
 function derive(s) {
   s.snowy = s.snow >= 0.5 || s.codes.some(isSnowCode);
   s.rainy = !s.snowy && (s.pop >= 50 || s.precip >= 1) && s.precip >= 0.2;
-  s.windy = s.wind >= WINDY;
+  s.windy = s.wind >= WINDY || (s.gust || 0) >= GUSTY;
+  s.stormy = s.wind >= 11 || (s.gust || 0) >= 16; // liian tuulista sateenvarjolle
   s.thunder = s.codes.some((c) => c >= 95);
-  s.foggy = s.codes.filter((c) => c === 45 || c === 48).length * 2 >= s.codes.length;
+  s.foggy = s.codes.filter(isFogCode).length * 2 >= s.codes.length;
   s.slush = s.snowy && s.tAvg > 0.5;
+  s.snowGround = (s.snowDepth || 0) >= 0.03; // lunta maassa vähintään 3 cm
   s.icy = s.codes.some((c) => [56, 57, 66, 67].includes(c))
     || ((s.snowy || s.precip > 0.2) && s.tAvg > -3 && s.tAvg < 1.5);
   return s;
 }
 const fxOf = (s) => ({ wind: s.windy, rain: s.rainy, snow: s.snowy, thunder: s.thunder, fog: s.foggy, night: !s.mostlyDay });
 
-function periodEmoji(s) {
-  if (s.snowy) return '🌨️';
-  if (s.rainy) return '🌧️';
+function periodSky(s) {
+  if (s.thunder) return skyIcon(95);
+  if (s.snowy) return skyIcon(73);
+  if (s.rainy) return skyIcon(63);
   const count = {};
   let best = s.codes[0];
   for (const c of s.codes) { count[c] = (count[c] || 0) + 1; if (count[c] > count[best]) best = c; }
-  return wmo(best, s.mostlyDay).emoji;
+  return skyIcon(best, s.mostlyDay);
 }
 
 // Onko ilta selvästi erilainen kuin nyt?
@@ -574,16 +721,17 @@ function veryDifferent(a, b) {
 }
 
 // ---------- Pukeutumissäännöt ----------
-function outfit(s) {
+// chill: avustajan säätö. +3 = palelee helposti (lämpimämmät vaatteet), -3 = tulee helposti kuuma.
+function outfit(s, chill = 0) {
   // Pukeudutaan hieman kylmimmän hetken suuntaan painottaen.
-  const f = (s.feelsMin + s.feelsAvg) / 2;
+  const f = (s.feelsMin + s.feelsAvg) / 2 - chill;
   const { snowy, rainy, windy } = s;
   const maybeRain = !snowy && !rainy && s.pop >= 30;
   const items = [];
   const add = (icon, name) => items.push({ icon, name });
 
   // Alusvaatteet
-  const sandals = !snowy && !rainy && f >= 23;
+  const sandals = !snowy && !rainy && !s.snowGround && f >= 23;
   add('underpants', 'Alushousut');
   if (f < -5) add('longjohns', 'Pitkät alushousut');
   if (f < 0) add('warmsocks', 'Lämpimät sukat');
@@ -615,6 +763,7 @@ function outfit(s) {
   // Kengät
   if (s.slush) add('rubberboots', 'Kumisaappaat');
   else if (snowy || f < 0) add('winterboots', 'Talvikengät');
+  else if (s.snowGround) add(s.tAvg > 1 ? 'rubberboots' : 'winterboots', s.tAvg > 1 ? 'Kumisaappaat' : 'Talvikengät'); // lunta maassa, vaikka ei sada
   else if (rainy) add('rubberboots', 'Kumisaappaat');
   else if (sandals) add('sandals', 'Sandaalit');
   else if (f < 7) add('boots', 'Paksut kengät');
@@ -624,10 +773,9 @@ function outfit(s) {
   // Asusteet
   // Keväällä ja kesällä (maalis–elokuu) suositellaan aina lakkia, ellei tarvita lämmintä päähinettä.
   const capSeason = s.month >= 3 && s.month <= 8;
-  const rainHat = rainy && s.wind >= 11 && f >= 4;
   if (f < -12) add('earflap', 'Karvahattu');
   else if (f < 4) add('beanie', 'Pipo');
-  else if (rainHat) add('rainhat', 'Sadehattu');
+  else if (rainy && s.stormy) add('rainhat', 'Sadehattu');
   else if (s.uv >= 6 && f >= 10) add('sunhat', 'Aurinkohattu');
   else if (capSeason || (s.uv >= 3 && f >= 10)) add('cap', 'Lippalakki');
   else if (f < 8) add('thinbeanie', 'Ohut pipo');
@@ -635,7 +783,7 @@ function outfit(s) {
   else if (f < 3) add('gloves', 'Hanskat');
   if (f < -2 || (f < 6 && windy)) add('scarf', 'Kaulahuivi');
   if ((rainy || maybeRain) && !s.thunder) {
-    if (s.wind < 11) add('umbrella', 'Sateenvarjo');
+    if (!s.stormy) add('umbrella', 'Sateenvarjo');
     else if (!items.some((i) => i.icon === 'raincoat')) add('raincoat', 'Sadetakki');
   }
   if (s.daylight && (s.uv >= 3 || (s.clearish && s.uv >= 1.5))) add('sunglasses', 'Aurinkolasit');
@@ -646,53 +794,76 @@ function outfit(s) {
   return items;
 }
 
+// Suositus tälle käyttäjälle: avustajan lämpösäätö ja piilotetut vaatteet huomioitu.
+const wearFor = (s) => outfit(s, settings.chill).filter((i) => !settings.hidden.includes(i.icon));
+
 // ---------- Piirto ----------
-function drawScene(prefix, feel, fx, emoji, temp, wear) {
+function drawScene(prefix, feel, fx, sky, temp, wear) {
   const p = $(prefix + 'Person');
   p.innerHTML = person(feel, fx, wear.map((i) => i.icon)); // oma, kiinteä SVG-merkkijono
   const words = [FEEL[feel].label, fx.wind && 'tuulinen', fx.rain && 'sataa', fx.snow && 'sataa lunta',
     fx.thunder && 'ukkonen', fx.fog && 'sumua', fx.night && 'pimeää'].filter(Boolean);
   p.setAttribute('aria-label', words.join(', '));
   p.title = words.join(', ');
-  $(prefix + 'Icon').textContent = emoji;
+  $(prefix + 'Icon').innerHTML = sky;
   $(prefix + 'Thermo').innerHTML = thermometer(temp, feel);
   const t = $(prefix + 'Temp');
   t.textContent = deg(temp);
   t.style.color = FEEL[feel].hue;
 }
 
+// Vaatteen kuva: avustajan lisäämä valokuva tai piirros.
+function fillPicture(el, key) {
+  if (photos[key]) {
+    const img = document.createElement('img');
+    img.className = 'photo';
+    img.alt = '';
+    img.src = photos[key];
+    el.append(img);
+  } else {
+    el.insertAdjacentHTML('beforeend', ICONS[key]);
+  }
+}
+
 const HYPHEN = /(Alus|alus|Pitkä|Kumi|Villa|Aurinko|Sateen|Talvi|Liuku|Kaula|Lippa|Hyttys|Karva|Sade|Tuuli|Vesi)(?=[a-zäö]{4,})/g;
 function clothesEls(items) {
   return items.map((it) => {
-    const d = document.createElement('div');
-    d.className = 'item';
-    d.innerHTML = ICONS[it.icon];
-    const b = document.createElement('b');
-    b.textContent = it.name.replace(HYPHEN, '$1­'); // pehmeä tavuviiva yhdyssanan osien väliin
-    d.append(b);
-    return d;
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'item';
+    b.title = it.name;
+    fillPicture(b, it.icon);
+    const label = document.createElement('b');
+    label.textContent = it.name.replace(HYPHEN, '$1­'); // pehmeä tavuviiva yhdyssanan osien väliin
+    b.append(label);
+    b.addEventListener('click', () => speak(it.name)); // painallus sanoo vaatteen nimen
+    return b;
   });
 }
 
 function render() {
   const data = state.data;
   if (!data) return;
-  const c = data.current;
   const w = windows(data);
   if (!w.now.length) return;
+  const c = currentOf(data, w.idx);
 
   // Nyt
   const sNow = summarize(data, w.now);
-  const wearNow = outfit(sNow);
-  drawScene('now', feelCat(c.apparent_temperature), {
-    wind: c.wind_speed_10m >= WINDY,
+  const wearNow = wearFor(sNow);
+  const feel = feelCat(c.apparent_temperature - settings.chill);
+  const fx = {
+    wind: c.wind_speed_10m >= WINDY || (c.wind_gusts_10m || 0) >= GUSTY,
     rain: isRainCode(c.weather_code),
     snow: isSnowCode(c.weather_code),
     sun: !!c.is_day && c.weather_code <= 1,
     thunder: c.weather_code >= 95,
-    fog: c.weather_code === 45 || c.weather_code === 48,
+    fog: isFogCode(c.weather_code),
     night: !c.is_day,
-  }, wmo(c.weather_code, !!c.is_day).emoji, c.temperature_2m, wearNow);
+  };
+  drawScene('now', feel, fx, skyIcon(c.weather_code, !!c.is_day), c.temperature_2m, wearNow);
+  state.view = { feel, fx, temp: c.temperature_2m, wear: wearNow };
+  $('staleBadge').hidden = !state.stale;
 
   $('clothes').replaceChildren(...clothesEls(wearNow));
   $('now').hidden = false;
@@ -704,8 +875,8 @@ function render() {
   if (w.evening.length) {
     const sEve = summarize(data, w.evening);
     if (veryDifferent(sNow, sEve)) {
-      const wearEve = outfit(sEve);
-      drawScene('later', feelCat(sEve.feelsAvg), fxOf(sEve), periodEmoji(sEve), sEve.tAvg, wearEve);
+      const wearEve = wearFor(sEve);
+      drawScene('later', feelCat(sEve.feelsAvg - settings.chill), fxOf(sEve), periodSky(sEve), sEve.tAvg, wearEve);
       const have = new Set(wearNow.map((i) => i.icon));
       const extra = wearEve.filter((i) => !have.has(i.icon));
       const box = $('laterClothes');
@@ -723,6 +894,164 @@ function render() {
     }
   }
   fit();
+}
+
+// ---------- Pukeminen yksi vaate kerrallaan ----------
+const steps = { items: [], i: 0 };
+function openSteps() {
+  if (!state.view || !state.view.wear.length) return;
+  steps.items = state.view.wear;
+  steps.i = 0;
+  $('steps').hidden = false;
+  drawStep();
+}
+function closeSteps() {
+  $('steps').hidden = true;
+  if ('speechSynthesis' in window) speechSynthesis.cancel();
+}
+function drawStep() {
+  const n = steps.items.length;
+  const done = steps.i >= n;
+  $('stepDots').replaceChildren(...steps.items.map((_, k) => {
+    const d = document.createElement('span');
+    d.className = k < steps.i ? 'dot done' : k === steps.i ? 'dot cur' : 'dot';
+    return d;
+  }));
+  const pic = $('stepPic');
+  pic.replaceChildren();
+  $('stepPrev').disabled = steps.i === 0;
+  if (done) {
+    // Kaikki puettu: näytetään valmis ukko.
+    pic.innerHTML = person('warm', {}, steps.items.map((i) => i.icon)); // iloinen ukko: kaikki on puettu
+    $('stepName').textContent = 'Valmis!';
+    pic.onclick = () => speak('Valmis!');
+    speak('Valmis! Olet pukenut kaikki vaatteet.');
+    return;
+  }
+  const it = steps.items[steps.i];
+  fillPicture(pic, it.icon);
+  $('stepName').textContent = it.name;
+  pic.onclick = () => speak(sayItem(it));
+  speak(sayItem(it));
+}
+
+// ---------- Avustajan asetukset ----------
+function applySettings() {
+  for (const id of ['gpsBtn', 'searchToggle', 'calLink']) $(id).hidden = settings.lock;
+  if (settings.lock) toggleSearch(false);
+  $('speakBtn').hidden = !settings.speak || !('speechSynthesis' in window);
+}
+
+// Valokuva pienennetään neliöksi ennen tallennusta, jotta se mahtuu selaimen muistiin.
+function fileToPhoto(file) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => {
+      const size = 320;
+      const c = document.createElement('canvas');
+      c.width = c.height = size;
+      const m = Math.min(img.width, img.height);
+      c.getContext('2d').drawImage(img, (img.width - m) / 2, (img.height - m) / 2, m, m, 0, 0, size, size);
+      URL.revokeObjectURL(url);
+      resolve(c.toDataURL('image/jpeg', 0.8));
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('Kuvaa ei voitu lukea')); };
+    img.src = url;
+  });
+}
+
+function clothesRow(key) {
+  const row = document.createElement('div');
+  row.className = 'set-row';
+  const thumb = document.createElement('span');
+  thumb.className = 'thumb';
+  fillPicture(thumb, key);
+
+  const show = document.createElement('label');
+  const cb = document.createElement('input');
+  cb.type = 'checkbox';
+  cb.checked = !settings.hidden.includes(key);
+  cb.dataset.key = key;
+  show.append(cb, ' ' + NAMES[key]);
+
+  const pick = document.createElement('label');
+  pick.className = 'btn';
+  const file = document.createElement('input');
+  file.type = 'file';
+  file.accept = 'image/*';
+  file.hidden = true;
+  file.addEventListener('change', async () => {
+    if (!file.files[0]) return;
+    try {
+      const next = { ...photos, [key]: await fileToPhoto(file.files[0]) };
+      if (!store.set('wtw.photos', next)) throw new Error('Muisti täynnä');
+      photos = next;
+      row.replaceWith(clothesRow(key));
+    } catch {
+      msg($('setMsg'), 'Kuvaa ei voitu tallentaa. Selaimen muisti voi olla täynnä.', true);
+    }
+  });
+  pick.append(photos[key] ? 'Vaihda kuva' : 'Oma kuva', file);
+  row.append(thumb, show, pick);
+
+  if (photos[key]) {
+    const del = document.createElement('button');
+    del.type = 'button';
+    del.textContent = 'Poista kuva';
+    del.addEventListener('click', () => {
+      const next = { ...photos };
+      delete next[key];
+      store.set('wtw.photos', next);
+      photos = next;
+      row.replaceWith(clothesRow(key));
+    });
+    row.append(del);
+  }
+  return row;
+}
+
+function openSettings() {
+  $('setLock').checked = settings.lock;
+  $('setSpeak').checked = settings.speak;
+  $('setChill').value = String(settings.chill);
+  $('setOuting').checked = settings.outing;
+  for (const [id, val] of [['setFrom', settings.from], ['setTo', settings.to]]) {
+    const sel = $(id);
+    if (!sel.options.length) for (let h = 5; h <= 23; h++) sel.add(new Option(`${h}.00`, String(h)));
+    sel.value = String(val);
+  }
+  msg($('setMsg'), '');
+  $('setClothes').replaceChildren(...Object.keys(NAMES).map(clothesRow));
+  $('settings').showModal();
+}
+
+function saveSettings() {
+  const from = +$('setFrom').value;
+  const to = +$('setTo').value;
+  settings = {
+    lock: $('setLock').checked,
+    speak: $('setSpeak').checked,
+    chill: +$('setChill').value,
+    outing: $('setOuting').checked,
+    from: Math.min(from, to), to: Math.max(from, to),
+    hidden: [...$('setClothes').querySelectorAll('input[type=checkbox]')].filter((c) => !c.checked).map((c) => c.dataset.key),
+  };
+  store.set('wtw.settings', settings);
+  applySettings();
+  render();
+}
+
+// Asetukset avataan pitämällä nappia pohjassa, jotta käyttäjä ei avaa niitä vahingossa.
+function holdToOpen(el, fn, ms = 1200) {
+  let timer;
+  const stop = () => { clearTimeout(timer); el.classList.remove('holding'); };
+  el.addEventListener('pointerdown', () => {
+    el.classList.add('holding');
+    timer = setTimeout(() => { stop(); fn(); }, ms);
+  });
+  for (const ev of ['pointerup', 'pointerleave', 'pointercancel']) el.addEventListener(ev, stop);
+  el.addEventListener('contextmenu', (e) => e.preventDefault());
 }
 
 // ---------- Sovitus ruudulle ----------
@@ -769,7 +1098,6 @@ function queueFit() {
   fitQueued = true;
   requestAnimationFrame(() => { fitQueued = false; fit(); });
 }
-window.addEventListener('resize', queueFit);
 
 // ---------- Kuukausien esikatselu (?kuukaudet) ----------
 // Tyypillinen sää Etelä- ja Keski-Suomessa kunakin kuukautena.
@@ -810,7 +1138,7 @@ function renderMonths() {
     const scene = document.createElement('div');
     scene.className = 'scene';
     scene.innerHTML = `<div class="person">${person(feel, { ...fxOf(s), sun: m.day && m.code <= 1 }, wear.map((i) => i.icon))}</div>
-      <div class="reading"><div class="sky">${wmo(m.code, m.day).emoji}</div>
+      <div class="reading"><div class="sky">${skyIcon(m.code, m.day)}</div>
       <div class="temp" style="color:${FEEL[feel].hue}"><span class="thermo">${thermometer(m.t, feel)}</span>${deg(m.t)}</div></div>`;
     const clothes = document.createElement('div');
     clothes.className = 'clothes';
@@ -820,33 +1148,64 @@ function renderMonths() {
   }
 }
 
-// ---------- Tapahtumat ----------
-$('gpsBtn').addEventListener('click', () => useGps());
-$('searchToggle').addEventListener('click', () => toggleSearch($('searchForm').hidden));
-$('searchForm').addEventListener('submit', (e) => {
-  e.preventDefault();
-  const q = $('searchInput').value.trim();
-  if (q.length >= 2) searchPlace(q);
-});
-
-// Päivitä ennuste (ja GPS-tilassa myös sijainti) puolen tunnin välein ja kun sivulle palataan.
+// ---------- Päivitys ----------
+// Päivitä ennuste (ja sijainti, ellei paikkaa ole valittu käsin) puolen tunnin välein ja kun sivulle palataan.
 let lastRefresh = Date.now();
 function refresh() {
   if (!state.loc || document.hidden) return;
   lastRefresh = Date.now();
-  if (state.loc.mode !== 'manual') useGps(true).then((ok) => { if (!ok) loadWeather(); });
+  if (state.loc.mode !== 'manual' && !settings.lock) useGps(true).then((ok) => { if (!ok) loadWeather(); });
   else loadWeather();
 }
-setInterval(refresh, 30 * 60 * 1000);
-document.addEventListener('visibilitychange', () => {
-  if (!document.hidden && Date.now() - lastRefresh > 10 * 60 * 1000) refresh();
-});
 
 // ---------- Käynnistys ----------
 (async function init() {
+  // Nappien kuvat
+  const icons = {
+    gpsBtn: UI.pin, searchToggle: UI.search, searchGo: UI.search, calLink: UI.calendar, backLink: UI.left, gearBtn: UI.gear,
+    speakBtn: UI.speaker, stepBtn: UI.play, stepClose: UI.close, stepPrev: UI.left, stepNext: UI.check,
+    retryBtn: UI.retry, offlinePic: UI.offline, staleBadge: UI.offline,
+  };
+  for (const [id, pic] of Object.entries(icons)) $(id).innerHTML = pic;
+
+  // Tapahtumat
+  $('gpsBtn').addEventListener('click', () => useGps());
+  $('searchToggle').addEventListener('click', () => toggleSearch($('searchForm').hidden));
+  $('searchForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const q = $('searchInput').value.trim();
+    if (q.length >= 2) searchPlace(q);
+  });
+  const sayAll = () => state.view && speak(summaryText(state.view));
+  $('speakBtn').addEventListener('click', sayAll);
+  $('nowPerson').addEventListener('click', sayAll);
+  $('stepBtn').addEventListener('click', openSteps);
+  $('stepClose').addEventListener('click', closeSteps);
+  $('stepPrev').addEventListener('click', () => { if (steps.i > 0) { steps.i--; drawStep(); } });
+  $('stepNext').addEventListener('click', () => {
+    if (steps.i >= steps.items.length) return closeSteps();
+    steps.i++;
+    drawStep();
+  });
+  $('retryBtn').addEventListener('click', refresh);
+  holdToOpen($('gearBtn'), openSettings);
+  $('settings').addEventListener('close', saveSettings);
+  window.addEventListener('resize', queueFit);
+  window.addEventListener('online', refresh);
+  setInterval(refresh, 30 * 60 * 1000);
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden && Date.now() - lastRefresh > 10 * 60 * 1000) refresh();
+  });
+  if ('speechSynthesis' in window) speechSynthesis.getVoices(); // ladataan äänet valmiiksi
+
+  // Asennettava sovellus: toimii ilman verkkoa viimeksi haetulla ennusteella.
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
+
   if (new URLSearchParams(location.search).has('kuukaudet')) return renderMonths();
-  const saved = loadLoc();
-  if (saved && saved.mode === 'manual') return setLocation(saved);
+  applySettings();
+
+  const saved = store.get('wtw.location', null);
+  if (saved && (saved.mode === 'manual' || settings.lock)) return setLocation(saved);
   // Näytä heti jotain, ja tarkenna omaan sijaintiin jos paikannus onnistuu.
   setLocation(saved || DEFAULT_LOC);
   await useGps(true);

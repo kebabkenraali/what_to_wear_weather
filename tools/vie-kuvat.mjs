@@ -212,5 +212,18 @@ node tools/vie-kuvat.mjs
 `;
 
 fs.writeFileSync(path.join(out, 'README.md'), md);
+
+// --- Sovelluksen logo: iloinen ukko talvivaatteissa ---
+// icon.svg on tavallinen logo. icon-maskable.svg on sama pienempänä, jotta puhelin voi
+// leikata kuvakkeen pyöreäksi. PNG-versiot tehdään näistä erikseen (katso README).
+const logoWear = ['wintercoat', 'trousers', 'winterboots', 'beanie', 'scarf', 'mittens'];
+const logo = (viewBox, bg) => person('warm', {}, logoWear)
+  .replace('<svg viewBox="0 0 120 140" aria-hidden="true">', `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${viewBox}" width="512" height="512" role="img"><title>Mitä päälle?</title>`)
+  .replace(/<rect width="120" height="140" rx="20" fill="[^"]*"\/>/, bg)
+  .replace(/\r?\n\s*/g, '\n');
+const icons = path.join(root, 'icons');
+fs.mkdirSync(icons, { recursive: true });
+fs.writeFileSync(path.join(icons, 'icon.svg'), logo('-10 0 140 140', '<rect x="-10" width="140" height="140" rx="28" fill="#cfe6ff"/>'));
+fs.writeFileSync(path.join(icons, 'icon-maskable.svg'), logo('-35 -22 190 190', '<rect x="-35" y="-22" width="190" height="190" fill="#cfe6ff"/>'));
 const count = fs.readdirSync(out, { recursive: true }).filter((f) => String(f).endsWith('.svg')).length;
 console.log(`Valmis: ${count} kuvaa kansiossa kuvat/`);

@@ -4,30 +4,40 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Mitä päälle?</title>
+  <meta name="description" content="Sovellus katsoo sään ja näyttää kuvina, mitä vaatteita kannattaa pukea.">
+  <meta name="theme-color" content="#cfe6ff">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <main>
     <section class="location" aria-label="Sijainti">
       <div class="loc-row">
-        <button id="gpsBtn" class="round" type="button" aria-label="Päivitä sijaintini" title="Päivitä sijaintini">📍</button>
+        <button id="gpsBtn" class="round" type="button" aria-label="Päivitä sijaintini" title="Päivitä sijaintini"></button>
         <div id="locName" class="loc-name">–</div>
-        <button id="searchToggle" class="round" type="button" aria-label="Hae paikkakunta" title="Hae paikkakunta" aria-expanded="false">🔍</button>
+        <button id="searchToggle" class="round" type="button" aria-label="Hae paikkakunta" title="Hae paikkakunta" aria-expanded="false"></button>
       </div>
       <form id="searchForm" autocomplete="off" hidden>
         <input id="searchInput" type="search" placeholder="Paikkakunta" aria-label="Hae paikkakunta">
-        <button type="submit" aria-label="Hae">🔍</button>
+        <button id="searchGo" type="submit" class="round" aria-label="Hae"></button>
       </form>
       <ul id="results" class="results" hidden></ul>
       <p id="locMsg" class="msg" hidden></p>
     </section>
 
     <!-- Nyt: ukko + sää + lämpötila -->
-    <section id="now" class="card scene" hidden aria-live="polite">
-      <div id="nowPerson" class="person" role="img"></div>
+    <section id="now" class="card scene" hidden>
+      <div id="staleBadge" class="stale" hidden role="img" aria-label="Ei yhteyttä. Näytetään aiempi ennuste." title="Ei yhteyttä. Näytetään aiempi ennuste."></div>
+      <button id="nowPerson" class="person" type="button"></button>
       <div class="reading">
         <div id="nowIcon" class="sky"></div>
         <div class="temp"><span id="nowThermo" class="thermo"></span><span id="nowTemp"></span></div>
+        <div class="acts">
+          <button id="speakBtn" class="round" type="button" aria-label="Kuuntele" title="Kuuntele"></button>
+          <button id="stepBtn" class="round go" type="button" aria-label="Pue yksi vaate kerrallaan" title="Pue yksi vaate kerrallaan"></button>
+        </div>
       </div>
     </section>
 
@@ -49,19 +59,63 @@
       <div id="laterClothes" class="clothes extra"></div>
     </section>
 
+    <!-- Ei yhteyttä eikä aiempaa ennustetta -->
+    <section id="offline" class="card offline" hidden>
+      <div id="offlinePic" class="offline-pic" role="img" aria-label="Ei yhteyttä"></div>
+      <button id="retryBtn" class="big" type="button" aria-label="Yritä uudelleen" title="Yritä uudelleen"></button>
+      <p class="msg">Ei yhteyttä. Sääennustetta ei saatu.</p>
+    </section>
+
     <!-- Esikatselu: tyypillinen sää joka kuukausi (avautuu osoitteella ?kuukaudet) -->
     <div id="months" class="months" hidden>
-      <a class="back" href="./" aria-label="Takaisin" title="Takaisin">⬅</a>
+      <a id="backLink" class="back" href="./" aria-label="Takaisin" title="Takaisin"></a>
     </div>
 
-    <p id="status" class="msg"></p>
-
     <footer>
-      <a href="?kuukaudet" title="Kuukaudet" aria-label="Kuukaudet" class="cal">📅</a>
+      <a id="calLink" href="?kuukaudet" title="Kuukaudet" aria-label="Kuukaudet" class="cal"></a>
+      <button id="gearBtn" class="gear" type="button" aria-label="Avustajan asetukset: pidä painettuna" title="Avustajan asetukset: pidä painettuna"></button>
       <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a>
       <span id="updated"></span>
     </footer>
   </main>
+
+  <!-- Pukeminen yksi vaate kerrallaan -->
+  <div id="steps" class="steps" hidden>
+    <div class="steps-top">
+      <div id="stepDots" class="dots" aria-hidden="true"></div>
+      <button id="stepClose" class="round" type="button" aria-label="Sulje"></button>
+    </div>
+    <button id="stepPic" class="step-pic" type="button" aria-label="Kuuntele"></button>
+    <div id="stepName" class="step-name" aria-live="polite"></div>
+    <div class="step-nav">
+      <button id="stepPrev" class="big" type="button" aria-label="Edellinen vaate"></button>
+      <button id="stepNext" class="big ok" type="button" aria-label="Puettu, seuraava"></button>
+    </div>
+  </div>
+
+  <!-- Avustajan asetukset (avataan pitämällä ratasta painettuna) -->
+  <dialog id="settings">
+    <form method="dialog" class="set">
+      <h2>Avustajan asetukset</h2>
+      <label><input type="checkbox" id="setLock"> <span><b>Lukitse näkymä.</b> Sijainti-, haku- ja kalenterinappi piilotetaan, ja paikka pysyy samana.</span></label>
+      <label><input type="checkbox" id="setSpeak"> <span><b>Puhe päällä.</b> Sovellus sanoo vaatteen nimen, kun kuvaa painetaan.</span></label>
+      <label class="stack"><b>Lämmön tunne</b>
+        <select id="setChill">
+          <option value="3">Palelee helposti: lämpimämmät vaatteet</option>
+          <option value="0">Tavallinen</option>
+          <option value="-3">Tulee helposti kuuma: kevyemmät vaatteet</option>
+        </select>
+      </label>
+      <label><input type="checkbox" id="setOuting"> <span><b>Valitse vaatteet ulkonaoloajan mukaan.</b> Muuten katsotaan seuraavat 4 tuntia.</span></label>
+      <div class="times">Ulkona kello <select id="setFrom" aria-label="Alkaa"></select> – <select id="setTo" aria-label="Päättyy"></select></div>
+      <h3>Vaatteet</h3>
+      <p>Poista rasti, jos vaatetta ei haluta näyttää. Piirroksen tilalle voi vaihtaa valokuvan omasta vaatteesta. Kuvat tallentuvat vain tähän laitteeseen.</p>
+      <p id="setMsg" class="msg" hidden></p>
+      <div id="setClothes"></div>
+      <button id="setClose" class="primary" value="close">Valmis</button>
+    </form>
+  </dialog>
+
   <script src="app.js"></script>
 </body>
 </html>
