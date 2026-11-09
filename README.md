@@ -98,6 +98,15 @@ Kortissa on nuoli ja kuu.
 Kortti näyttää illan sään.
 Plus-merkin jälkeen ovat vaatteet, jotka kannattaa ottaa mukaan.
 
+### Katso kaikki kuvat
+
+Kaikki sovelluksen kuvat ovat yhdessä paikassa.
+
+**[Avaa kuvien kansio](kuvat/)**
+
+Kansiossa näet jokaisen vaatteen kuvan ja nimen.
+Näet myös kaikki ukon kuvat.
+
 ## Sijainti
 
 Sovellus tarvitsee tiedon, missä olet.
@@ -262,6 +271,13 @@ Avaa sitten selaimessa osoite `http://localhost:8767`.
 
 Vaatteiden säännöt ovat tiedostossa `app.js`.
 Etsi kohta, jonka nimi on `outfit`.
+
+Kansiossa `kuvat` ovat kopiot kaikista kuvista.
+Jos muutat kuvia, tee kansio uudelleen tällä komennolla:
+
+```bash
+node tools/vie-kuvat.mjs
+```
 
 Kun viet muutoksen GitHubiin, sovellus päivittyy itse.
 Päivitys kestää noin minuutin.

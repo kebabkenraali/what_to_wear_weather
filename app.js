@@ -69,7 +69,7 @@ const ICONS = {
     <circle cx="32" cy="38" r="6" fill="#ffffff" ${S}/>`),
   icegrips: svg(`<path d="M18 6 H36 V30 L52 38 C56 40 58 44 58 48 H18Z" fill="#aab4c0" ${S}/><path d="M18 48 H58 V53 H18Z" fill="#3b2a20" ${S}/>
     <path d="M18 40 Q38 34 57 45" fill="none" stroke="#e2574c" stroke-width="4" stroke-linecap="round"/>
-    <path d="M21 53 l2.5 7 l2.5 -7 M31 53 l2.5 7 l2.5 -7 M41 53 l2.5 7 l2.5 -7 M51 53 l2.5 7 l2.5 -7" fill="#f3f5f8" ${S} stroke-width="2"/>`),
+    <path d="M21 53 l2.5 7 l2.5 -7 M31 53 l2.5 7 l2.5 -7 M41 53 l2.5 7 l2.5 -7 M51 53 l2.5 7 l2.5 -7" fill="#f3f5f8" stroke="var(--ink)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`),
   boots: svg(`<path d="M20 14 H36 V34 L52 42 C56 44 58 48 58 52 H20Z" fill="#a9713f" ${S}/><path d="M20 52 H58 V57 H20Z" fill="#3b2a20" ${S}/>
     <path d="M36 20 H30 M36 26 H30 M36 32 H30 M20 20 H24" ${L}/>`),
   sunhat: svg(`<ellipse cx="32" cy="42" rx="29" ry="10" fill="#f2d48a" ${S}/><path d="M17 41 C17 12 47 12 47 41 C40 45 24 45 17 41Z" fill="#f2d48a" ${S}/>
@@ -260,7 +260,7 @@ function person(feel, fx = {}, wear) {
 
   let extras = '';
   if (feel === 'freezing') {
-    extras += `<path d="M26 62 q-5 6 0 12 q5 6 0 12 M94 62 q5 6 0 12 q-5 6 0 12" ${line} stroke-width="2"/>`;
+    extras += `<path d="M26 62 q-5 6 0 12 q5 6 0 12 M94 62 q5 6 0 12 q-5 6 0 12" fill="none" ${thin}/>`;
     extras += (fx.night || fx.thunder ? '' : flake(18, 22, 7)) + flake(102, 30, 6) + flake(104, 100, 5);
   }
   if (feel === 'hot') {
