@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="fi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mitä päälle?</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <section class="location" aria-label="Sijainti">
+      <div class="loc-row">
+        <button id="gpsBtn" class="round" type="button" aria-label="Päivitä sijaintini" title="Päivitä sijaintini">📍</button>
+        <div id="locName" class="loc-name">–</div>
+        <button id="searchToggle" class="round" type="button" aria-label="Hae paikkakunta" title="Hae paikkakunta" aria-expanded="false">🔍</button>
+      </div>
+      <form id="searchForm" autocomplete="off" hidden>
+        <input id="searchInput" type="search" placeholder="Paikkakunta" aria-label="Hae paikkakunta">
+        <button type="submit" aria-label="Hae">🔍</button>
+      </form>
+      <ul id="results" class="results" hidden></ul>
+      <p id="locMsg" class="msg" hidden></p>
+    </section>
+
+    <!-- Nyt: ukko + sää + lämpötila -->
+    <section id="now" class="card scene" hidden aria-live="polite">
+      <div id="nowPerson" class="person" role="img"></div>
+      <div class="reading">
+        <div id="nowIcon" class="sky"></div>
+        <div class="temp"><span id="nowThermo" class="thermo"></span><span id="nowTemp"></span></div>
+      </div>
+    </section>
+
+    <!-- Vaatteet nyt -->
+    <section id="wear" aria-label="Pue päälle" hidden>
+      <div id="clothes" class="clothes"></div>
+    </section>
+
+    <!-- Illalla sää muuttuu -->
+    <section id="later" class="card later" aria-label="Illalla sää muuttuu" hidden>
+      <div class="later-head" aria-hidden="true"><span>➜</span><span>🌙</span></div>
+      <div class="scene">
+        <div id="laterPerson" class="person" role="img"></div>
+        <div class="reading">
+          <div id="laterIcon" class="sky"></div>
+          <div class="temp"><span id="laterThermo" class="thermo"></span><span id="laterTemp"></span></div>
+        </div>
+      </div>
+      <div id="laterClothes" class="clothes extra"></div>
+    </section>
+
+    <!-- Esikatselu: tyypillinen sää joka kuukausi (avautuu osoitteella ?kuukaudet) -->
+    <div id="months" class="months" hidden>
+      <a class="back" href="./" aria-label="Takaisin" title="Takaisin">⬅</a>
+    </div>
+
+    <p id="status" class="msg"></p>
+
+    <footer>
+      <a href="?kuukaudet" title="Kuukaudet" aria-label="Kuukaudet" class="cal">📅</a>
+      <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a>
+      <span id="updated"></span>
+    </footer>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
