@@ -94,6 +94,81 @@ Sovellus muistaa paikan seuraavalla kerralla.
 
 Jos sovellus ei saa tietää, missä olet, se näyttää Helsingin sään.
 
+## Jos sovellus sanoo: Paikannus on estetty
+
+Tämä tarkoittaa, että selain ei anna sovelluksen katsoa, missä olet.
+
+Voit antaa luvan vain tälle sovellukselle.
+Muut sivut eivät saa lupaa samalla.
+
+Voit pyytää apua toiselta ihmiseltä.
+Lupa annetaan vain yhden kerran.
+
+Valikoiden nimet voivat olla puhelimessasi vähän erilaiset.
+
+### Chrome Android-puhelimessa
+
+1. Avaa sovellus Chromessa.
+2. Katso osoiteriviä ylhäällä. Paina sen vasemmassa reunassa olevaa pientä kuvaa.
+3. Paina: Käyttöoikeudet.
+4. Paina: Sijainti.
+5. Valitse: Salli.
+6. Palaa sovellukseen ja paina 📍.
+
+### Edge Android-puhelimessa
+
+1. Avaa sovellus Edgessä.
+2. Katso osoiteriviä. Paina sen vasemmassa reunassa olevaa lukon kuvaa.
+3. Paina: Käyttöoikeudet.
+4. Paina: Sijainti.
+5. Valitse: Salli.
+6. Palaa sovellukseen ja paina 📍.
+
+Jos et löydä lukon kuvaa, tee näin:
+
+1. Paina Edgen valikkoa. Se on kolme viivaa tai kolme pistettä alareunassa.
+2. Paina: Asetukset.
+3. Paina: Tietosuoja ja suojaus.
+4. Paina: Sivuston käyttöoikeudet.
+5. Paina: Sijainti.
+6. Etsi listasta `kebabkenraali.github.io` ja valitse: Salli.
+
+### Edge tai Chrome tietokoneessa
+
+1. Avaa sovellus.
+2. Paina osoiterivin vasemmassa reunassa olevaa lukon kuvaa.
+3. Etsi kohta: Sijainti.
+4. Valitse: Salli.
+5. Lataa sivu uudelleen.
+
+### Jos lupa ei vieläkään toimi
+
+Tarkista kaksi asiaa puhelimen asetuksista.
+
+**1. Puhelimen sijainti on päällä.**
+Vedä sormella näytön yläreunasta alas.
+Katso, että Sijainti-nappi on päällä.
+
+**2. Selaimella on lupa käyttää sijaintia.**
+
+1. Avaa puhelimen Asetukset.
+2. Paina: Sovellukset.
+3. Valitse selain: Chrome tai Edge.
+4. Paina: Käyttöoikeudet.
+5. Paina: Sijainti.
+6. Valitse: Salli vain sovelluksen käytön aikana.
+
+### Jos et halua antaa lupaa
+
+Sovellus toimii myös ilman lupaa.
+
+1. Paina 🔍.
+2. Kirjoita paikan nimi, esimerkiksi Tampere.
+3. Valitse oikea paikka listasta.
+
+Sovellus muistaa paikan.
+Sinun ei tarvitse kirjoittaa sitä uudelleen.
+
 ## Sovellus tuntee Suomen sään
 
 Sovellus ehdottaa oikeita vaatteita joka vuodenaikaan.
