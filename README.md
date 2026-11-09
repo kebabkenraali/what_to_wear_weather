@@ -27,6 +27,22 @@ Vaatteiden nimet on kirjoitettu lyhyesti ja selkeästi.
 Sovellus toimii, kun puhelin on pystyssä.
 Sovellus toimii myös, kun puhelin on vaakatasossa.
 
+Kaikki mahtuu ruudulle.
+Sinun ei tarvitse vierittää sivua.
+
+## Lisää sovellus puhelimen aloitusnäyttöön
+
+Näin löydät sovelluksen helposti joka aamu.
+
+1. Avaa sovellus selaimessa.
+2. Paina selaimen valikkoa. Se on kolme pistettä tai kolme viivaa.
+3. Paina: Lisää aloitusnäytölle.
+4. Paina: Lisää.
+
+Nyt sovelluksen kuvake on puhelimen aloitusnäytössä.
+
+Valikon sanat voivat olla puhelimessasi vähän erilaiset.
+
 ## Mitä kuvat tarkoittavat?
 
 ### Ukko
@@ -47,6 +63,8 @@ Ukon kuvassa näkyy myös sää:
 - siniset pisarat tarkoittavat sadetta
 - valkoiset pallot tarkoittavat lunta
 - salama tarkoittaa ukkosta
+- vaaleat raidat tarkoittavat sumua
+- aurinko tarkoittaa, että aurinko paistaa
 - kuu tarkoittaa, että ulkona on pimeää.
 
 ### Lämpötila
@@ -199,6 +217,17 @@ Näet esimerkin jokaisesta kuukaudesta.
 Esimerkit eivät ole oikea sääennuste.
 Ne näyttävät, millainen sää Suomessa yleensä on.
 
+## Jos sovellus näyttää vanhalta
+
+Sovellusta parannetaan välillä.
+Joskus puhelin näyttää vielä vanhan version.
+
+Tee näin:
+
+1. Avaa sovellus selaimessa.
+2. Vedä sivua sormella alaspäin, kunnes näet pyörivän nuolen.
+3. Päästä irti. Sivu latautuu uudelleen.
+
 ## Tietosuoja
 
 Sovellus ei kerää tietoja sinusta.
@@ -233,3 +262,21 @@ Avaa sitten selaimessa osoite `http://localhost:8767`.
 
 Vaatteiden säännöt ovat tiedostossa `app.js`.
 Etsi kohta, jonka nimi on `outfit`.
+
+Kun viet muutoksen GitHubiin, sovellus päivittyy itse.
+Päivitys kestää noin minuutin.
+
+## Versio
+
+Uusin versio on 1.0.
+
+Versiossa 1.0 on nämä asiat:
+
+- Sovellus näyttää sään ja vaatteet kuvina.
+- Ukolla on päällä ehdotetut vaatteet.
+- Vaatteita on koko Suomen vuoden säähän.
+- Sovellus näyttää, jos illalla sää muuttuu.
+- Sovellus toimii puhelimessa pystyssä ja vaakatasossa.
+- Sovellus arvaa paikan, jos selain ei anna lupaa.
+
+Kaikki versiot ovat sivulla [Releases](https://github.com/kebabkenraali/what_to_wear_weather/releases).
