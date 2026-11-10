@@ -305,3 +305,9 @@ dialog#settings::backdrop { background: rgba(10, 20, 35, .55); }
 dialog.steps { border: 0; margin: 0; width: 100vw; height: 100dvh; max-width: none; max-height: none; color: var(--ink); }
 dialog.steps:not([open]) { display: none; }
 dialog.steps::backdrop { background: var(--bg); }
+
+/* Varmuuskopion napit asetuksissa */
+.backup { display: flex; flex-wrap: wrap; gap: 8px; }
+.backup button, .backup .btn { font: inherit; font-size: .95rem; padding: 10px 14px; border: 1px solid var(--line); border-radius: 10px; background: var(--tile); color: var(--ink); cursor: pointer; }
+.backup .btn:focus-within { outline: 3px solid var(--accent); outline-offset: 2px; }
+.set .msg { text-align: left; }

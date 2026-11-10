@@ -9,7 +9,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="icons/icon-192.png">
-  <link rel="stylesheet" href="style.css?v=1.1.3">
+  <link rel="stylesheet" href="style.css?v=1.2.0">
 </head>
 <body>
   <main>
@@ -111,6 +111,14 @@
       </label>
       <label><input type="checkbox" id="setOuting"> <span><b>Valitse vaatteet ulkonaoloajan mukaan.</b> Muuten katsotaan seuraavat 4 tuntia.</span></label>
       <div class="times">Ulkona kello <select id="setFrom" aria-label="Alkaa"></select> – <select id="setTo" aria-label="Päättyy"></select></div>
+      <h3>Varmuuskopio</h3>
+      <p>Varmuuskopiossa ovat nämä asetukset, omat valokuvat ja paikka. Tee uusi kopio, kun muutat asetuksia. Kopion voi palauttaa myös toiseen laitteeseen.</p>
+      <div class="backup">
+        <button id="shareBackup" type="button">Jaa varmuuskopio</button>
+        <button id="saveBackup" type="button">Tallenna laitteelle</button>
+        <label class="btn">Palauta varmuuskopio<input id="restoreFile" type="file" accept=".txt,.json,text/plain,application/json" hidden></label>
+      </div>
+      <p id="backupMsg" class="msg" role="status" hidden></p>
       <h3>Vaatteet</h3>
       <p>Poista rasti, jos vaatetta ei haluta näyttää. Piirroksen tilalle voi vaihtaa valokuvan omasta vaatteesta. Kuvat tallentuvat vain tähän laitteeseen.</p>
       <p id="setMsg" class="msg" hidden></p>
@@ -119,6 +127,6 @@
     </form>
   </dialog>
 
-  <script src="app.js?v=1.1.3"></script>
+  <script src="app.js?v=1.2.0"></script>
 </body>
 </html>

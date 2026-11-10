@@ -1051,7 +1051,8 @@ function clothesRow(key) {
   return row;
 }
 
-function openSettings() {
+// Lomakkeen kentät nykyisten asetusten mukaisiksi.
+function fillSettingsForm() {
   $('setLock').checked = settings.lock;
   $('setSpeak').checked = settings.speak;
   $('setChill').value = String(settings.chill);
@@ -1061,15 +1062,22 @@ function openSettings() {
     if (!sel.options.length) for (let h = 5; h <= 23; h++) sel.add(new Option(`${h}.00`, String(h)));
     sel.value = String(val);
   }
-  msg($('setMsg'), '');
   $('setClothes').replaceChildren(...Object.keys(NAMES).map(clothesRow));
+}
+
+function openSettings() {
+  fillSettingsForm();
+  msg($('setMsg'), '');
+  msg($('backupMsg'), '');
+  $('shareBackup').hidden = !canShareFiles();
   $('settings').showModal();
 }
 
-function saveSettings() {
+// Asetukset sellaisina kuin ne ovat lomakkeessa juuri nyt.
+function readForm() {
   const from = +$('setFrom').value;
   const to = +$('setTo').value;
-  settings = {
+  return {
     lock: $('setLock').checked,
     speak: $('setSpeak').checked,
     chill: +$('setChill').value,
@@ -1077,9 +1085,87 @@ function saveSettings() {
     from: Math.min(from, to), to: Math.max(from, to),
     hidden: [...$('setClothes').querySelectorAll('input[type=checkbox]')].filter((c) => !c.checked).map((c) => c.dataset.key),
   };
+}
+
+function saveSettings() {
+  settings = readForm();
   store.set('wtw.settings', settings);
   applySettings();
   render();
+}
+
+// ---------- Varmuuskopio ----------
+// Asetukset, omat valokuvat ja paikka yhteen tiedostoon. Tiedosto on tekstiä (JSON), ja sen pääte on .txt,
+// koska puhelinten Jaa-valikko ei hyväksy .json-tiedostoja.
+const BACKUP_NAME = 'mita-paalle-varmuuskopio.txt';
+function backupFile() {
+  const data = { app: 'mita-paalle', version: 1, saved: new Date().toISOString(), settings: readForm(), photos, location: state.loc };
+  return new File([JSON.stringify(data)], BACKUP_NAME, { type: 'text/plain' });
+}
+function canShareFiles() {
+  try {
+    return !!navigator.canShare && navigator.canShare({ files: [new File(['x'], BACKUP_NAME, { type: 'text/plain' })] });
+  } catch { return false; }
+}
+
+// Tallennus laitteen Lataukset-kansioon.
+function downloadBackup() {
+  const url = URL.createObjectURL(backupFile());
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = BACKUP_NAME;
+  document.body.append(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 10000);
+  msg($('backupMsg'), `Varmuuskopio tallennettiin Lataukset-kansioon nimellä ${BACKUP_NAME}.`);
+}
+
+// Jako puhelimen Jaa-valikon kautta, esimerkiksi sähköpostiin tai pilvikansioon.
+async function shareBackup() {
+  try {
+    await navigator.share({ files: [backupFile()], title: 'Mitä päälle? -varmuuskopio' });
+    msg($('backupMsg'), 'Varmuuskopio jaettiin.');
+  } catch (e) {
+    if (e && e.name === 'AbortError') return; // käyttäjä perui
+    msg($('backupMsg'), 'Jakaminen ei onnistunut. Käytä Tallenna laitteelle -nappia.', true);
+  }
+}
+
+// Palautus tiedostosta. Tiedoston sisältö tarkistetaan: vain tunnetut asetukset ja kuvat otetaan käyttöön.
+async function restoreBackup(file) {
+  try {
+    const d = JSON.parse(await file.text());
+    if (!d || d.app !== 'mita-paalle' || typeof d.settings !== 'object') throw new Error('Väärä tiedosto');
+    const s0 = d.settings || {};
+    const hour = (v, fallback) => (Number.isInteger(v) && v >= 5 && v <= 23 ? v : fallback);
+    const clean = {
+      lock: !!s0.lock,
+      speak: s0.speak !== false,
+      chill: [3, 0, -3].includes(s0.chill) ? s0.chill : 0,
+      outing: !!s0.outing,
+      from: hour(s0.from, 8), to: hour(s0.to, 16),
+      hidden: Array.isArray(s0.hidden) ? s0.hidden.filter((k) => Object.hasOwn(NAMES, k)) : [],
+    };
+    const pics = {};
+    for (const [k, v] of Object.entries(d.photos || {})) {
+      if (Object.hasOwn(NAMES, k) && typeof v === 'string' && v.startsWith('data:image/')) pics[k] = v;
+    }
+    if (!store.set('wtw.photos', pics)) throw new Error('Muisti täynnä');
+    photos = pics;
+    settings = clean;
+    store.set('wtw.settings', settings);
+    fillSettingsForm();
+    applySettings();
+    const l = d.location;
+    const okLoc = l && typeof l.name === 'string' && Number.isFinite(l.lat) && Number.isFinite(l.lon)
+      && Math.abs(l.lat) <= 90 && Math.abs(l.lon) <= 180;
+    if (okLoc) setLocation({ name: l.name.slice(0, 80), lat: l.lat, lon: l.lon, mode: ['gps', 'ip', 'manual'].includes(l.mode) ? l.mode : 'manual' });
+    else render();
+    msg($('backupMsg'), 'Varmuuskopio palautettiin. Asetukset ja kuvat ovat nyt käytössä.');
+  } catch {
+    msg($('backupMsg'), 'Tiedostoa ei voitu lukea. Valitse tiedosto, jonka tämä sovellus on tallentanut.', true);
+  }
 }
 
 // Asetukset avataan pitämällä nappia pohjassa, jotta käyttäjä ei avaa niitä vahingossa.
@@ -1208,7 +1294,7 @@ function refresh() {
   // osia ja se jäisi tyhjäksi. Ladataan sivu kerran uudelleen ohi muistin; jos sekään ei auta,
   // näytetään kuva ja nappi, jolla voi yrittää uudelleen.
   const freshUrl = () => location.pathname + '?v=' + Date.now();
-  if (!$('stepBtn') || !$('settings') || !$('offline') || !$('srStatus') || !$('steps').showModal) {
+  if (!$('stepBtn') || !$('settings') || !$('offline') || !$('srStatus') || !$('saveBackup') || !$('steps').showModal) {
     let tried = true;
     try {
       tried = !!sessionStorage.getItem('wtw.reloaded');
@@ -1254,6 +1340,13 @@ function refresh() {
   });
   $('retryBtn').addEventListener('click', refresh);
   holdToOpen($('gearBtn'), openSettings);
+  $('saveBackup').addEventListener('click', downloadBackup);
+  $('shareBackup').addEventListener('click', shareBackup);
+  $('restoreFile').addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    e.target.value = ''; // sama tiedosto voidaan valita uudelleen
+    if (file) restoreBackup(file);
+  });
   $('settings').addEventListener('close', saveSettings);
   window.addEventListener('resize', queueFit);
   window.addEventListener('online', refresh);

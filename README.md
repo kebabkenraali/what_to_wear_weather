@@ -329,6 +329,30 @@ Paina lopuksi: Valmis.
 Asetukset ja valokuvat tallentuvat vain tähän laitteeseen.
 Niitä ei lähetetä minnekään.
 
+### Tee varmuuskopio
+
+Asetukset ja valokuvat voivat hävitä.
+Näin käy, jos selaimen tiedot tyhjennetään tai puhelin vaihtuu.
+
+Tee siksi varmuuskopio.
+Varmuuskopio on yksi tiedosto.
+Siinä ovat asetukset, omat valokuvat ja paikka.
+
+Asetuksissa on kolme nappia:
+
+- **Jaa varmuuskopio.** Puhelin kysyy, minne tiedosto lähetetään. Voit lähettää sen esimerkiksi omaan sähköpostiisi.
+- **Tallenna laitteelle.** Tiedosto menee laitteen Lataukset-kansioon. Tiedoston nimi on `mita-paalle-varmuuskopio.txt`.
+- **Palauta varmuuskopio.** Valitse tiedosto, jonka tallensit. Asetukset ja kuvat tulevat takaisin.
+
+Jos Jaa-nappia ei näy, laitteesi ei osaa jakaa tiedostoja.
+Käytä silloin Tallenna laitteelle -nappia.
+
+Muista nämä asiat:
+
+- Tee uusi varmuuskopio aina, kun muutat asetuksia tai kuvia.
+- Sama tiedosto käy myös toiseen puhelimeen tai tablettiin.
+- Varmuuskopiossa on käyttäjän valokuvat ja paikka. Lähetä se vain ihmiselle, johon luotat.
+
 ## Jos sovellus näyttää vanhalta
 
 Sovellusta parannetaan välillä.
@@ -476,7 +500,9 @@ Päivitys kestää noin minuutin.
 
 ## Versio
 
-Uusin versio on 1.1.3.
+Uusin versio on 1.2.
+
+Versiossa 1.2 avustaja voi tehdä varmuuskopion asetuksista ja kuvista.
 
 Versio 1.1.3 paransi saavutettavuutta. Värit erottuvat paremmin. Sovellusta voi käyttää näppäimistöllä ja ruudunlukijalla.
 
