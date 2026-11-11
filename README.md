@@ -321,6 +321,8 @@ Näppäimistöllä: siirry rattaaseen sarkaimella ja paina Enter.
 - **Puhe päällä.** Sovellus sanoo vaatteen nimen, kun kuvaa painetaan. Voit ottaa puheen pois.
 - **Lämmön tunne.** Jos käyttäjä palelee helposti, sovellus ehdottaa lämpimämpiä vaatteita. Jos käyttäjälle tulee helposti kuuma, sovellus ehdottaa kevyempiä vaatteita.
 - **Ulkonaoloaika.** Sovellus valitsee vaatteet sen ajan mukaan, kun käyttäjä on ulkona. Esimerkiksi kello 8–16. Muuten sovellus katsoo seuraavat 4 tuntia.
+- **Sateenvarjo varmuuden vuoksi.** Joskus ei sada, mutta sade on mahdollinen. Voit valita, milloin sovellus ehdottaa silloin sateenvarjoa. Voit valita 30, 50 tai 70 prosenttia. Voit myös valita: ei koskaan varmuuden vuoksi. Alussa valinta on 50 prosenttia.
+- **Illan kortin sadevarusteet.** Kun tämä on päällä, illan kortti näyttää sateenvarjon, sadetakin, sadehatun ja heijastimen aina, kun niitä tarvitaan illalla. Kun tämä on pois päältä, illan kortti näyttää vain vaatteet, joita ei ole jo ylemmässä listassa. Alussa tämä on päällä.
 - **Vaatteet.** Poista rasti, jos jotain vaatetta ei haluta näyttää.
 - **Oma kuva.** Voit vaihtaa piirroksen valokuvaan käyttäjän omasta vaatteesta. Moni tunnistaa oman takkinsa paremmin kuin piirroksen.
 
@@ -328,6 +330,40 @@ Paina lopuksi: Valmis.
 
 Asetukset ja valokuvat tallentuvat vain tähän laitteeseen.
 Niitä ei lähetetä minnekään.
+
+### Käyttöohje on myös asetuksissa
+
+Asetusten alussa on kohta: Käyttöohje.
+Paina sitä.
+
+Siinä kerrotaan lyhyesti, miten sovellus toimii.
+Ohje näkyy vain avustajalle.
+Käyttäjän näkymässä ei ole ohjetekstejä.
+
+### Miksi sovellus näyttää joskus kaksi ukkoa?
+
+Ylempi ukko näyttää sään nyt.
+Alempi ukko näyttää sään illalla kello 18–22.
+
+Alempi ukko tulee näkyviin, kun illan sää on selvästi erilainen kuin nyt.
+Näin käy, kun yksi näistä on totta:
+
+- Lämpötila muuttuu paljon.
+- Sade alkaa tai loppuu.
+- Lumisade alkaa tai loppuu.
+- Kova tuuli alkaa tai loppuu.
+
+Plus-merkin jälkeen ovat vaatteet, jotka kannattaa ottaa mukaan illaksi.
+
+Alempi ukko ei näy, jos olet valinnut ulkonaoloajan.
+Silloin sovellus valitsee vaatteet koko ulkonaoloajalle.
+
+### Miksi sovellus ehdottaa sateenvarjoa, vaikka ei sada?
+
+Sovellus katsoo, kuinka todennäköinen sade on.
+Jos sade on tarpeeksi todennäköinen, sovellus ehdottaa sateenvarjoa varmuuden vuoksi.
+
+Voit muuttaa rajaa asetuksista kohdasta: Sateenvarjo varmuuden vuoksi.
 
 ### Tee varmuuskopio
 
@@ -500,7 +536,9 @@ Päivitys kestää noin minuutin.
 
 ## Versio
 
-Uusin versio on 1.2.
+Uusin versio on 1.2.1.
+
+Versiossa 1.2.1 illan kortti näyttää sateenvarjon aina, kun illalla sataa. Avustaja voi valita, milloin sovellus ehdottaa sateenvarjoa varmuuden vuoksi. Asetuksissa on käyttöohje avustajalle.
 
 Versiossa 1.2 avustaja voi tehdä varmuuskopion asetuksista ja kuvista.
 

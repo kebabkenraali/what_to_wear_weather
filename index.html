@@ -9,7 +9,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="icons/icon-192.png">
-  <link rel="stylesheet" href="style.css?v=1.2.0">
+  <link rel="stylesheet" href="style.css?v=1.2.1">
 </head>
 <body>
   <main>
@@ -100,6 +100,18 @@
   <dialog id="settings" aria-labelledby="setTitle">
     <form method="dialog" class="set">
       <h2 id="setTitle">Avustajan asetukset</h2>
+      <details class="guide">
+        <summary>Käyttöohje</summary>
+        <div>
+          <p><b>Ukko ja sää.</b> Ukko näyttää, miltä ulkona tuntuu, ja sillä on päällään ehdotetut vaatteet. Vieressä ovat sään kuva ja lämpötila. Ukkoa tai kaiutinta painamalla sovellus kertoo sään ja miten kannattaa pukeutua.</p>
+          <p><b>Vaatteet.</b> Ruudut ovat pukemisjärjestyksessä alusvaatteista päällysvaatteisiin. Ruutua painamalla sovellus sanoo vaatteen nimen. Suositus lasketaan seuraavan neljän tunnin säästä tai asettamasi ulkonaoloajan mukaan.</p>
+          <p><b>Pue vaatteet.</b> Nappi näyttää yhden vaatteen kerrallaan isona kuvana. Vihreä oikein-merkki siirtää seuraavaan, nuoli palaa edelliseen ja risti sulkee näkymän.</p>
+          <p><b>Illan kortti.</b> Katkoviivalla kehystetty kortti (nuoli ja kuu) tulee näkyviin, kun sää on klo 18–22 selvästi erilainen kuin nyt: lämpötila muuttuu paljon tai sade, lumisade tai kova tuuli alkaa tai loppuu. Plus-merkin perässä ovat vaatteet, jotka kannattaa ottaa mukaan illaksi.</p>
+          <p><b>Paikka.</b> Karttaneula hakee laitteen sijainnin ja suurennuslasi avaa paikkakuntahaun. Merkki ≈ paikan nimen edessä tarkoittaa, että paikka on arvio verkkoyhteydestä. Kun paikka on oikein, sen voi lukita alla olevasta asetuksesta.</p>
+          <p><b>Ei yhteyttä.</b> Yliviivattu pilvi ukon kulmassa tarkoittaa, että sovellus näyttää aiemmin haetun ennusteen. Sää päivittyy itsestään, kun yhteys palaa.</p>
+          <p><b>Nämä asetukset.</b> Asetukset aukeavat pitämällä ratasta pohjassa noin sekunnin, tai näppäimistöllä Enterillä. Muutokset tulevat voimaan, kun painat Valmis. Asetukset ja kuvat tallentuvat vain tähän laitteeseen, joten tee niistä varmuuskopio.</p>
+        </div>
+      </details>
       <label><input type="checkbox" id="setLock"> <span><b>Lukitse näkymä.</b> Sijainti-, haku- ja kalenterinappi piilotetaan, ja paikka pysyy samana.</span></label>
       <label><input type="checkbox" id="setSpeak"> <span><b>Puhe päällä.</b> Sovellus sanoo vaatteen nimen, kun kuvaa painetaan.</span></label>
       <label class="stack"><b>Lämmön tunne</b>
@@ -111,6 +123,15 @@
       </label>
       <label><input type="checkbox" id="setOuting"> <span><b>Valitse vaatteet ulkonaoloajan mukaan.</b> Muuten katsotaan seuraavat 4 tuntia.</span></label>
       <div class="times">Ulkona kello <select id="setFrom" aria-label="Alkaa"></select> – <select id="setTo" aria-label="Päättyy"></select></div>
+      <label class="stack"><b>Sateenvarjo varmuuden vuoksi</b>
+        <select id="setRainPop">
+          <option value="30">Kun sateen todennäköisyys on vähintään 30 %</option>
+          <option value="50">Kun sateen todennäköisyys on vähintään 50 %</option>
+          <option value="70">Kun sateen todennäköisyys on vähintään 70 %</option>
+          <option value="0">Ei koskaan varmuuden vuoksi, vain kun sataa</option>
+        </select>
+      </label>
+      <label><input type="checkbox" id="setEveningGear"> <span><b>Näytä illan kortissa sadevarusteet ja heijastin aina.</b> Muuten illan kortissa näkyvät vain vaatteet, joita ei ole jo ylemmässä listassa.</span></label>
       <h3>Varmuuskopio</h3>
       <p>Varmuuskopiossa ovat nämä asetukset, omat valokuvat ja paikka. Tee uusi kopio, kun muutat asetuksia. Kopion voi palauttaa myös toiseen laitteeseen.</p>
       <div class="backup">
@@ -127,6 +148,6 @@
     </form>
   </dialog>
 
-  <script src="app.js?v=1.2.0"></script>
+  <script src="app.js?v=1.2.1"></script>
 </body>
 </html>

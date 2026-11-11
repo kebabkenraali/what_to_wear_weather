@@ -311,3 +311,9 @@ dialog.steps::backdrop { background: var(--bg); }
 .backup button, .backup .btn { font: inherit; font-size: .95rem; padding: 10px 14px; border: 1px solid var(--line); border-radius: 10px; background: var(--tile); color: var(--ink); cursor: pointer; }
 .backup .btn:focus-within { outline: 3px solid var(--accent); outline-offset: 2px; }
 .set .msg { text-align: left; }
+
+/* Käyttöohje avustajan asetuksissa */
+.guide { border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; background: var(--tile); }
+.guide summary { font-weight: 700; cursor: pointer; }
+.guide div { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+.guide p { color: var(--ink); font-size: .92rem; }

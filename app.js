@@ -425,7 +425,11 @@ const DEFAULT_SETTINGS = {
   hidden: [],    // vaatteet, joita ei näytetä
   outing: false, // valitse vaatteet ulkonaoloajalle
   from: 8, to: 16,
+  rainPop: 50,       // sateenvarjo varmuuden vuoksi, kun sateen todennäköisyys on vähintään näin monta prosenttia (0 = ei koskaan)
+  eveningGear: true, // illan kortti näyttää sää- ja turvavarusteet, vaikka ne olisivat jo ylemmässä listassa
 };
+// Varusteet, jotka illan kortti toistaa: niiden unohtaminen haittaa eniten.
+const EVENING_GEAR = ['umbrella', 'raincoat', 'rainhat', 'reflector'];
 let settings = { ...DEFAULT_SETTINGS, ...store.get('wtw.settings', {}) };
 let photos = store.get('wtw.photos', {}); // omat valokuvat vaatteista: { avain: dataURL }
 const state = { loc: null, data: null, req: 0, stale: false, view: null };
@@ -758,11 +762,12 @@ function veryDifferent(a, b) {
 
 // ---------- Pukeutumissäännöt ----------
 // chill: avustajan säätö. +3 = palelee helposti (lämpimämmät vaatteet), -3 = tulee helposti kuuma.
-function outfit(s, chill = 0) {
+// rainPop: sateenvarjo otetaan varmuuden vuoksi, kun sateen todennäköisyys on vähintään tämän verran (0 = ei koskaan).
+function outfit(s, chill = 0, rainPop = 50) {
   // Pukeudutaan hieman kylmimmän hetken suuntaan painottaen.
   const f = (s.feelsMin + s.feelsAvg) / 2 - chill;
   const { snowy, rainy, windy } = s;
-  const maybeRain = !snowy && !rainy && s.pop >= 30;
+  const maybeRain = !snowy && !rainy && rainPop > 0 && s.pop >= rainPop;
   const items = [];
   const add = (icon, name) => items.push({ icon, name });
 
@@ -831,7 +836,7 @@ function outfit(s, chill = 0) {
 }
 
 // Suositus tälle käyttäjälle: avustajan lämpösäätö ja piilotetut vaatteet huomioitu.
-const wearFor = (s) => outfit(s, settings.chill).filter((i) => !settings.hidden.includes(i.icon));
+const wearFor = (s) => outfit(s, settings.chill, settings.rainPop).filter((i) => !settings.hidden.includes(i.icon));
 
 // ---------- Piirto ----------
 function drawScene(prefix, feel, fx, sky, temp, wear) {
@@ -918,7 +923,9 @@ function render() {
       const wearEve = wearFor(sEve);
       drawScene('later', feelCat(sEve.feelsAvg - settings.chill), fxOf(sEve), periodSky(sEve), sEve.tAvg, wearEve);
       const have = new Set(wearNow.map((i) => i.icon));
-      const extra = wearEve.filter((i) => !have.has(i.icon));
+      // Lisävaatteet illaksi. Sää- ja turvavarusteet näytetään uudelleen, vaikka ne olisivat jo ylemmässä listassa,
+      // jotta sateisen illan kortista ei puutu sateenvarjo.
+      const extra = wearEve.filter((i) => !have.has(i.icon) || (settings.eveningGear && EVENING_GEAR.includes(i.icon)));
       const box = $('laterClothes');
       box.replaceChildren();
       if (extra.length) {
@@ -1057,6 +1064,8 @@ function fillSettingsForm() {
   $('setSpeak').checked = settings.speak;
   $('setChill').value = String(settings.chill);
   $('setOuting').checked = settings.outing;
+  $('setRainPop').value = String(settings.rainPop);
+  $('setEveningGear').checked = settings.eveningGear;
   for (const [id, val] of [['setFrom', settings.from], ['setTo', settings.to]]) {
     const sel = $(id);
     if (!sel.options.length) for (let h = 5; h <= 23; h++) sel.add(new Option(`${h}.00`, String(h)));
@@ -1082,6 +1091,8 @@ function readForm() {
     speak: $('setSpeak').checked,
     chill: +$('setChill').value,
     outing: $('setOuting').checked,
+    rainPop: +$('setRainPop').value,
+    eveningGear: $('setEveningGear').checked,
     from: Math.min(from, to), to: Math.max(from, to),
     hidden: [...$('setClothes').querySelectorAll('input[type=checkbox]')].filter((c) => !c.checked).map((c) => c.dataset.key),
   };
@@ -1144,6 +1155,8 @@ async function restoreBackup(file) {
       speak: s0.speak !== false,
       chill: [3, 0, -3].includes(s0.chill) ? s0.chill : 0,
       outing: !!s0.outing,
+      rainPop: [0, 30, 50, 70].includes(s0.rainPop) ? s0.rainPop : 50,
+      eveningGear: s0.eveningGear !== false,
       from: hour(s0.from, 8), to: hour(s0.to, 16),
       hidden: Array.isArray(s0.hidden) ? s0.hidden.filter((k) => Object.hasOwn(NAMES, k)) : [],
     };
@@ -1294,7 +1307,7 @@ function refresh() {
   // osia ja se jäisi tyhjäksi. Ladataan sivu kerran uudelleen ohi muistin; jos sekään ei auta,
   // näytetään kuva ja nappi, jolla voi yrittää uudelleen.
   const freshUrl = () => location.pathname + '?v=' + Date.now();
-  if (!$('stepBtn') || !$('settings') || !$('offline') || !$('srStatus') || !$('saveBackup') || !$('steps').showModal) {
+  if (!$('stepBtn') || !$('settings') || !$('offline') || !$('srStatus') || !$('saveBackup') || !$('setRainPop') || !$('steps').showModal) {
     let tried = true;
     try {
       tried = !!sessionStorage.getItem('wtw.reloaded');
