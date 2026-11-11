@@ -174,10 +174,22 @@ Viimeisenä tulevat pipo, hanskat ja muut pienet tavarat.
 
 Joskus illalla sää on erilainen kuin nyt.
 Silloin näet toisen kortin.
-Kortissa on nuoli ja kuu.
 
-Kortti näyttää illan sään.
-Plus-merkin jälkeen ovat vaatteet, jotka kannattaa ottaa mukaan.
+Kortissa on kello ja kuu.
+Kello ja numero kertovat, mihin aikaan sää muuttuu.
+Esimerkiksi 18 tarkoittaa: kello kuusi illalla.
+
+Kortin ukko näyttää illan sään.
+
+Kortissa on myös repun kuva.
+Repun vieressä ovat tavarat, jotka kannattaa ottaa mukaan.
+Esimerkiksi sateenvarjo.
+
+Sinun ei tarvitse vaihtaa vaatteita.
+Ota vain tavarat mukaan, kun lähdet.
+
+Paina illan ukkoa.
+Sovellus kertoo, mitä kannattaa ottaa mukaan.
 
 ### Katso kaikki kuvat
 
@@ -322,7 +334,8 @@ Näppäimistöllä: siirry rattaaseen sarkaimella ja paina Enter.
 - **Lämmön tunne.** Jos käyttäjä palelee helposti, sovellus ehdottaa lämpimämpiä vaatteita. Jos käyttäjälle tulee helposti kuuma, sovellus ehdottaa kevyempiä vaatteita.
 - **Ulkonaoloaika.** Sovellus valitsee vaatteet sen ajan mukaan, kun käyttäjä on ulkona. Esimerkiksi kello 8–16. Muuten sovellus katsoo seuraavat 4 tuntia.
 - **Sateenvarjo varmuuden vuoksi.** Joskus ei sada, mutta sade on mahdollinen. Voit valita, milloin sovellus ehdottaa silloin sateenvarjoa. Voit valita 30, 50 tai 70 prosenttia. Voit myös valita: ei koskaan varmuuden vuoksi. Alussa valinta on 50 prosenttia.
-- **Illan kortin sadevarusteet.** Kun tämä on päällä, illan kortti näyttää sateenvarjon, sadetakin, sadehatun ja heijastimen aina, kun niitä tarvitaan illalla. Kun tämä on pois päältä, illan kortti näyttää vain vaatteet, joita ei ole jo ylemmässä listassa. Alussa tämä on päällä.
+- **Aurinkorasva.** Voit valita, milloin sovellus ehdottaa aurinkorasvaa. Valintoja on neljä: kun UV-indeksi on vähintään 3, kun UV-indeksi on vähintään 5, aina kesällä, tai ei koskaan. Alussa valinta on: UV-indeksi vähintään 3. Se on yleinen suositus.
+- **Illan kortin sadevarusteet.** Kun tämä on päällä, illan kortti näyttää sateenvarjon, sadetakin ja sadehatun aina, kun niitä tarvitaan illalla. Kun tämä on pois päältä, illan kortti ei näytä niitä, jos ne ovat jo ylemmässä listassa. Alussa tämä on päällä.
 - **Vaatteet.** Poista rasti, jos jotain vaatetta ei haluta näyttää.
 - **Oma kuva.** Voit vaihtaa piirroksen valokuvaan käyttäjän omasta vaatteesta. Moni tunnistaa oman takkinsa paremmin kuin piirroksen.
 
@@ -353,10 +366,48 @@ Näin käy, kun yksi näistä on totta:
 - Lumisade alkaa tai loppuu.
 - Kova tuuli alkaa tai loppuu.
 
-Plus-merkin jälkeen ovat vaatteet, jotka kannattaa ottaa mukaan illaksi.
+Kello ja numero kertovat, mihin aikaan sää muuttuu.
+
+Sovellus olettaa, että käyttäjä lähtee ylemmän listan vaatteissa.
+Repun vieressä ovat vain tavarat, jotka kannattaa ottaa mukaan illaksi.
+Esimerkiksi sateenvarjo, pipo tai lämpimämpi takki.
+Kortti ei ehdota uusia paitoja, housuja tai kenkiä.
 
 Alempi ukko ei näy, jos olet valinnut ulkonaoloajan.
 Silloin sovellus valitsee vaatteet koko ulkonaoloajalle.
+
+### Milloin sovellus ehdottaa heijastinta?
+
+- Lokakuusta maaliskuuhun aina.
+- Muina kuukausina silloin, kun ulkona on pimeää.
+
+### Milloin sovellus ehdottaa aurinkorasvaa?
+
+Sovellus katsoo sääennusteen UV-indeksin.
+UV-indeksi kertoo, kuinka voimakkaasti aurinko polttaa ihoa.
+
+Kun UV-indeksi on 3 tai enemmän, iho kannattaa suojata.
+Suomessa näin on yleensä huhtikuusta syyskuuhun keskellä päivää.
+
+UV-säteily tulee myös pilvien läpi.
+Siksi sovellus voi ehdottaa aurinkorasvaa pilvisenä päivänä.
+
+Jos valitset: aina kesällä, sovellus ehdottaa aurinkorasvaa toukokuusta elokuuhun joka päivä, kun on valoisaa.
+
+### Milloin sovellus ehdottaa aurinkolaseja?
+
+Kaikkien näiden pitää olla totta:
+
+- Ulkona on valoisaa.
+- Aurinko pääsee paistamaan. Taivas ei ole koko ajan pilvessä.
+- Ei sada.
+
+Lisäksi yhden näistä pitää olla totta:
+
+- UV-indeksi on 2 tai enemmän.
+- Maassa on lunta. Lumi häikäisee kirkkaalla säällä.
+
+Jos käyttäjä ei käytä aurinkolaseja, poista niiden rasti kohdasta Vaatteet.
 
 ### Miksi sovellus ehdottaa sateenvarjoa, vaikka ei sada?
 
@@ -536,7 +587,9 @@ Päivitys kestää noin minuutin.
 
 ## Versio
 
-Uusin versio on 1.2.1.
+Uusin versio on 1.3.
+
+Versiossa 1.3 illan kortti on selkeämpi. Siinä on kello ja reppu. Heijastin on listassa koko talven. Avustaja voi valita, milloin sovellus ehdottaa aurinkorasvaa.
 
 Versiossa 1.2.1 illan kortti näyttää sateenvarjon aina, kun illalla sataa. Avustaja voi valita, milloin sovellus ehdottaa sateenvarjoa varmuuden vuoksi. Asetuksissa on käyttöohje avustajalle.
 

@@ -9,7 +9,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="icons/icon-192.png">
-  <link rel="stylesheet" href="style.css?v=1.2.1">
+  <link rel="stylesheet" href="style.css?v=1.3.0">
 </head>
 <body>
   <main>
@@ -51,15 +51,24 @@
 
     <!-- Illalla sää muuttuu -->
     <section id="later" class="card later" aria-label="Illalla sää muuttuu" hidden>
-      <div class="later-head" aria-hidden="true"><span>➜</span><span>🌙</span></div>
+      <!-- Milloin sää muuttuu: kello, tunti numerona ja kuu -->
+      <div class="later-head">
+        <span id="laterClock" class="clock" role="img"></span>
+        <span id="laterHour" class="hour" aria-hidden="true"></span>
+        <span id="laterMoon" class="moon" aria-hidden="true"></span>
+      </div>
       <div class="scene">
-        <div id="laterPerson" class="person" role="img"></div>
+        <button id="laterPerson" class="person" type="button"></button>
         <div class="reading">
           <div id="laterIcon" class="sky" role="img"></div>
           <div class="temp"><span id="laterThermo" class="thermo"></span><span id="laterTemp"></span></div>
         </div>
       </div>
-      <div id="laterClothes" class="clothes extra"></div>
+      <!-- Ota mukaan: reppu ja varusteet -->
+      <div id="laterTake" class="take">
+        <div id="laterBag" class="bag" role="img" aria-label="Ota mukaan illaksi" title="Ota mukaan illaksi"></div>
+        <div id="laterClothes" class="clothes extra"></div>
+      </div>
     </section>
 
     <!-- Ei yhteyttä eikä aiempaa ennustetta -->
@@ -106,7 +115,8 @@
           <p><b>Ukko ja sää.</b> Ukko näyttää, miltä ulkona tuntuu, ja sillä on päällään ehdotetut vaatteet. Vieressä ovat sään kuva ja lämpötila. Ukkoa tai kaiutinta painamalla sovellus kertoo sään ja miten kannattaa pukeutua.</p>
           <p><b>Vaatteet.</b> Ruudut ovat pukemisjärjestyksessä alusvaatteista päällysvaatteisiin. Ruutua painamalla sovellus sanoo vaatteen nimen. Suositus lasketaan seuraavan neljän tunnin säästä tai asettamasi ulkonaoloajan mukaan.</p>
           <p><b>Pue vaatteet.</b> Nappi näyttää yhden vaatteen kerrallaan isona kuvana. Vihreä oikein-merkki siirtää seuraavaan, nuoli palaa edelliseen ja risti sulkee näkymän.</p>
-          <p><b>Illan kortti.</b> Katkoviivalla kehystetty kortti (nuoli ja kuu) tulee näkyviin, kun sää on klo 18–22 selvästi erilainen kuin nyt: lämpötila muuttuu paljon tai sade, lumisade tai kova tuuli alkaa tai loppuu. Plus-merkin perässä ovat vaatteet, jotka kannattaa ottaa mukaan illaksi.</p>
+          <p><b>Illan kortti.</b> Katkoviivalla kehystetty kortti tulee näkyviin, kun sää on klo 18–22 selvästi erilainen kuin nyt: lämpötila muuttuu paljon tai sade, lumisade tai kova tuuli alkaa tai loppuu. Kello ja numero kertovat, mihin aikaan muutos alkaa. Kortti olettaa, että käyttäjä lähtee ylemmän listan vaatteissa. Repun vieressä ovat vain varusteet, jotka kannattaa ottaa mukaan, esimerkiksi sateenvarjo tai lämpimämpi takki. Illan ukkoa painamalla sovellus kertoo saman ääneen.</p>
+          <p><b>Heijastin, aurinkorasva ja aurinkolasit.</b> Heijastin on listassa aina loka–maaliskuussa ja muulloin, kun on pimeää. Aurinkorasva tulee listaan UV-indeksin mukaan, ja voit muuttaa sääntöä alla. Aurinkolasit ehdotetaan, kun on valoisaa ja aurinko pääsee paistamaan, tai kun hanki häikäisee.</p>
           <p><b>Paikka.</b> Karttaneula hakee laitteen sijainnin ja suurennuslasi avaa paikkakuntahaun. Merkki ≈ paikan nimen edessä tarkoittaa, että paikka on arvio verkkoyhteydestä. Kun paikka on oikein, sen voi lukita alla olevasta asetuksesta.</p>
           <p><b>Ei yhteyttä.</b> Yliviivattu pilvi ukon kulmassa tarkoittaa, että sovellus näyttää aiemmin haetun ennusteen. Sää päivittyy itsestään, kun yhteys palaa.</p>
           <p><b>Nämä asetukset.</b> Asetukset aukeavat pitämällä ratasta pohjassa noin sekunnin, tai näppäimistöllä Enterillä. Muutokset tulevat voimaan, kun painat Valmis. Asetukset ja kuvat tallentuvat vain tähän laitteeseen, joten tee niistä varmuuskopio.</p>
@@ -131,7 +141,15 @@
           <option value="0">Ei koskaan varmuuden vuoksi, vain kun sataa</option>
         </select>
       </label>
-      <label><input type="checkbox" id="setEveningGear"> <span><b>Näytä illan kortissa sadevarusteet ja heijastin aina.</b> Muuten illan kortissa näkyvät vain vaatteet, joita ei ole jo ylemmässä listassa.</span></label>
+      <label class="stack"><b>Aurinkorasva</b>
+        <select id="setSun">
+          <option value="uv3">Kun UV-indeksi on vähintään 3 (suositus)</option>
+          <option value="uv5">Kun UV-indeksi on vähintään 5</option>
+          <option value="summer">Aina kesällä (touko–elokuu), kun on valoisaa</option>
+          <option value="never">Ei koskaan</option>
+        </select>
+      </label>
+      <label><input type="checkbox" id="setEveningGear"> <span><b>Näytä illan kortissa sadevarusteet aina.</b> Sateenvarjo, sadetakki ja sadehattu näkyvät illan kortissa, vaikka ne olisivat jo ylemmässä listassa.</span></label>
       <h3>Varmuuskopio</h3>
       <p>Varmuuskopiossa ovat nämä asetukset, omat valokuvat ja paikka. Tee uusi kopio, kun muutat asetuksia. Kopion voi palauttaa myös toiseen laitteeseen.</p>
       <div class="backup">
@@ -148,6 +166,6 @@
     </form>
   </dialog>
 
-  <script src="app.js?v=1.2.1"></script>
+  <script src="app.js?v=1.3.0"></script>
 </body>
 </html>

@@ -389,6 +389,25 @@ const UI = {
   offline: svg(cloudPic('#dfe6ee') + `<path d="M12 56 L52 10" fill="none" stroke="#e2452f" stroke-width="6" stroke-linecap="round"/>`),
 };
 
+// Kellotaulu, jonka tuntiviisari osoittaa annettua tuntia.
+function clockPic(h) {
+  const a = (((h % 12) * 30 - 90) * Math.PI) / 180;
+  const ticks = [...Array(12)].map((_, i) => {
+    const t = (i * 30 * Math.PI) / 180;
+    const r1 = i % 3 === 0 ? 19 : 22;
+    return `M${(32 + Math.cos(t) * r1).toFixed(1)} ${(32 + Math.sin(t) * r1).toFixed(1)}L${(32 + Math.cos(t) * 25).toFixed(1)} ${(32 + Math.sin(t) * 25).toFixed(1)}`;
+  }).join('');
+  return svg(`<circle cx="32" cy="32" r="28" fill="#ffffff" ${S}/><path d="${ticks}" ${LS} stroke-width="2"/>
+    <path d="M32 32 V13" ${LS} stroke-width="3"/>
+    <path d="M32 32 L${(32 + Math.cos(a) * 14).toFixed(1)} ${(32 + Math.sin(a) * 14).toFixed(1)}" ${LS} stroke-width="5"/>
+    <circle cx="32" cy="32" r="3" fill="var(--ink)"/>`);
+}
+// Reppu ja vihreä plus: ota mukaan.
+UI.bag = svg(`<path d="M23 20 C23 6 41 6 41 20" ${LS} stroke-width="5"/><rect x="11" y="18" width="40" height="42" rx="11" fill="#f0a646" ${S}/>
+  <rect x="19" y="37" width="24" height="15" rx="4" fill="#d98a2b" ${S}/><path d="M11 31 H51" ${LS} stroke-width="2.5"/>
+  <circle cx="50" cy="15" r="12" fill="#3fae6a" ${S}/><path d="M43.5 15 H56.5 M50 8.5 V21.5" fill="none" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round"/>`);
+UI.moon = svg(moonPic(14, 12));
+
 // ---------- Vaatteiden nimet ----------
 const NAMES = {
   underpants: 'Alushousut', longjohns: 'Pitkät alushousut', socks: 'Sukat', warmsocks: 'Lämpimät sukat', thermal: 'Pitkä aluspaita',
@@ -426,10 +445,17 @@ const DEFAULT_SETTINGS = {
   outing: false, // valitse vaatteet ulkonaoloajalle
   from: 8, to: 16,
   rainPop: 50,       // sateenvarjo varmuuden vuoksi, kun sateen todennäköisyys on vähintään näin monta prosenttia (0 = ei koskaan)
-  eveningGear: true, // illan kortti näyttää sää- ja turvavarusteet, vaikka ne olisivat jo ylemmässä listassa
+  eveningGear: true, // illan kortti näyttää sadevarusteet, vaikka ne olisivat jo ylemmässä listassa
+  sun: 'uv3',        // aurinkorasva: 'uv3' | 'uv5' | 'summer' (aina kesällä) | 'never'
 };
 // Varusteet, jotka illan kortti toistaa: niiden unohtaminen haittaa eniten.
-const EVENING_GEAR = ['umbrella', 'raincoat', 'rainhat', 'reflector'];
+const EVENING_GEAR = ['umbrella', 'raincoat', 'rainhat'];
+// Illan kortti olettaa, että käyttäjä lähtee ylemmän listan vaatteissa. Mukaan ehdotetaan vain
+// varusteita, jotka voi kantaa tai pukea päälle myöhemmin: ei alusvaatteita, paitoja, housuja eikä kenkiä.
+const CARRY = new Set(['umbrella', 'raincoat', 'rainhat', 'rainpants', 'windbreaker', 'jacket', 'wintercoat', 'parka',
+  'hoodie', 'woolsweater', 'beanie', 'thinbeanie', 'earflap', 'gloves', 'mittens', 'scarf', 'reflector', 'sunglasses', 'icegrips']);
+// Samaa tarkoitusta palvelevat varusteet: jos yksi on jo päällä, toista ei ehdoteta mukaan.
+const CARRY_GROUP = { hoodie: 'mid', woolsweater: 'mid', gloves: 'hands', mittens: 'hands', beanie: 'head', thinbeanie: 'head', earflap: 'head' };
 let settings = { ...DEFAULT_SETTINGS, ...store.get('wtw.settings', {}) };
 let photos = store.get('wtw.photos', {}); // omat valokuvat vaatteista: { avain: dataURL }
 const state = { loc: null, data: null, req: 0, stale: false, view: null };
@@ -488,8 +514,22 @@ function summaryText(v) {
   if (s.foggy) parts.push('On sumua');
   if (s.windy) parts.push('Tuulee. Pue takki, joka suojaa tuulelta');
   if (s.icy) parts.push('On liukasta. Kävele varovasti');
-  if (has('sunscreen', 'sunhat')) parts.push('Aurinko paistaa. Suojaa iho ja pää');
-  if (has('reflector')) parts.push('On pimeää. Laita heijastin');
+  if (has('sunscreen', 'sunhat')) parts.push(s.clearish ? 'Aurinko paistaa. Suojaa iho ja pää' : 'Laita aurinkorasvaa');
+  if (has('reflector')) parts.push(s.anyDark ? 'On pimeää. Laita heijastin' : 'Laita heijastin');
+  return parts.join('. ') + '.';
+}
+// Illan ukkoa painamalla kuultava teksti: mihin aikaan sää muuttuu, miten, ja mitä kannattaa ottaa mukaan.
+function laterText(v) {
+  const what = [];
+  const d = v.s.feelsAvg - v.now.feelsAvg;
+  if (v.s.thunder) what.push('Ukkostaa');
+  if (v.s.snowy) what.push('Sataa lunta');
+  else if (v.s.rainy) what.push('Sataa');
+  if (v.s.windy && !v.now.windy) what.push('Tuulee');
+  if (d <= -3) what.push('On kylmempää');
+  if (d >= 3) what.push('On lämpimämpää');
+  const parts = [`Illalla kello ${v.hour} sää muuttuu`, ...what];
+  if (v.extra.length) parts.push('Ota mukaan: ' + v.extra.map((i) => i.name.replace(' päälle', '').toLowerCase()).join(', '));
   return parts.join('. ') + '.';
 }
 // "Pue pipo", "Ota mukaan sateenvarjo", "Laita aurinkorasva".
@@ -763,7 +803,9 @@ function veryDifferent(a, b) {
 // ---------- Pukeutumissäännöt ----------
 // chill: avustajan säätö. +3 = palelee helposti (lämpimämmät vaatteet), -3 = tulee helposti kuuma.
 // rainPop: sateenvarjo otetaan varmuuden vuoksi, kun sateen todennäköisyys on vähintään tämän verran (0 = ei koskaan).
-function outfit(s, chill = 0, rainPop = 50) {
+// sun: milloin aurinkorasvaa ehdotetaan. 'uv3' = UV-indeksi vähintään 3 (suositus), 'uv5' = vähintään 5,
+//      'summer' = lisäksi aina touko–elokuussa valoisaan aikaan, 'never' = ei koskaan.
+function outfit(s, chill = 0, rainPop = 50, sun = 'uv3') {
   // Pukeudutaan hieman kylmimmän hetken suuntaan painottaen.
   const f = (s.feelsMin + s.feelsAvg) / 2 - chill;
   const { snowy, rainy, windy } = s;
@@ -813,7 +855,7 @@ function outfit(s, chill = 0, rainPop = 50) {
 
   // Asusteet
   // Keväällä ja kesällä (maalis–elokuu) suositellaan aina lakkia, ellei tarvita lämmintä päähinettä.
-  const capSeason = s.month >= 3 && s.month <= 8;
+  const capSeason = s.month >= 3 && s.month <= 8 && s.daylight; // lakkia ei ehdoteta yöllä
   if (f < -12) add('earflap', 'Karvahattu');
   else if (f < 4) add('beanie', 'Pipo');
   else if (rainy && s.stormy) add('rainhat', 'Sadehattu');
@@ -827,16 +869,24 @@ function outfit(s, chill = 0, rainPop = 50) {
     if (!s.stormy) add('umbrella', 'Sateenvarjo');
     else if (!items.some((i) => i.icon === 'raincoat')) add('raincoat', 'Sadetakki');
   }
-  if (s.daylight && (s.uv >= 3 || (s.clearish && s.uv >= 1.5))) add('sunglasses', 'Aurinkolasit');
-  if (s.uv >= 3) add('sunscreen', 'Aurinkorasva');
+  // Aurinkolasit: valoisaa, taivaalla selkeitä hetkiä eikä sada, ja joko UV-indeksi vähintään 2
+  // tai maassa on lunta (hanki häikäisee kevättalvella, vaikka UV on matala).
+  const bright = s.daylight && s.clearish && !rainy && !snowy;
+  if (bright && (s.uv >= 2 || s.snowGround)) add('sunglasses', 'Aurinkolasit');
+  // Aurinkorasva: UV-indeksin mukaan (myös pilvisellä, koska UV läpäisee pilvet) tai avustajan valinnalla aina kesällä.
+  const summer = s.month >= 5 && s.month <= 8;
+  const needSun = sun !== 'never' && (s.uv >= (sun === 'uv5' ? 5 : 3) || (sun === 'summer' && summer && s.daylight));
+  if (needSun) add('sunscreen', 'Aurinkorasva');
   if (f >= 25) add('waterbottle', 'Vesipullo');
   if (s.mosquito) add('mosquito', 'Hyttyssuoja');
-  if (s.anyDark) add('reflector', 'Heijastin');
+  // Heijastin: aina pimeään vuodenaikaan (loka–maaliskuu) ja muulloin, kun jakson aikana on pimeää.
+  const darkSeason = s.month >= 10 || s.month <= 3;
+  if (s.anyDark || darkSeason) add('reflector', 'Heijastin');
   return items;
 }
 
 // Suositus tälle käyttäjälle: avustajan lämpösäätö ja piilotetut vaatteet huomioitu.
-const wearFor = (s) => outfit(s, settings.chill, settings.rainPop).filter((i) => !settings.hidden.includes(i.icon));
+const wearFor = (s) => outfit(s, settings.chill, settings.rainPop, settings.sun).filter((i) => !settings.hidden.includes(i.icon));
 
 // ---------- Piirto ----------
 function drawScene(prefix, feel, fx, sky, temp, wear) {
@@ -914,29 +964,28 @@ function render() {
   $('now').hidden = false;
   $('wear').hidden = false;
 
-  // Ilta, jos selvästi erilainen
+  // Ilta, jos selvästi erilainen. Oletus: käyttäjä lähtee ylemmän listan vaatteissa, joten kortti
+  // kertoo kellonajan, illan sään ja vain ne varusteet, jotka kannattaa ottaa mukaan.
   const later = $('later');
   later.hidden = true;
+  state.later = null;
   if (w.evening.length) {
     const sEve = summarize(data, w.evening);
     if (veryDifferent(sNow, sEve)) {
-      const wearEve = wearFor(sEve);
-      drawScene('later', feelCat(sEve.feelsAvg - settings.chill), fxOf(sEve), periodSky(sEve), sEve.tAvg, wearEve);
-      const have = new Set(wearNow.map((i) => i.icon));
-      // Lisävaatteet illaksi. Sää- ja turvavarusteet näytetään uudelleen, vaikka ne olisivat jo ylemmässä listassa,
-      // jotta sateisen illan kortista ei puutu sateenvarjo.
-      const extra = wearEve.filter((i) => !have.has(i.icon) || (settings.eveningGear && EVENING_GEAR.includes(i.icon)));
-      const box = $('laterClothes');
-      box.replaceChildren();
-      if (extra.length) {
-        const plus = document.createElement('div');
-        plus.className = 'item plus';
-        plus.textContent = '+';
-        plus.setAttribute('aria-label', 'Ota mukaan illaksi');
-        plus.title = 'Ota mukaan illaksi';
-        box.append(plus, ...clothesEls(extra));
-      }
-      box.hidden = !extra.length;
+      const group = (icon) => CARRY_GROUP[icon] || icon;
+      const have = new Set(wearNow.map((i) => group(i.icon)));
+      const extra = wearFor(sEve).filter((i) => CARRY.has(i.icon)
+        && (!have.has(group(i.icon)) || (settings.eveningGear && EVENING_GEAR.includes(i.icon))));
+      const hour = +data.hourly.time[w.evening[0]].slice(11, 13);
+      // Illan ukolla on samat vaatteet kuin lähtiessä ja lisäksi mukaan otetut varusteet.
+      drawScene('later', feelCat(sEve.feelsAvg - settings.chill), fxOf(sEve), periodSky(sEve), sEve.tAvg, [...wearNow, ...extra]);
+      $('laterClock').innerHTML = clockPic(hour);
+      $('laterClock').setAttribute('aria-label', `Kello ${hour}`);
+      $('laterHour').textContent = String(hour);
+      $('laterClothes').replaceChildren(...clothesEls(extra));
+      $('laterClothes').hidden = !extra.length;
+      $('laterTake').hidden = !extra.length;
+      state.later = { hour, s: sEve, now: sNow, extra };
       later.hidden = false;
     }
   }
@@ -1066,6 +1115,7 @@ function fillSettingsForm() {
   $('setOuting').checked = settings.outing;
   $('setRainPop').value = String(settings.rainPop);
   $('setEveningGear').checked = settings.eveningGear;
+  $('setSun').value = settings.sun;
   for (const [id, val] of [['setFrom', settings.from], ['setTo', settings.to]]) {
     const sel = $(id);
     if (!sel.options.length) for (let h = 5; h <= 23; h++) sel.add(new Option(`${h}.00`, String(h)));
@@ -1093,6 +1143,7 @@ function readForm() {
     outing: $('setOuting').checked,
     rainPop: +$('setRainPop').value,
     eveningGear: $('setEveningGear').checked,
+    sun: $('setSun').value,
     from: Math.min(from, to), to: Math.max(from, to),
     hidden: [...$('setClothes').querySelectorAll('input[type=checkbox]')].filter((c) => !c.checked).map((c) => c.dataset.key),
   };
@@ -1157,6 +1208,7 @@ async function restoreBackup(file) {
       outing: !!s0.outing,
       rainPop: [0, 30, 50, 70].includes(s0.rainPop) ? s0.rainPop : 50,
       eveningGear: s0.eveningGear !== false,
+      sun: ['uv3', 'uv5', 'summer', 'never'].includes(s0.sun) ? s0.sun : 'uv3',
       from: hour(s0.from, 8), to: hour(s0.to, 16),
       hidden: Array.isArray(s0.hidden) ? s0.hidden.filter((k) => Object.hasOwn(NAMES, k)) : [],
     };
@@ -1307,7 +1359,7 @@ function refresh() {
   // osia ja se jäisi tyhjäksi. Ladataan sivu kerran uudelleen ohi muistin; jos sekään ei auta,
   // näytetään kuva ja nappi, jolla voi yrittää uudelleen.
   const freshUrl = () => location.pathname + '?v=' + Date.now();
-  if (!$('stepBtn') || !$('settings') || !$('offline') || !$('srStatus') || !$('saveBackup') || !$('setRainPop') || !$('steps').showModal) {
+  if (!$('stepBtn') || !$('settings') || !$('offline') || !$('srStatus') || !$('saveBackup') || !$('setRainPop') || !$('setSun') || !$('laterBag') || !$('steps').showModal) {
     let tried = true;
     try {
       tried = !!sessionStorage.getItem('wtw.reloaded');
@@ -1326,7 +1378,7 @@ function refresh() {
   const icons = {
     gpsBtn: UI.pin, searchToggle: UI.search, searchGo: UI.search, calLink: UI.calendar, backLink: UI.left, gearBtn: UI.gear,
     speakBtn: UI.speaker, stepBtn: UI.dress, stepClose: UI.close, stepPrev: UI.left, stepNext: UI.check,
-    retryBtn: UI.retry, offlinePic: UI.offline, staleBadge: UI.offline,
+    laterBag: UI.bag, laterMoon: UI.moon, retryBtn: UI.retry, offlinePic: UI.offline, staleBadge: UI.offline,
   };
   for (const [id, pic] of Object.entries(icons)) $(id).innerHTML = pic;
   $('stepBtn').insertAdjacentHTML('beforeend', '<span>Pue vaatteet</span>'); // seliteteksti pukemisnappiin
@@ -1342,6 +1394,7 @@ function refresh() {
   const sayAll = () => state.view && speak(summaryText(state.view));
   $('speakBtn').addEventListener('click', sayAll);
   $('nowPerson').addEventListener('click', sayAll);
+  $('laterPerson').addEventListener('click', () => state.later && speak(laterText(state.later)));
   $('stepBtn').addEventListener('click', openSteps);
   $('stepClose').addEventListener('click', closeSteps);
   $('steps').addEventListener('close', closeSteps); // myös Esc-näppäin lopettaa puheen

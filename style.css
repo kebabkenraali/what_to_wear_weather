@@ -317,3 +317,17 @@ dialog.steps::backdrop { background: var(--bg); }
 .guide summary { font-weight: 700; cursor: pointer; }
 .guide div { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
 .guide p { color: var(--ink); font-size: .92rem; }
+
+/* ---------- Illan kortti: kello, tunti, kuu ja mukaan otettavat ---------- */
+.later-head { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 0; font-size: 1rem; color: var(--ink); }
+.later-head .clock svg, .later-head .moon svg { width: 46px; height: 46px; display: block; }
+.later-head .hour { font-size: 2.2rem; font-weight: 800; line-height: 1; }
+.take { flex-basis: 100%; display: flex; align-items: center; gap: 8px; }
+.take .bag { flex: none; width: 60px; }
+.take .bag svg { width: 100%; height: auto; display: block; }
+.take .clothes.extra { flex: 1 1 0; min-width: 0; margin: 0; }
+@media (orientation: landscape) and (max-height: 540px) {
+  .later-head .clock svg, .later-head .moon svg { width: 34px; height: 34px; }
+  .later-head .hour { font-size: 1.6rem; }
+  .take .bag { width: 40px; }
+}
