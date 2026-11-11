@@ -394,16 +394,18 @@ const UI = {
 
 // Kellotaulu, jonka tuntiviisari osoittaa annettua tuntia.
 function clockPic(h) {
+  const INKC = '#101a26';
   const a = (((h % 12) * 30 - 90) * Math.PI) / 180;
   const ticks = [...Array(12)].map((_, i) => {
     const t = (i * 30 * Math.PI) / 180;
-    const r1 = i % 3 === 0 ? 19 : 22;
-    return `M${(32 + Math.cos(t) * r1).toFixed(1)} ${(32 + Math.sin(t) * r1).toFixed(1)}L${(32 + Math.cos(t) * 25).toFixed(1)} ${(32 + Math.sin(t) * 25).toFixed(1)}`;
+    const r1 = i % 3 === 0 ? 18 : 22;
+    return `M${(32 + Math.cos(t) * r1).toFixed(1)} ${(32 + Math.sin(t) * r1).toFixed(1)}L${(32 + Math.cos(t) * 26).toFixed(1)} ${(32 + Math.sin(t) * 26).toFixed(1)}`;
   }).join('');
-  return svg(`<circle cx="32" cy="32" r="28" fill="#ffffff" ${S}/><path d="${ticks}" ${LS} stroke-width="2"/>
-    <path d="M32 32 V13" ${LS} stroke-width="3"/>
-    <path d="M32 32 L${(32 + Math.cos(a) * 14).toFixed(1)} ${(32 + Math.sin(a) * 14).toFixed(1)}" ${LS} stroke-width="5"/>
-    <circle cx="32" cy="32" r="3" fill="var(--ink)"/>`);
+  return svg(`<circle cx="32" cy="32" r="29" fill="#ffffff" stroke="${INKC}" stroke-width="3"/>
+    <path d="${ticks}" fill="none" stroke="${INKC}" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M32 32 V11" fill="none" stroke="${INKC}" stroke-width="4.5" stroke-linecap="round"/>
+    <path d="M32 32 L${(32 + Math.cos(a) * 15).toFixed(1)} ${(32 + Math.sin(a) * 15).toFixed(1)}" fill="none" stroke="${INKC}" stroke-width="6.5" stroke-linecap="round"/>
+    <circle cx="32" cy="32" r="4" fill="${INKC}"/>`);
 }
 // Reppu ja vihreä plus: ota mukaan.
 UI.bag = svg(`<path d="M23 20 C23 6 41 6 41 20" ${LS} stroke-width="5"/><rect x="11" y="18" width="40" height="42" rx="11" fill="#f0a646" ${S}/>
@@ -1017,12 +1019,16 @@ function render() {
       const have = new Set(wearNow.map((i) => group(i.icon)));
       const extra = wearFor(sEve).filter((i) => CARRY.has(i.icon)
         && (!have.has(group(i.icon)) || (settings.eveningGear && EVENING_GEAR.includes(i.icon))));
+      // Sadetakki on vaihtoehto sateenvarjolle: sateella kumpi tahansa käy, joten molemmat ehdotetaan.
+      if (sEve.rainy && !sEve.stormy && !extra.some((i) => i.icon === 'raincoat') && !have.has('raincoat')) {
+        extra.push({ icon: 'raincoat', name: 'Sadetakki' });
+      }
       const hour = +data.hourly.time[w.evening[0]].slice(11, 13);
       // Illan ukolla on samat vaatteet kuin lähtiessä ja lisäksi mukaan otetut varusteet.
       drawScene('later', feelCat(sEve.feelsAvg - settings.chill), fxOf(sEve), periodSky(sEve), sEve.tAvg, [...wearNow, ...extra]);
       $('laterClock').innerHTML = clockPic(hour);
       $('laterClock').setAttribute('aria-label', `Kello ${hour}`);
-      $('laterHour').textContent = String(hour);
+      $('laterHour').textContent = `${String(hour).padStart(2, '0')}:00`;
       $('laterClothes').replaceChildren(...clothesEls(extra));
       $('laterClothes').hidden = !extra.length;
       $('laterTake').hidden = !extra.length;

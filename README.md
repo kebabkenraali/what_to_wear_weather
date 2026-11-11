@@ -191,14 +191,13 @@ Joskus illalla sää on erilainen kuin nyt.
 Silloin näet toisen kortin.
 
 Kortissa on kello ja kuu.
-Kello ja numero kertovat, mihin aikaan sää muuttuu.
-Esimerkiksi 18 tarkoittaa: kello kuusi illalla.
+Kortissa lukee kellonaika, esimerkiksi 19:00. Se kertoo, mihin aikaan sää muuttuu.
 
 Kortin ukko näyttää illan sään.
 
 Kortissa on myös repun kuva.
 Repun vieressä ovat tavarat, jotka kannattaa ottaa mukaan.
-Esimerkiksi sateenvarjo.
+Esimerkiksi sateenvarjo tai sadetakki.
 
 Sinun ei tarvitse vaihtaa vaatteita.
 Ota vain tavarat mukaan, kun lähdet.
