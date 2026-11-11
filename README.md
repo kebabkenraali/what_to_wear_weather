@@ -602,41 +602,83 @@ Näin puhelin hakee varmasti uudet tiedostot.
 Kun viet muutoksen GitHubiin, sovellus päivittyy itse.
 Päivitys kestää noin minuutin.
 
-## Versio
+## Versio ja muutokset
 
-Uusin versio on 1.3.1.
+Uusin versio on 1.3.5.
 
-Versiossa 1.3.1 takki valitaan vuodenajan mukaan. Lämmin takki on uusi. Vuodenajan rajat muuttuvat sijainnin mukaan.
+Kaikki versiot ovat sivulla [Releases](https://github.com/kebabkenraali/what_to_wear_weather/releases).
 
-Versiossa 1.3 illan kortti on selkeämpi. Siinä on kello ja reppu. Heijastin on listassa koko talven. Avustaja voi valita, milloin sovellus ehdottaa aurinkorasvaa.
+### 1.3.5
 
-Versiossa 1.2.1 illan kortti näyttää sateenvarjon aina, kun illalla sataa. Avustaja voi valita, milloin sovellus ehdottaa sateenvarjoa varmuuden vuoksi. Asetuksissa on käyttöohje avustajalle.
+- Ukolla näkyvät alusvaatteet: alushousujen vyötärönauha ja sukkien varret.
 
-Versiossa 1.2 avustaja voi tehdä varmuuskopion asetuksista ja kuvista.
+### 1.3.4
 
-Versio 1.1.3 paransi saavutettavuutta. Värit erottuvat paremmin. Sovellusta voi käyttää näppäimistöllä ja ruudunlukijalla.
+- Vaatteet ovat pukemisjärjestyksessä. Ensin alusvaatteet ja sukat, sitten housut ja paidat, takki, kengät, päähine, kaulahuivi, hanskat, sateenvarjo ja asusteet.
+- Sama järjestys näkyy pääkortissa, pukemisnäkymässä ja illan kortissa.
 
-Versiossa 1.1.2 ukko kertoo, miten kannattaa pukeutua. Se ei enää luettele kaikkia vaatteita.
+### 1.3.3
 
-Versio 1.1.1 korjasi vian: päivityksen jälkeen sivu saattoi jäädä tyhjäksi.
+- Illan kortin kellonaika on ensimmäinen illan tunti, jona sää muuttuu. Se ei ole enää jakson alku.
 
-Versiossa 1.1 tulivat nämä uudet asiat:
+### 1.3.2
+
+- Illan kortissa kellonaika näkyy numeroina, esimerkiksi 19:00.
+- Kellon viisarit ovat tummemmat.
+- Sadetakki näkyy sateenvarjon rinnalla illan kortissa.
+
+### 1.3.1
+
+- Takki valitaan vuodenajan mukaan: talvella talvitakki, syksyllä lämmin takki, keväällä takki ja kesällä ei takkia.
+- Uusi lämmin takki on lisätty.
+- Vuodenajan rajat muuttuvat sijainnin mukaan. Lapissa talvi on pidempi, ja eteläisellä pallonpuoliskolla vuodenajat ovat toisin päin. Päiväntasaajan lähellä vuodenaikoja ei ole, joten sovellus katsoo vain lämpötilaa.
+- Talvikengät ovat oletuksena talvella.
+
+### 1.3
+
+- Illan kortti on selkeämpi: kellonaika, reppu ja vain ne tavarat, jotka kannattaa ottaa mukaan.
+- Ukon puhe kertoo illan muutoksen ja mukaan otettavat tavarat.
+- Heijastin on mukana koko pimeän kauden.
+- Avustaja voi valita, milloin aurinkorasvaa ehdotetaan: UV-indeksin mukaan, aina kesällä tai ei koskaan.
+- Aurinkolasit ehdotetaan, kun on valoisaa ja aurinko paistaa, tai kun on lunta.
+
+### 1.2.1
+
+- Illan kortti näyttää sateenvarjon, kun illalla sataa.
+- Avustaja voi valita, milloin sovellus ehdottaa sateenvarjoa varmuuden vuoksi.
+- Asetuksissa on käyttöohje avustajalle.
+
+### 1.2
+
+- Avustaja voi tehdä varmuuskopion asetuksista ja kuvista. Kopion voi jakaa, tallentaa laitteelle tai palauttaa.
+
+### 1.1.3
+
+- Värit erottuvat paremmin.
+- Sovellusta voi käyttää näppäimistöllä ja ruudunlukijalla.
+
+### 1.1.2
+
+- Ukko kertoo, miten kannattaa pukeutua. Se ei enää luettele kaikkia vaatteita.
+- Pukemisnapissa on kuva ja teksti.
+
+### 1.1.1
+
+- Korjattiin vika, jossa päivityksen jälkeen sivu saattoi jäädä tyhjäksi.
+
+### 1.1
 
 - Sovellus osaa puhua.
 - Voit pukea yhden vaatteen kerrallaan.
-- Sovelluksella on oma kuvake, ja sen voi lisätä puhelimen aloitusnäyttöön.
-- Sovellus aukeaa myös ilman nettiä.
+- Sovelluksella on oma kuvake, ja sen voi lisätä aloitusnäytölle.
+- Sovellus aukeaa ilman nettiä viimeksi haetulla säällä.
 - Avustaja voi tehdä omat asetukset ja lisätä valokuvia omista vaatteista.
-- Sään kuvat ovat nyt samanlaiset kaikissa puhelimissa.
-- Sovellus huomaa tuulen puuskat ja lumen maassa.
 
-Versiossa 1.0 olivat nämä asiat:
+### 1.0
 
 - Sovellus näyttää sään ja vaatteet kuvina.
 - Ukolla on päällä ehdotetut vaatteet.
 - Vaatteita on koko Suomen vuoden säähän.
-- Sovellus näyttää, jos illalla sää muuttuu.
+- Sovellus näyttää illan muutoksen.
 - Sovellus toimii puhelimessa pystyssä ja vaakatasossa.
 - Sovellus arvaa paikan, jos selain ei anna lupaa.
-
-Kaikki versiot ovat sivulla [Releases](https://github.com/kebabkenraali/what_to_wear_weather/releases).
