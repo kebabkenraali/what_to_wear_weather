@@ -2,7 +2,7 @@
 // Sovelluksen omat tiedostot haetaan ensin verkosta (aina uusin versio) ja
 // varalla käytetään viimeksi tallennettua kopiota. Säätietoja ei tallenneta täällä:
 // app.js muistaa viimeisimmän ennusteen itse.
-const CACHE = 'mita-paalle-v8';
+const CACHE = 'mita-paalle-v9';
 const SHELL = ['./', 'index.html', 'style.css', 'app.js', 'manifest.webmanifest', 'icons/icon.svg', 'icons/icon-192.png'];
 
 self.addEventListener('install', (e) => {

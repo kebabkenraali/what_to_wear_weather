@@ -47,10 +47,11 @@ Nimen alla lukee, milloin vaate puetaan.
 <td align="center" valign="top" width="156"><img src="vaatteet/liivi.svg" width="96" alt="Liivi. Kun on melkein lämmin."><br><b>Liivi</b><br>Kun on melkein lämmin.</td>
 <td align="center" valign="top" width="156"><img src="vaatteet/tuulitakki.svg" width="96" alt="Tuulitakki. Kun tuulee."><br><b>Tuulitakki</b><br>Kun tuulee.</td>
 <td align="center" valign="top" width="156"><img src="vaatteet/takki.svg" width="96" alt="Takki. Kun on viileää."><br><b>Takki</b><br>Kun on viileää.</td>
+<td align="center" valign="top" width="156"><img src="vaatteet/lammin-takki.svg" width="96" alt="Lämmin takki. Syksyllä, kun on viileää."><br><b>Lämmin takki</b><br>Syksyllä, kun on viileää.</td>
 <td align="center" valign="top" width="156"><img src="vaatteet/sadetakki.svg" width="96" alt="Sadetakki. Kun sataa."><br><b>Sadetakki</b><br>Kun sataa.</td>
-<td align="center" valign="top" width="156"><img src="vaatteet/talvitakki.svg" width="96" alt="Talvitakki. Kun on kylmä."><br><b>Talvitakki</b><br>Kun on kylmä.</td>
 </tr>
 <tr>
+<td align="center" valign="top" width="156"><img src="vaatteet/talvitakki.svg" width="96" alt="Talvitakki. Kun on kylmä."><br><b>Talvitakki</b><br>Kun on kylmä.</td>
 <td align="center" valign="top" width="156"><img src="vaatteet/paksu-talvitakki.svg" width="96" alt="Paksu talvitakki. Kun on kova pakkanen."><br><b>Paksu talvitakki</b><br>Kun on kova pakkanen.</td>
 </tr>
 </table>
@@ -166,8 +167,8 @@ Säät ovat esimerkkejä. Ne eivät ole oikea sääennuste.
 <td align="center" valign="top" width="190"><img src="kuukaudet/03-maaliskuu.svg" width="130" alt="Maaliskuu. 0 astetta. Kylmä. Sataa lunta. Ukolla on: talvitakki, pitkät housut, talvikengät, pipo, hanskat, kaulahuivi, heijastin."><br><b>Maaliskuu</b><br>0 astetta. Kylmä. Sataa lunta.<br>Ukolla on: talvitakki, pitkät housut, talvikengät, pipo, hanskat, kaulahuivi, heijastin.</td>
 </tr>
 <tr>
-<td align="center" valign="top" width="190"><img src="kuukaudet/04-huhtikuu.svg" width="130" alt="Huhtikuu. +6 astetta. Kylmä. On pilvistä. Tuulee. Ukolla on: takki, pitkät housut, paksut kengät, pipo, hanskat, kaulahuivi, aurinkolasit."><br><b>Huhtikuu</b><br>+6 astetta. Kylmä. On pilvistä. Tuulee.<br>Ukolla on: takki, pitkät housut, paksut kengät, pipo, hanskat, kaulahuivi, aurinkolasit.</td>
-<td align="center" valign="top" width="190"><img src="kuukaudet/05-toukokuu.svg" width="130" alt="Toukokuu. +14 astetta. Viileä. Aurinko paistaa. Ukolla on: ohut takki, pitkät housut, lenkkarit, lippalakki, aurinkolasit."><br><b>Toukokuu</b><br>+14 astetta. Viileä. Aurinko paistaa.<br>Ukolla on: ohut takki, pitkät housut, lenkkarit, lippalakki, aurinkolasit.</td>
+<td align="center" valign="top" width="190"><img src="kuukaudet/04-huhtikuu.svg" width="130" alt="Huhtikuu. +6 astetta. Kylmä. On pilvistä. Tuulee. Ukolla on: tuulitakki, pitkät housut, paksut kengät, pipo, hanskat, kaulahuivi, aurinkolasit."><br><b>Huhtikuu</b><br>+6 astetta. Kylmä. On pilvistä. Tuulee.<br>Ukolla on: tuulitakki, pitkät housut, paksut kengät, pipo, hanskat, kaulahuivi, aurinkolasit.</td>
+<td align="center" valign="top" width="190"><img src="kuukaudet/05-toukokuu.svg" width="130" alt="Toukokuu. +14 astetta. Viileä. Aurinko paistaa. Ukolla on: takki, pitkät housut, lenkkarit, lippalakki, aurinkolasit."><br><b>Toukokuu</b><br>+14 astetta. Viileä. Aurinko paistaa.<br>Ukolla on: takki, pitkät housut, lenkkarit, lippalakki, aurinkolasit.</td>
 <td align="center" valign="top" width="190"><img src="kuukaudet/06-kesakuu.svg" width="130" alt="Kesäkuu. +19 astetta. Lämmin. On pilvistä. Ukolla on: pitkähihainen paita, pitkät housut, lenkkarit, aurinkohattu, aurinkolasit."><br><b>Kesäkuu</b><br>+19 astetta. Lämmin. On pilvistä.<br>Ukolla on: pitkähihainen paita, pitkät housut, lenkkarit, aurinkohattu, aurinkolasit.</td>
 </tr>
 <tr>
@@ -176,7 +177,7 @@ Säät ovat esimerkkejä. Ne eivät ole oikea sääennuste.
 <td align="center" valign="top" width="190"><img src="kuukaudet/09-syyskuu.svg" width="130" alt="Syyskuu. +12 astetta. Viileä. Sataa. Ukolla on: sadetakki, pitkät housut, kumisaappaat, sateenvarjo."><br><b>Syyskuu</b><br>+12 astetta. Viileä. Sataa.<br>Ukolla on: sadetakki, pitkät housut, kumisaappaat, sateenvarjo.</td>
 </tr>
 <tr>
-<td align="center" valign="top" width="190"><img src="kuukaudet/10-lokakuu.svg" width="130" alt="Lokakuu. +6 astetta. Kylmä. On sumua. On pimeää. Ukolla on: takki, pitkät housut, paksut kengät, pipo, hanskat, heijastin."><br><b>Lokakuu</b><br>+6 astetta. Kylmä. On sumua. On pimeää.<br>Ukolla on: takki, pitkät housut, paksut kengät, pipo, hanskat, heijastin.</td>
+<td align="center" valign="top" width="190"><img src="kuukaudet/10-lokakuu.svg" width="130" alt="Lokakuu. +6 astetta. Kylmä. On sumua. On pimeää. Ukolla on: lämmin takki, pitkät housut, paksut kengät, pipo, hanskat, heijastin."><br><b>Lokakuu</b><br>+6 astetta. Kylmä. On sumua. On pimeää.<br>Ukolla on: lämmin takki, pitkät housut, paksut kengät, pipo, hanskat, heijastin.</td>
 <td align="center" valign="top" width="190"><img src="kuukaudet/11-marraskuu.svg" width="130" alt="Marraskuu. +1 astetta. Kylmä. Sataa lunta. On pimeää. Ukolla on: talvitakki, pitkät housut, kumisaappaat, pipo, hanskat, kaulahuivi, heijastin."><br><b>Marraskuu</b><br>+1 astetta. Kylmä. Sataa lunta. On pimeää.<br>Ukolla on: talvitakki, pitkät housut, kumisaappaat, pipo, hanskat, kaulahuivi, heijastin.</td>
 <td align="center" valign="top" width="190"><img src="kuukaudet/12-joulukuu.svg" width="130" alt="Joulukuu. −4 astetta. Kylmä. Sataa lunta. On pimeää. Ukolla on: talvitakki, lämpimät housut, talvikengät, pipo, lapaset, kaulahuivi, heijastin."><br><b>Joulukuu</b><br>−4 astetta. Kylmä. Sataa lunta. On pimeää.<br>Ukolla on: talvitakki, lämpimät housut, talvikengät, pipo, lapaset, kaulahuivi, heijastin.</td>
 </tr>

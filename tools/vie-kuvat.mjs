@@ -52,7 +52,7 @@ const personSvg = (svg, caption) => svg
 const GROUPS = [
   ['Alusvaatteet', [['underpants', 'Alushousut'], ['longjohns', 'Pitkät alushousut'], ['socks', 'Sukat'], ['warmsocks', 'Lämpimät sukat'], ['thermal', 'Pitkä aluspaita']]],
   ['Paidat', [['tanktop', 'Hihaton paita'], ['tshirt', 'T-paita'], ['longsleeve', 'Pitkähihainen paita'], ['hoodie', 'Lämmin paita'], ['woolsweater', 'Villapaita']]],
-  ['Takit', [['vest', 'Liivi'], ['windbreaker', 'Tuulitakki'], ['jacket', 'Takki'], ['raincoat', 'Sadetakki'], ['wintercoat', 'Talvitakki'], ['parka', 'Paksu talvitakki']]],
+  ['Takit', [['vest', 'Liivi'], ['windbreaker', 'Tuulitakki'], ['jacket', 'Takki'], ['warmjacket', 'Lämmin takki'], ['raincoat', 'Sadetakki'], ['wintercoat', 'Talvitakki'], ['parka', 'Paksu talvitakki']]],
   ['Housut', [['shorts', 'Shortsit'], ['trousers', 'Pitkät housut'], ['rainpants', 'Sadehousut'], ['warmtrousers', 'Lämpimät housut']]],
   ['Kengät', [['sandals', 'Sandaalit'], ['sneakers', 'Lenkkarit'], ['boots', 'Paksut kengät'], ['rubberboots', 'Kumisaappaat'], ['winterboots', 'Talvikengät'], ['icegrips', 'Liukuesteet kenkiin']]],
   ['Päähineet', [['cap', 'Lippalakki'], ['sunhat', 'Aurinkohattu'], ['rainhat', 'Sadehattu'], ['thinbeanie', 'Ohut pipo'], ['beanie', 'Pipo'], ['earflap', 'Karvahattu']]],
@@ -64,7 +64,7 @@ const GROUPS = [
 const WHEN = {
   underpants: 'Aina.', longjohns: 'Kun on kova pakkanen.', socks: 'Melkein aina.', warmsocks: 'Kun on pakkasta.', thermal: 'Kun on kova pakkanen.',
   tanktop: 'Kun on helle.', tshirt: 'Kun on lämmin.', longsleeve: 'Kun on vähän viileää.', hoodie: 'Kun on viileää.', woolsweater: 'Kun on kylmä.',
-  vest: 'Kun on melkein lämmin.', windbreaker: 'Kun tuulee.', jacket: 'Kun on viileää.', raincoat: 'Kun sataa.', wintercoat: 'Kun on kylmä.', parka: 'Kun on kova pakkanen.',
+  vest: 'Kun on melkein lämmin.', windbreaker: 'Kun tuulee.', jacket: 'Kun on viileää.', warmjacket: 'Syksyllä, kun on viileää.', raincoat: 'Kun sataa.', wintercoat: 'Kun on kylmä.', parka: 'Kun on kova pakkanen.',
   shorts: 'Kun on kuuma.', trousers: 'Melkein aina.', rainpants: 'Kun sataa paljon.', warmtrousers: 'Kun on pakkasta.',
   sandals: 'Kun on kuuma ja kuivaa.', sneakers: 'Kun on kuivaa.', boots: 'Kun on viileää.', rubberboots: 'Kun sataa tai on loskaa.', winterboots: 'Kun on lunta tai pakkasta.', icegrips: 'Kun on liukasta.',
   cap: 'Keväällä ja kesällä.', sunhat: 'Kun aurinko paistaa kovaa.', rainhat: 'Kun sataa ja tuulee kovaa.', thinbeanie: 'Kun on viileää.', beanie: 'Kun on kylmä.', earflap: 'Kun on kova pakkanen.',

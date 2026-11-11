@@ -17,6 +17,9 @@ const ICONS = {
     <path d="M29 14 V24 M35 14 V24" ${L}/>`),
   jacket: svg(`<path d="${COAT}" fill="#f0a646" ${S}/>
     <path d="M32 14 V58 M22 42 H28 M36 42 H42" ${L}/>`),
+  warmjacket: svg(`<path d="${COAT}" fill="#e08a3c" ${S}/>
+    <path d="M24 9 C26 4 38 4 40 9 L40 17 L24 17Z" fill="#f3e9d8" ${S}/>
+    <path d="M32 17 V58 M22 42 H28 M36 42 H42" ${L}/>`),
   wintercoat: svg(`<path d="${COAT}" fill="#3f6fd1" ${S}/>
     <path d="M32 14 V58 M18 34 H46 M18 46 H46" ${L}/>
     <path d="M21 9 C22 -1 42 -1 43 9" fill="none" stroke="#f3e9d8" stroke-width="6" stroke-linecap="round"/>
@@ -120,13 +123,13 @@ const tempVars = (feel) => `--h:${FEEL[feel].text};--hd:${FEEL[feel].textDark}`;
 const feelCat = (f) => (f < -15 ? 'freezing' : f < 7 ? 'cold' : f < 15 ? 'cool' : f < 23 ? 'warm' : 'hot');
 
 // Ukon vaatteet: mitä ehdotetuista vaatteista piirretään ukon päälle ja millä värillä.
-const TOPS = ['parka', 'wintercoat', 'raincoat', 'jacket', 'windbreaker', 'vest', 'hoodie', 'woolsweater', 'thermal', 'longsleeve', 'tshirt', 'tanktop'];
+const TOPS = ['parka', 'wintercoat', 'raincoat', 'jacket', 'warmjacket', 'windbreaker', 'vest', 'hoodie', 'woolsweater', 'thermal', 'longsleeve', 'tshirt', 'tanktop'];
 const TOP_COL = {
-  parka: '#2f5d50', wintercoat: '#3f6fd1', raincoat: '#f6d33c', jacket: '#f0a646', windbreaker: '#35b5a6', vest: '#6f9a4a',
+  parka: '#2f5d50', wintercoat: '#3f6fd1', raincoat: '#f6d33c', jacket: '#f0a646', warmjacket: '#e08a3c', windbreaker: '#35b5a6', vest: '#6f9a4a',
   hoodie: '#9a8cf0', woolsweater: '#c0504d', thermal: '#c9d3df', longsleeve: '#7bc47f', tshirt: '#4fb6e8', tanktop: '#ffb347',
 };
 const BARE_ARMS = new Set(['tshirt', 'tanktop']);
-const ZIPPED = new Set(['parka', 'wintercoat', 'raincoat', 'jacket', 'windbreaker', 'vest']);
+const ZIPPED = new Set(['parka', 'wintercoat', 'raincoat', 'jacket', 'warmjacket', 'windbreaker', 'vest']);
 const BOTTOM_COL = { rainpants: '#f6d33c', warmtrousers: '#35507c', trousers: '#4a6fa5' };
 const SHOES = { // [väri, onko varrellinen]
   winterboots: ['#8a5a3c', true], rubberboots: ['#3fae6a', true], boots: ['#a9713f', true],
@@ -412,7 +415,7 @@ UI.moon = svg(moonPic(14, 12));
 const NAMES = {
   underpants: 'Alushousut', longjohns: 'Pitkät alushousut', socks: 'Sukat', warmsocks: 'Lämpimät sukat', thermal: 'Pitkä aluspaita',
   tanktop: 'Hihaton paita', tshirt: 'T-paita', longsleeve: 'Pitkähihainen paita', hoodie: 'Lämmin paita', woolsweater: 'Villapaita',
-  vest: 'Liivi', windbreaker: 'Tuulitakki', jacket: 'Takki', raincoat: 'Sadetakki', wintercoat: 'Talvitakki', parka: 'Paksu talvitakki',
+  vest: 'Liivi', windbreaker: 'Tuulitakki', jacket: 'Takki', warmjacket: 'Lämmin takki', raincoat: 'Sadetakki', wintercoat: 'Talvitakki', parka: 'Paksu talvitakki',
   shorts: 'Shortsit', trousers: 'Pitkät housut', rainpants: 'Sadehousut', warmtrousers: 'Lämpimät housut',
   sandals: 'Sandaalit', sneakers: 'Lenkkarit', boots: 'Paksut kengät', rubberboots: 'Kumisaappaat', winterboots: 'Talvikengät', icegrips: 'Liukuesteet kenkiin',
   cap: 'Lippalakki', sunhat: 'Aurinkohattu', rainhat: 'Sadehattu', thinbeanie: 'Ohut pipo', beanie: 'Pipo', earflap: 'Karvahattu',
@@ -760,6 +763,7 @@ function summarize(data, idx) {
   derive(s);
   // Hyttyset: Suomen leveysasteilla kesällä, lämpimällä ja tyynellä poutasäällä.
   s.month = +localHour(data).slice(5, 7);
+  s.season = seasonOf(s.month, data.latitude);
   s.mosquito = data.latitude >= 55 && s.month >= 6 && s.month <= 8 && s.tAvg >= 12 && !s.rainy && s.wind < 7;
   return s;
 }
@@ -800,6 +804,22 @@ function veryDifferent(a, b) {
     || (a.windy !== b.windy && Math.abs(a.wind - b.wind) >= 3);
 }
 
+// Vuodenaika paikan mukaan. Pohjoisella pallonpuoliskolla talvi on marras-maaliskuu (Etelä-Suomi).
+// Yli 66 astetta leveyttä (Lappi) talvi alkaa kuukautta aiemmin ja loppuu kuukautta myöhemmin.
+// Eteläisellä pallonpuoliskolla vuodenajat ovat kuuden kuukauden päässä. Alle 23,5 astetta päiväntasaajasta
+// vuodenaikoja ei ole, joten pukeutuminen seuraa silloin pelkkää lämpötilaa.
+function seasonOf(month, lat) {
+  const L = Number.isFinite(lat) ? lat : 60;
+  const a = Math.abs(L);
+  if (a < 23.5) return 'tropic';
+  const m = L >= 0 ? month : ((month + 5) % 12) + 1;
+  const e = a >= 66 ? 1 : 0;
+  if (m >= 11 - e || m <= 3 + e) return 'winter';
+  if (m >= 9 - e && m <= 10) return 'autumn';
+  if (m >= 4 && m <= 5) return 'spring';
+  return 'summer';
+}
+
 // ---------- Pukeutumissäännöt ----------
 // chill: avustajan säätö. +3 = palelee helposti (lämpimämmät vaatteet), -3 = tulee helposti kuuma.
 // rainPop: sateenvarjo otetaan varmuuden vuoksi, kun sateen todennäköisyys on vähintään tämän verran (0 = ei koskaan).
@@ -828,14 +848,34 @@ function outfit(s, chill = 0, rainPop = 50, sun = 'uv3') {
   else if (f >= -10) { add('tshirt', 'T-paita'); add('woolsweater', 'Villapaita päälle'); }
   else { add('thermal', 'Pitkä aluspaita'); add('woolsweater', 'Villapaita päälle'); }
 
-  // Päällysvaate
+  // Päällysvaate: vuodenaika antaa oletuksen, lämpötila muuttaa sitä vain poikkeuksellisissa oloissa.
+  const season = s.season || seasonOf(s.month, 60);
   if (rainy && f >= 5) add('raincoat', 'Sadetakki');
+  else if (season === 'tropic') { // ei vuodenaikoja: lämpötila ratkaisee
+    if (f < -12) add('parka', 'Paksu talvitakki');
+    else if (f < 2) add('wintercoat', 'Talvitakki');
+    else if (f < 10) add('jacket', 'Takki');
+    else if (windy && f < 21) add('windbreaker', 'Tuulitakki');
+    else if (f < 14) add('jacket', 'Ohut takki');
+    else if (f < 17) add('vest', 'Liivi');
+  }
   else if (f < -12) add('parka', 'Paksu talvitakki');
-  else if (f < 2) add('wintercoat', 'Talvitakki');
-  else if (f < 10) add('jacket', 'Takki');
-  else if (windy && f < 21) add('windbreaker', 'Tuulitakki');
-  else if (f < 14) add('jacket', 'Ohut takki');
-  else if (f < 17) add('vest', 'Liivi');
+  else if (season === 'winter') {
+    if (f >= 8) add('warmjacket', 'Lämmin takki');
+    else add('wintercoat', 'Talvitakki');
+  }
+  else if (windy && f < 21 && f >= 2 && season !== 'winter') add('windbreaker', 'Tuulitakki');
+  else if (season === 'autumn') {
+    if (f < 0) add('wintercoat', 'Talvitakki');
+    else if (f >= 18) { /* ei takkia */ }
+    else if (f >= 14) add('jacket', 'Ohut takki');
+    else add('warmjacket', 'Lämmin takki');
+  }
+  else if (season === 'spring') {
+    if (f < 0) add('wintercoat', 'Talvitakki');
+    else if (f < 16) add('jacket', 'Takki');
+  }
+  else if (f < 12) add('jacket', 'Takki'); // kesä: takki vain, kun on kylmä
 
   // Alaosa
   if (f >= 22 && !rainy) add('shorts', 'Shortsit');
@@ -848,6 +888,7 @@ function outfit(s, chill = 0, rainPop = 50, sun = 'uv3') {
   else if (snowy || f < 0) add('winterboots', 'Talvikengät');
   else if (s.snowGround) add(s.tAvg > 1 ? 'rubberboots' : 'winterboots', s.tAvg > 1 ? 'Kumisaappaat' : 'Talvikengät'); // lunta maassa, vaikka ei sada
   else if (rainy) add('rubberboots', 'Kumisaappaat');
+  else if (season === 'winter' && f < 8) add('winterboots', 'Talvikengät');
   else if (sandals) add('sandals', 'Sandaalit');
   else if (f < 7) add('boots', 'Paksut kengät');
   else add('sneakers', 'Lenkkarit');

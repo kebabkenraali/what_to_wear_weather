@@ -170,6 +170,21 @@ Ensin tulevat alusvaatteet.
 Sitten tulevat paidat, takki, housut ja kengät.
 Viimeisenä tulevat pipo, hanskat ja muut pienet tavarat.
 
+### Takit ja vuodenajat
+
+Takki valitaan vuodenajan mukaan. Lämpötila muuttaa sitä vain, kun sää on poikkeuksellinen.
+
+- **Talvi** (marras-maaliskuu): talvitakki. Kun on lämmin, lämmin takki.
+- **Syksy** (syys-loka): lämmin takki. Kun on pakkasta, talvitakki. Kun on lämmin, ohut takki tai ei takkia.
+- **Kevät** (huhti-touko): takki. Kun on pakkasta, talvitakki.
+- **Kesä** (kesä-elo): ei takkia. Kun on kylmä, takki.
+
+Sadetakki ja tuulitakki tulevat sateella ja tuulella.
+
+Pohjoisessa talvi on pidempi. Lapissa talvi alkaa aiemmin ja päättyy myöhemmin.
+Eteläisellä pallonpuoliskolla vuodenajat ovat toisin päin.
+Päiväntasaajan lähellä vuodenaikoja ei ole, joten sovellus katsoo vain lämpötilaa.
+
 ### Illan kortti
 
 Joskus illalla sää on erilainen kuin nyt.
@@ -587,7 +602,9 @@ Päivitys kestää noin minuutin.
 
 ## Versio
 
-Uusin versio on 1.3.
+Uusin versio on 1.3.1.
+
+Versiossa 1.3.1 takki valitaan vuodenajan mukaan. Lämmin takki on uusi. Vuodenajan rajat muuttuvat sijainnin mukaan.
 
 Versiossa 1.3 illan kortti on selkeämpi. Siinä on kello ja reppu. Heijastin on listassa koko talven. Avustaja voi valita, milloin sovellus ehdottaa aurinkorasvaa.
 
