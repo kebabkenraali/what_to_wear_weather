@@ -166,9 +166,12 @@ Jokainen vaate on omassa ruudussa.
 Ruudussa on vaatteen kuva ja nimi.
 
 Vaatteet ovat pukemisjärjestyksessä.
-Ensin tulevat alusvaatteet.
-Sitten tulevat paidat, takki, housut ja kengät.
-Viimeisenä tulevat pipo, hanskat ja muut pienet tavarat.
+Ensin tulevat alusvaatteet ja sukat.
+Sitten housut, paidat ja takki.
+Sitten kengät ja päähine.
+Lopuksi kaulahuivi, hanskat, sateenvarjo ja asusteet.
+
+Sama järjestys näkyy pääkortissa ja pukemisnäkymässä.
 
 ### Takit ja vuodenajat
 

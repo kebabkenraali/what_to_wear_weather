@@ -200,6 +200,14 @@ function person(feel, fx = {}, wear) {
   let legs = limb('M53 100 V126', legCol) + limb('M67 100 V126', legCol);
   if (shorts) legs += `<path d="M46 92 H74 V110 H62 L60 102 L58 110 H46Z" fill="#f08a5d" ${st}/>`;
   if (bottom === 'warmtrousers') legs += `<path d="M48.5 110 h9 M62.5 110 h9" fill="none" ${thin}/>`;
+  // Alusvaatteet näkyvät ukon päällä: alushousujen vyötärönauha ja sukkien varret housunlahkeen ja kengän välissä.
+  if (has.has('underpants') || has.has('longjohns')) {
+    legs += `<rect x="46" y="99" width="28" height="7" rx="3" fill="${has.has('longjohns') ? '#c9d3df' : '#bfe3f7'}" ${thin}/>`;
+  }
+  if (has.has('socks') || has.has('warmsocks')) {
+    const sc = has.has('warmsocks') ? '#c96a4a' : '#f3f5f8';
+    for (const x of [53, 67]) legs += `<rect x="${x - 6.5}" y="117" width="13" height="6" rx="2" fill="${sc}" ${thin}/>`;
+  }
   const shoeKey = Object.keys(SHOES).find((k) => has.has(k));
   if (shoeKey) {
     const [col, tall] = SHOES[shoeKey];
@@ -822,6 +830,28 @@ function seasonOf(month, lat) {
   return 'summer';
 }
 
+// Pukemisjärjestys: ensin alle, lopuksi päälle ja asusteet. Sama järjestys näkyy pääkortissa ja pukemisnäkymässä.
+const DRESS_RANK = {
+  underpants: 1, longjohns: 1,
+  socks: 2, warmsocks: 2,
+  trousers: 3, shorts: 3, warmtrousers: 3, rainpants: 3,
+  tshirt: 4, tanktop: 4, longsleeve: 4, hoodie: 4, thermal: 4,
+  woolsweater: 5,
+  vest: 6,
+  jacket: 7, warmjacket: 7, wintercoat: 7, parka: 7, windbreaker: 7, raincoat: 7,
+  sneakers: 8, sandals: 8, boots: 8, winterboots: 8, rubberboots: 8,
+  icegrips: 9,
+  beanie: 10, thinbeanie: 10, earflap: 10, rainhat: 10, sunhat: 10, cap: 10,
+  scarf: 11,
+  gloves: 12, mittens: 12,
+  umbrella: 13,
+  sunglasses: 14, sunscreen: 14,
+  waterbottle: 15, mosquito: 15, reflector: 15,
+};
+function dressSort(items) {
+  return [...items].sort((a, b) => (DRESS_RANK[a.icon] ?? 99) - (DRESS_RANK[b.icon] ?? 99));
+}
+
 // ---------- Pukeutumissäännöt ----------
 // chill: avustajan säätö. +3 = palelee helposti (lämpimämmät vaatteet), -3 = tulee helposti kuuma.
 // rainPop: sateenvarjo otetaan varmuuden vuoksi, kun sateen todennäköisyys on vähintään tämän verran (0 = ei koskaan).
@@ -925,7 +955,7 @@ function outfit(s, chill = 0, rainPop = 50, sun = 'uv3') {
   // Heijastin: aina pimeään vuodenaikaan (loka–maaliskuu) ja muulloin, kun jakson aikana on pimeää.
   const darkSeason = s.month >= 10 || s.month <= 3;
   if (s.anyDark || darkSeason) add('reflector', 'Heijastin');
-  return items;
+  return dressSort(items);
 }
 
 // Suositus tälle käyttäjälle: avustajan lämpösäätö ja piilotetut vaatteet huomioitu.
@@ -1022,6 +1052,7 @@ function render() {
       // Sadetakki on vaihtoehto sateenvarjolle: sateella kumpi tahansa käy, joten molemmat ehdotetaan.
       if (sEve.rainy && !sEve.stormy && !extra.some((i) => i.icon === 'raincoat') && !have.has('raincoat')) {
         extra.push({ icon: 'raincoat', name: 'Sadetakki' });
+        extra.splice(0, extra.length, ...dressSort(extra));
       }
       // Kellonaika: ensimmäinen illan tunti, jona sää poikkeaa nykyisestä (sade, lumi, tuuli tai tuntuu-lämpötilan luokka).
       const hourState = (i) => {
