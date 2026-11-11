@@ -1023,7 +1023,24 @@ function render() {
       if (sEve.rainy && !sEve.stormy && !extra.some((i) => i.icon === 'raincoat') && !have.has('raincoat')) {
         extra.push({ icon: 'raincoat', name: 'Sadetakki' });
       }
-      const hour = +data.hourly.time[w.evening[0]].slice(11, 13);
+      // Kellonaika: ensimmäinen illan tunti, jona sää poikkeaa nykyisestä (sade, lumi, tuuli tai tuntuu-lämpötilan luokka).
+      const hourState = (i) => {
+        const h = data.hourly;
+        const p = h.precipitation_probability[i] ?? 0;
+        const pr = h.precipitation[i] ?? 0;
+        return {
+          rainy: isRainCode(h.weather_code[i]) || (p >= 50 && pr >= 0.2),
+          snowy: isSnowCode(h.weather_code[i]) || (h.snowfall[i] ?? 0) >= 0.5,
+          windy: (h.wind_speed_10m[i] ?? 0) >= WINDY,
+          feel: feelCat((h.apparent_temperature[i] ?? 0) - settings.chill),
+        };
+      };
+      const ref = hourState(w.now[w.now.length - 1]);
+      const changeIdx = w.evening.find((i) => {
+        const x = hourState(i);
+        return x.rainy !== ref.rainy || x.snowy !== ref.snowy || x.windy !== ref.windy || x.feel !== ref.feel;
+      });
+      const hour = +data.hourly.time[changeIdx ?? w.evening[0]].slice(11, 13);
       // Illan ukolla on samat vaatteet kuin lähtiessä ja lisäksi mukaan otetut varusteet.
       drawScene('later', feelCat(sEve.feelsAvg - settings.chill), fxOf(sEve), periodSky(sEve), sEve.tAvg, [...wearNow, ...extra]);
       $('laterClock').innerHTML = clockPic(hour);

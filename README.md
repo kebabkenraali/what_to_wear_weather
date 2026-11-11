@@ -191,7 +191,7 @@ Joskus illalla sää on erilainen kuin nyt.
 Silloin näet toisen kortin.
 
 Kortissa on kello ja kuu.
-Kortissa lukee kellonaika, esimerkiksi 19:00. Se kertoo, mihin aikaan sää muuttuu.
+Kortissa lukee kellonaika, esimerkiksi 19:00. Se on ensimmäinen tunti illalla, jona sää poikkeaa nykyisestä.
 
 Kortin ukko näyttää illan sään.
 
