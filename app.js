@@ -123,7 +123,7 @@ const tempVars = (feel) => `--h:${FEEL[feel].text};--hd:${FEEL[feel].textDark}`;
 const feelCat = (f) => (f < -15 ? 'freezing' : f < 7 ? 'cold' : f < 15 ? 'cool' : f < 23 ? 'warm' : 'hot');
 
 // Ukon vaatteet: mitä ehdotetuista vaatteista piirretään ukon päälle ja millä värillä.
-const TOPS = ['parka', 'wintercoat', 'raincoat', 'jacket', 'warmjacket', 'windbreaker', 'vest', 'hoodie', 'woolsweater', 'thermal', 'longsleeve', 'tshirt', 'tanktop'];
+const TOPS = ['raincoat', 'parka', 'wintercoat', 'jacket', 'warmjacket', 'windbreaker', 'vest', 'hoodie', 'woolsweater', 'thermal', 'longsleeve', 'tshirt', 'tanktop'];
 const TOP_COL = {
   parka: '#2f5d50', wintercoat: '#3f6fd1', raincoat: '#f6d33c', jacket: '#f0a646', warmjacket: '#e08a3c', windbreaker: '#35b5a6', vest: '#6f9a4a',
   hoodie: '#9a8cf0', woolsweater: '#c0504d', thermal: '#c9d3df', longsleeve: '#7bc47f', tshirt: '#4fb6e8', tanktop: '#ffb347',
@@ -938,9 +938,11 @@ function outfit(s, chill = 0, rainPop = 50, sun = 'uv3') {
   if (f < -5) add('mittens', 'Lapaset');
   else if (f < 3) add('gloves', 'Hanskat');
   if (f < -2 || (f < 6 && windy)) add('scarf', 'Kaulahuivi');
-  if ((rainy || maybeRain) && !s.thunder) {
-    if (!s.stormy) add('umbrella', 'Sateenvarjo');
-    else if (!items.some((i) => i.icon === 'raincoat')) add('raincoat', 'Sadetakki');
+  if (rainy || maybeRain) {
+    // Sade uhkaa tai sataa: sateenvarjo tai sadetakki, kumpi tahansa käy, joten molemmat ehdotetaan.
+    // Ukkonen tai myrsky: sateenvarjo jää kotiin, sadetakki kestää tuulen eikä houkuttele salamaa.
+    if (!s.thunder && !s.stormy) add('umbrella', 'Sateenvarjo');
+    if (!items.some((i) => i.icon === 'raincoat')) add('raincoat', 'Sadetakki');
   }
   // Aurinkolasit: valoisaa, taivaalla selkeitä hetkiä eikä sada, ja joko UV-indeksi vähintään 2
   // tai maassa on lunta (hanki häikäisee kevättalvella, vaikka UV on matala).

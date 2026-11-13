@@ -430,6 +430,9 @@ Jos käyttäjä ei käytä aurinkolaseja, poista niiden rasti kohdasta Vaatteet.
 
 Sovellus katsoo, kuinka todennäköinen sade on.
 Jos sade on tarpeeksi todennäköinen, sovellus ehdottaa sateenvarjoa varmuuden vuoksi.
+Samalla listassa on myös sadetakki, ja valitset itse, kumpi otat.
+
+Ukkosella tai kovalla tuulella sovellus ehdottaa vain sadetakkia.
 
 Voit muuttaa rajaa asetuksista kohdasta: Sateenvarjo varmuuden vuoksi.
 
@@ -604,9 +607,15 @@ Päivitys kestää noin minuutin.
 
 ## Versio ja muutokset
 
-Uusin versio on 1.3.5.
+Uusin versio on 1.3.6.
 
 Kaikki versiot ovat sivulla [Releases](https://github.com/kebabkenraali/what_to_wear_weather/releases).
+
+### 1.3.6
+
+- Sateen uhatessa tai sataessa listassa on sekä sateenvarjo että sadetakki. Valitset itse, kumpi otat.
+- Ukkosella tai myrskyllä ehdotetaan vain sadetakkia, sillä sateenvarjo ei kestä kovaa tuulta eikä sopi ukkoseen.
+- Sadetakki piirtyy ukolla päällimmäiseksi, myös talvitakin päälle.
 
 ### 1.3.5
 
