@@ -525,6 +525,11 @@ function summaryText(v) {
   if (s.thunder) parts.push('Ukkostaa. Pysy sisällä, jos voit');
   if (s.snowy) parts.push('Sataa lunta. Pue lämpimät kengät');
   else if (s.rainy) parts.push('Sataa. Pue sadevaatteet');
+  else if (v.rainSay) {
+    const gear = has('umbrella') && has('raincoat') ? 'ota sateenvarjo tai sadetakki mukaan'
+      : has('umbrella') ? 'ota sateenvarjo mukaan' : has('raincoat') ? 'ota sadetakki mukaan' : '';
+    parts.push(gear ? `${v.rainSay}. ${gear[0].toUpperCase()}${gear.slice(1)}` : v.rainSay);
+  }
   if (s.foggy) parts.push('On sumua');
   if (s.windy) parts.push('Tuulee. Pue takki, joka suojaa tuulelta');
   if (s.icy) parts.push('On liukasta. Kävele varovasti');
@@ -781,6 +786,7 @@ function summarize(data, idx) {
 
 // Säätilat, jotka johdetaan yhteenvedon luvuista.
 function derive(s) {
+  s.rainCode = s.codes.some(isRainCode); // ennusteessa on sadekoodi, vaikka sade olisi kevyt (esim. tihkua 0,1 mm)
   s.snowy = s.snow >= 0.5 || s.codes.some(isSnowCode);
   s.rainy = !s.snowy && (s.pop >= 50 || s.precip >= 1) && s.precip >= 0.2;
   s.windy = s.wind >= WINDY || (s.gust || 0) >= GUSTY;
@@ -862,7 +868,8 @@ function outfit(s, chill = 0, rainPop = 50, sun = 'uv3', rainGear = 'both') {
   // Pukeudutaan hieman kylmimmän hetken suuntaan painottaen.
   const f = (s.feelsMin + s.feelsAvg) / 2 - chill;
   const { snowy, rainy, windy } = s;
-  const maybeRain = !snowy && !rainy && rainPop > 0 && s.pop >= rainPop;
+  // Sade uhkaa: todennäköisyys yli asetetun rajan, tai ennusteessa on sadekoodi (vaikka sade olisi kevyt tihkua).
+  const maybeRain = !snowy && !rainy && (s.rainCode || (rainPop > 0 && s.pop >= rainPop));
   const items = [];
   const add = (icon, name) => items.push({ icon, name });
 
@@ -966,6 +973,18 @@ function outfit(s, chill = 0, rainPop = 50, sun = 'uv3', rainGear = 'both') {
 // Suositus tälle käyttäjälle: avustajan lämpösäätö ja piilotetut vaatteet huomioitu.
 const wearFor = (s) => outfit(s, settings.chill, settings.rainPop, settings.sun, settings.rainGear).filter((i) => !settings.hidden.includes(i.icon));
 
+// Mistä tunnista alkaa sade nyt-ikkunassa, kun juuri nyt ei sata eikä lunta.
+// Sadekoodi tai hyvä todennäköisyys vähintään 0,2 mm sadetta riittää.
+function rainStartHour(data, idx) {
+  const h = data.hourly;
+  for (const i of idx) {
+    if (isRainCode(h.weather_code[i]) || ((h.precipitation_probability[i] ?? 0) >= 50 && (h.precipitation[i] ?? 0) >= 0.2)) {
+      return +h.time[i].slice(11, 13);
+    }
+  }
+  return null;
+}
+
 // Illan kortin varusteet: mitä kannattaa ottaa mukaan, kun lähtee ylempien vaatteiden päällä.
 function eveningExtras(wearNow, sEve) {
   const group = (icon) => CARRY_GROUP[icon] || icon;
@@ -1049,7 +1068,13 @@ function render() {
   drawScene('now', feel, fx, { pic: skyIcon(c.weather_code, !!c.is_day), name: skyName(c.weather_code) }, c.temperature_2m, wearNow);
   // dress = kuinka lämpimästi pukeudutaan (sama luku, jolla vaatteet valitaan)
   const dress = feelCat((sNow.feelsMin + sNow.feelsAvg) / 2 - settings.chill);
-  state.view = { feel, fx, temp: c.temperature_2m, wear: wearNow, s: sNow, dress };
+  // Kellonaika, jolloin sade alkaa nyt-ikkunassa (puheeseen), kun juuri nyt ei sata.
+  let rainSay = null;
+  if (!fx.rain && !fx.snow && !fx.thunder) {
+    const from = rainStartHour(data, w.now);
+    if (from != null) rainSay = from === +data.hourly.time[w.now[0]].slice(11, 13) ? 'Sataa pian' : `Sade alkaa kello ${from}`;
+  }
+  state.view = { feel, fx, temp: c.temperature_2m, wear: wearNow, s: sNow, dress, rainSay };
   $('staleBadge').hidden = !state.stale;
   $('srStatus').textContent = state.stale ? 'Ei yhteyttä. Näytetään aiempi ennuste.' : '';
 
@@ -1315,7 +1340,7 @@ async function restoreBackup(file) {
       speak: s0.speak !== false,
       chill: [3, 0, -3].includes(s0.chill) ? s0.chill : 0,
       outing: !!s0.outing,
-      rainPop: [0, 30, 50, 70].includes(s0.rainPop) ? s0.rainPop : 50,
+      rainPop: [0, 30, 40, 50, 70].includes(s0.rainPop) ? s0.rainPop : 50,
       rainGear: ['both', 'umbrella', 'raincoat'].includes(s0.rainGear) ? s0.rainGear : 'both',
       eveningGear: s0.eveningGear !== false,
       sun: ['uv3', 'uv5', 'summer', 'never'].includes(s0.sun) ? s0.sun : 'uv3',

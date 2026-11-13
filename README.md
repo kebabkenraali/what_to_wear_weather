@@ -442,6 +442,7 @@ Jos käyttäjä ei käytä aurinkolaseja, poista niiden rasti kohdasta Vaatteet.
 
 Sovellus katsoo, kuinka todennäköinen sade on.
 Jos sade on tarpeeksi todennäköinen, sovellus ehdottaa sateenvarjoa varmuuden vuoksi.
+Sama käy, kun ennusteessa on sadekoodi, vaikka sade olisi kevyt.
 Listassa on lisäksi sadetakki, kun asetuksen Sadevaruste on valittu: sateenvarjo ja sadetakki.
 Jos haluat vain sadetakin tai vain sateenvarjon, valitse se asetuksen Sadevaruste kohdasta.
 
@@ -620,9 +621,15 @@ Päivitys kestää noin minuutin.
 
 ## Versio ja muutokset
 
-Uusin versio on 1.3.8.
+Uusin versio on 1.3.9.
 
 Kaikki versiot ovat sivulla [Releases](https://github.com/kebabkenraali/what_to_wear_weather/releases).
+
+### 1.3.9
+
+- Kevyt tihkusade tuo sadevarusteet listalle, vaikka todennäköisyys olisi rajan alapuolella.
+- Puhe kertoo, mihin aikaan sade alkaa seuraavan neljän tunnin sisällä: "Sade alkaa kello 15. Ota sateenvarjo mukaan."
+- Sateenvarjon varmuusrajaan uusi vaihtoehto 40 %.
 
 ### 1.3.8
 
