@@ -458,6 +458,7 @@ const DEFAULT_SETTINGS = {
   outing: false, // valitse vaatteet ulkonaoloajalle
   from: 8, to: 16,
   rainPop: 50,       // sateenvarjo varmuuden vuoksi, kun sateen todennäköisyys on vähintään näin monta prosenttia (0 = ei koskaan)
+  rainGear: 'both',  // sadevaruste: 'both' = sateenvarjo ja sadetakki, 'umbrella' = vain sateenvarjo, 'raincoat' = vain sadetakki
   eveningGear: true, // illan kortti näyttää sadevarusteet, vaikka ne olisivat jo ylemmässä listassa
   sun: 'uv3',        // aurinkorasva: 'uv3' | 'uv5' | 'summer' (aina kesällä) | 'never'
 };
@@ -857,7 +858,7 @@ function dressSort(items) {
 // rainPop: sateenvarjo otetaan varmuuden vuoksi, kun sateen todennäköisyys on vähintään tämän verran (0 = ei koskaan).
 // sun: milloin aurinkorasvaa ehdotetaan. 'uv3' = UV-indeksi vähintään 3 (suositus), 'uv5' = vähintään 5,
 //      'summer' = lisäksi aina touko–elokuussa valoisaan aikaan, 'never' = ei koskaan.
-function outfit(s, chill = 0, rainPop = 50, sun = 'uv3') {
+function outfit(s, chill = 0, rainPop = 50, sun = 'uv3', rainGear = 'both') {
   // Pukeudutaan hieman kylmimmän hetken suuntaan painottaen.
   const f = (s.feelsMin + s.feelsAvg) / 2 - chill;
   const { snowy, rainy, windy } = s;
@@ -939,10 +940,12 @@ function outfit(s, chill = 0, rainPop = 50, sun = 'uv3') {
   else if (f < 3) add('gloves', 'Hanskat');
   if (f < -2 || (f < 6 && windy)) add('scarf', 'Kaulahuivi');
   if (rainy || maybeRain) {
-    // Sade uhkaa tai sataa: sateenvarjo tai sadetakki, kumpi tahansa käy, joten molemmat ehdotetaan.
-    // Ukkonen tai myrsky: sateenvarjo jää kotiin, sadetakki kestää tuulen eikä houkuttele salamaa.
-    if (!s.thunder && !s.stormy) add('umbrella', 'Sateenvarjo');
-    if (!items.some((i) => i.icon === 'raincoat')) add('raincoat', 'Sadetakki');
+    // Sadevaruste: käyttäjän valinta (sateenvarjo, sadetakki tai molemmat). Sateella kumpi tahansa käy.
+    // Ukkonen tai myrsky: sateenvarjo jää aina kotiin, sadetakki kestää tuulen eikä houkuttele salamaa.
+    if (rainGear !== 'raincoat' && !s.thunder && !s.stormy) add('umbrella', 'Sateenvarjo');
+    if (rainGear !== 'umbrella' || s.thunder || s.stormy) {
+      if (!items.some((i) => i.icon === 'raincoat')) add('raincoat', 'Sadetakki');
+    }
   }
   // Aurinkolasit: valoisaa, taivaalla selkeitä hetkiä eikä sada, ja joko UV-indeksi vähintään 2
   // tai maassa on lunta (hanki häikäisee kevättalvella, vaikka UV on matala).
@@ -961,7 +964,7 @@ function outfit(s, chill = 0, rainPop = 50, sun = 'uv3') {
 }
 
 // Suositus tälle käyttäjälle: avustajan lämpösäätö ja piilotetut vaatteet huomioitu.
-const wearFor = (s) => outfit(s, settings.chill, settings.rainPop, settings.sun).filter((i) => !settings.hidden.includes(i.icon));
+const wearFor = (s) => outfit(s, settings.chill, settings.rainPop, settings.sun, settings.rainGear).filter((i) => !settings.hidden.includes(i.icon));
 
 // ---------- Piirto ----------
 function drawScene(prefix, feel, fx, sky, temp, wear) {
@@ -1052,7 +1055,8 @@ function render() {
       const extra = wearFor(sEve).filter((i) => CARRY.has(i.icon)
         && (!have.has(group(i.icon)) || (settings.eveningGear && EVENING_GEAR.includes(i.icon))));
       // Sadetakki on vaihtoehto sateenvarjolle: sateella kumpi tahansa käy, joten molemmat ehdotetaan.
-      if (sEve.rainy && !sEve.stormy && !extra.some((i) => i.icon === 'raincoat') && !have.has('raincoat')) {
+      // Jos sadevarusteeksi on valittu vain sateenvarjo, sadetakkia ei ehdoteta illankaan.
+      if (sEve.rainy && !sEve.stormy && settings.rainGear !== 'umbrella' && !extra.some((i) => i.icon === 'raincoat') && !have.has('raincoat')) {
         extra.push({ icon: 'raincoat', name: 'Sadetakki' });
         extra.splice(0, extra.length, ...dressSort(extra));
       }
@@ -1211,6 +1215,7 @@ function fillSettingsForm() {
   $('setChill').value = String(settings.chill);
   $('setOuting').checked = settings.outing;
   $('setRainPop').value = String(settings.rainPop);
+  $('setRainGear').value = ['both', 'umbrella', 'raincoat'].includes(settings.rainGear) ? settings.rainGear : 'both';
   $('setEveningGear').checked = settings.eveningGear;
   $('setSun').value = settings.sun;
   for (const [id, val] of [['setFrom', settings.from], ['setTo', settings.to]]) {
@@ -1239,6 +1244,7 @@ function readForm() {
     chill: +$('setChill').value,
     outing: $('setOuting').checked,
     rainPop: +$('setRainPop').value,
+    rainGear: $('setRainGear').value,
     eveningGear: $('setEveningGear').checked,
     sun: $('setSun').value,
     from: Math.min(from, to), to: Math.max(from, to),
@@ -1304,6 +1310,7 @@ async function restoreBackup(file) {
       chill: [3, 0, -3].includes(s0.chill) ? s0.chill : 0,
       outing: !!s0.outing,
       rainPop: [0, 30, 50, 70].includes(s0.rainPop) ? s0.rainPop : 50,
+      rainGear: ['both', 'umbrella', 'raincoat'].includes(s0.rainGear) ? s0.rainGear : 'both',
       eveningGear: s0.eveningGear !== false,
       sun: ['uv3', 'uv5', 'summer', 'never'].includes(s0.sun) ? s0.sun : 'uv3',
       from: hour(s0.from, 8), to: hour(s0.to, 16),
@@ -1456,7 +1463,7 @@ function refresh() {
   // osia ja se jäisi tyhjäksi. Ladataan sivu kerran uudelleen ohi muistin; jos sekään ei auta,
   // näytetään kuva ja nappi, jolla voi yrittää uudelleen.
   const freshUrl = () => location.pathname + '?v=' + Date.now();
-  if (!$('stepBtn') || !$('settings') || !$('offline') || !$('srStatus') || !$('saveBackup') || !$('setRainPop') || !$('setSun') || !$('laterBag') || !$('steps').showModal) {
+  if (!$('stepBtn') || !$('settings') || !$('offline') || !$('srStatus') || !$('saveBackup') || !$('setRainPop') || !$('setRainGear') || !$('setSun') || !$('laterBag') || !$('steps').showModal) {
     let tried = true;
     try {
       tried = !!sessionStorage.getItem('wtw.reloaded');
