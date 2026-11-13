@@ -1074,8 +1074,24 @@ function render() {
     const from = rainStartHour(data, w.now);
     if (from != null) rainSay = from === +data.hourly.time[w.now[0]].slice(11, 13) ? 'Sataa pian' : `Sade alkaa kello ${from}`;
   }
-  state.view = { feel, fx, temp: c.temperature_2m, wear: wearNow, s: sNow, dress, rainSay };
-  $('staleBadge').hidden = !state.stale;
+   state.view = { feel, fx, temp: c.temperature_2m, wear: wearNow, s: sNow, dress, rainSay };
+   $('staleBadge').hidden = !state.stale;
+   // Update rain information in the user view
+   const rainEl = $('nowRain');
+   if (!rainEl) {
+     const el = document.createElement('div');
+     el.id = 'nowRain';
+     el.className = 'rain-msg';
+     $('now').appendChild(el);
+   }
+   const rainEl2 = $('nowRain');
+   if (rainSay) {
+     rainEl2.textContent = rainSay;
+     rainEl2.hidden = false;
+   } else {
+     rainEl2.textContent = '';
+     rainEl2.hidden = true;
+   }
   $('srStatus').textContent = state.stale ? 'Ei yhteyttä. Näytetään aiempi ennuste.' : '';
 
   $('clothes').replaceChildren(...clothesEls(wearNow));
