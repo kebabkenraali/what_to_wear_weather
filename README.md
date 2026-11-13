@@ -24,6 +24,8 @@ Vaatteiden nimet on kirjoitettu lyhyesti ja selkeästi.
 3. Katso ukkoa. Ukko näyttää, miltä sää tuntuu.
 4. Katso vaatteiden kuvat. Pue ne päälle.
 
+![Etusivu: ukko, sää ja vaatteet](kuvat/kaappaukset/etusivu.svg)
+
 Sovellus toimii Android-puhelimessa, iPhonessa ja iPadissa.
 
 Sovellus toimii, kun laite on pystyssä.
@@ -208,6 +210,10 @@ Ota vain tavarat mukaan, kun lähdet.
 Paina illan ukkoa.
 Sovellus kertoo, mitä kannattaa ottaa mukaan.
 
+Esimerkki illasta, jolloin sade alkaa:
+
+![Illan kortti: sade alkaa illalla](kuvat/kaappaukset/illan-kortti-sade-alkaa-illalla.svg)
+
 ### Katso kaikki kuvat
 
 Kaikki sovelluksen kuvat ovat yhdessä paikassa.
@@ -216,6 +222,7 @@ Kaikki sovelluksen kuvat ovat yhdessä paikassa.
 
 Kansiossa näet jokaisen vaatteen kuvan ja nimen.
 Näet myös kaikki ukon kuvat.
+Kansiossa on myös kuvia sovelluksen näkymistä: etusivu ja illan kortin esimerkit.
 
 ## Sijainti
 
@@ -339,6 +346,8 @@ Jokainen kortti on piirretty samalla tavalla kuin oikea illan kortti.
 Ukon kuva piirtää, mitä illalla on päällä ja mitä kannattaa ottaa mukaan.
 Paina ukkoa, niin sovellus kertoo saman ääneen.
 
+![Illan kortti: lunta illalla](kuvat/kaappaukset/illan-kortti-lunta-illalla.svg)
+
 Esimerkit eivät ole oikea sääennuste.
 
 ## Ohje avustajalle
@@ -362,7 +371,8 @@ Näppäimistöllä: siirry rattaaseen sarkaimella ja paina Enter.
 - **Puhe päällä.** Sovellus sanoo vaatteen nimen, kun kuvaa painetaan. Voit ottaa puheen pois.
 - **Lämmön tunne.** Jos käyttäjä palelee helposti, sovellus ehdottaa lämpimämpiä vaatteita. Jos käyttäjälle tulee helposti kuuma, sovellus ehdottaa kevyempiä vaatteita.
 - **Ulkonaoloaika.** Sovellus valitsee vaatteet sen ajan mukaan, kun käyttäjä on ulkona. Esimerkiksi kello 8–16. Muuten sovellus katsoo seuraavat 4 tuntia.
-- **Sateenvarjo varmuuden vuoksi.** Joskus ei sada, mutta sade on mahdollinen. Voit valita, milloin sovellus ehdottaa silloin sateenvarjoa. Voit valita 30, 50 tai 70 prosenttia. Voit myös valita: ei koskaan varmuuden vuoksi. Alussa valinta on 50 prosenttia.
+- **Sateenvarjo varmuuden vuoksi.** Joskus ei sada, mutta sade on mahdollinen. Voit valita, milloin sovellus ehdottaa silloin sateenvarjoa. Voit valita 30, 40, 50 tai 70 prosenttia. Voit myös valita: ei koskaan varmuuden vuoksi. Alussa valinta on 50 prosenttia.
+- **Sadevaruste.** Voit valita, mitä sovellus ehdottaa sateella: sateenvarjo, sadetakki tai molemmat. Tämä sopii silloin, kun toinen on vaikea käyttää. Ukkosella ja kovalla tuulella sovellus ehdottaa aina sadetakkia, vaikka valinta olisi sateenvarjo. Alussa valinta on: molemmat.
 - **Aurinkorasva.** Voit valita, milloin sovellus ehdottaa aurinkorasvaa. Valintoja on neljä: kun UV-indeksi on vähintään 3, kun UV-indeksi on vähintään 5, aina kesällä, tai ei koskaan. Alussa valinta on: UV-indeksi vähintään 3. Se on yleinen suositus.
 - **Illan kortin sadevarusteet.** Kun tämä on päällä, illan kortti näyttää sateenvarjon, sadetakin ja sadehatun aina, kun niitä tarvitaan illalla. Kun tämä on pois päältä, illan kortti ei näytä niitä, jos ne ovat jo ylemmässä listassa. Alussa tämä on päällä.
 - **Vaatteet.** Poista rasti, jos jotain vaatetta ei haluta näyttää.

@@ -2,11 +2,12 @@
 
 Tässä kansiossa ovat kaikki kuvat, joita sovellus käyttää.
 
-Kuvia on kolmea lajia:
+Kuvia on neljää lajia:
 
 - vaatteiden kuvat
 - ukon kuvat
-- esimerkit jokaisesta kuukaudesta.
+- esimerkit jokaisesta kuukaudesta
+- kaappaukset sovelluksen näkymistä.
 
 Sovellus piirtää kuvat itse.
 Tämän kansion kuvat ovat kopioita katselua varten.
@@ -180,6 +181,33 @@ Säät ovat esimerkkejä. Ne eivät ole oikea sääennuste.
 <td align="center" valign="top" width="190"><img src="kuukaudet/10-lokakuu.svg" width="130" alt="Lokakuu. +6 astetta. Kylmä. On sumua. On pimeää. Ukolla on: pitkät housut, lämmin takki, paksut kengät, pipo, hanskat, heijastin."><br><b>Lokakuu</b><br>+6 astetta. Kylmä. On sumua. On pimeää.<br>Ukolla on: pitkät housut, lämmin takki, paksut kengät, pipo, hanskat, heijastin.</td>
 <td align="center" valign="top" width="190"><img src="kuukaudet/11-marraskuu.svg" width="130" alt="Marraskuu. +1 astetta. Kylmä. Sataa lunta. On pimeää. Ukolla on: pitkät housut, talvitakki, kumisaappaat, pipo, kaulahuivi, hanskat, heijastin."><br><b>Marraskuu</b><br>+1 astetta. Kylmä. Sataa lunta. On pimeää.<br>Ukolla on: pitkät housut, talvitakki, kumisaappaat, pipo, kaulahuivi, hanskat, heijastin.</td>
 <td align="center" valign="top" width="190"><img src="kuukaudet/12-joulukuu.svg" width="130" alt="Joulukuu. −4 astetta. Kylmä. Sataa lunta. On pimeää. Ukolla on: lämpimät housut, talvitakki, talvikengät, pipo, kaulahuivi, lapaset, heijastin."><br><b>Joulukuu</b><br>−4 astetta. Kylmä. Sataa lunta. On pimeää.<br>Ukolla on: lämpimät housut, talvitakki, talvikengät, pipo, kaulahuivi, lapaset, heijastin.</td>
+</tr>
+</table>
+
+## Näkymien kaappaukset
+
+Näin sovellus näyttää.
+Esimerkissä sataa, joten ukolla on sadetakki ja sateenvarjo.
+
+![Etusivu](kaappaukset/etusivu.svg)
+
+## Illan kortin esimerkit (?ilta)
+
+Nämä ovat samat esimerkit kuin sovelluksen ?ilta-esikatselussa.
+Ilta on eri säinen kuin lähtiessä, ja reppuun kannattaa ottaa tavaraa.
+
+<table>
+<tr>
+<td align="center" valign="top" width="480"><img src="kaappaukset/illan-kortti-sade-alkaa-illalla.svg" width="420" alt="Sade alkaa illalla. Kello 18. Mukaan: Sadehousut, Sadetakki, Sateenvarjo."><br><b>Sade alkaa illalla</b><br>Kello 18. Mukaan: Sadehousut, Sadetakki, Sateenvarjo.</td>
+<td align="center" valign="top" width="480"><img src="kaappaukset/illan-kortti-sade-loppuu-ja-viilenee.svg" width="420" alt="Sade loppuu ja viilenee. Kello 19. Mukaan: Pipo, Hanskat, Heijastin."><br><b>Sade loppuu ja viilenee</b><br>Kello 19. Mukaan: Pipo, Hanskat, Heijastin.</td>
+</tr>
+<tr>
+<td align="center" valign="top" width="480"><img src="kaappaukset/illan-kortti-lunta-illalla.svg" width="420" alt="Lunta illalla. Kello 17. Mukaan: Kaulahuivi, Lapaset."><br><b>Lunta illalla</b><br>Kello 17. Mukaan: Kaulahuivi, Lapaset.</td>
+<td align="center" valign="top" width="480"><img src="kaappaukset/illan-kortti-ukkoskuuro-illalla.svg" width="420" alt="Ukkoskuuro illalla. Kello 18. Mukaan: Sadehousut, Sadetakki, Heijastin."><br><b>Ukkoskuuro illalla</b><br>Kello 18. Mukaan: Sadehousut, Sadetakki, Heijastin.</td>
+</tr>
+<tr>
+<td align="center" valign="top" width="480"><img src="kaappaukset/illan-kortti-kova-tuuli-illalla.svg" width="420" alt="Kova tuuli illalla. Kello 19. Mukaan: Kaulahuivi, Hanskat."><br><b>Kova tuuli illalla</b><br>Kello 19. Mukaan: Kaulahuivi, Hanskat.</td>
+<td align="center" valign="top" width="480"><img src="kaappaukset/illan-kortti-lampenee-aurinko-paistaa.svg" width="420" alt="Lämpenee, aurinko paistaa. Kello 20. Mukaan: Aurinkolasit."><br><b>Lämpenee, aurinko paistaa</b><br>Kello 20. Mukaan: Aurinkolasit.</td>
 </tr>
 </table>
 

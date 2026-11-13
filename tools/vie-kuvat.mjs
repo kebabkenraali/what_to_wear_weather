@@ -25,9 +25,9 @@ const sandbox = {
 };
 const src = fs.readFileSync(path.join(root, 'app.js'), 'utf8')
   .replace(/\(async function init\(\)[\s\S]*$/, '') // ei käynnistetä sovellusta
-  + '\n;globalThis.__app = { ICONS, FEEL, MONTHS, TOPS, SHOES, person, outfit, derive, feelCat, fxOf };';
+  + '\n;globalThis.__app = { ICONS, FEEL, MONTHS, EVENINGS, TOPS, SHOES, NAMES, UI, person, outfit, derive, feelCat, fxOf, periodSky, wearFor, eveningExtras, clockPic, thermometer, skyIcon, deg, laterText };';
 vm.runInNewContext(src, sandbox);
-const { ICONS, FEEL, MONTHS, TOPS, SHOES, person, outfit, derive, feelCat, fxOf } = sandbox.__app;
+const { ICONS, FEEL, MONTHS, EVENINGS, TOPS, SHOES, NAMES, UI, person, outfit, derive, feelCat, fxOf, periodSky, wearFor, eveningExtras, clockPic, thermometer, skyIcon, deg, laterText } = sandbox.__app;
 
 // --- Apurit ---
 const INK = '#1d2a3a';
@@ -106,11 +106,12 @@ let md = `# Sovelluksen kuvat
 
 Tässä kansiossa ovat kaikki kuvat, joita sovellus käyttää.
 
-Kuvia on kolmea lajia:
+Kuvia on neljää lajia:
 
 - vaatteiden kuvat
 - ukon kuvat
-- esimerkit jokaisesta kuukaudesta.
+- esimerkit jokaisesta kuukaudesta
+- kaappaukset sovelluksen näkymistä.
 
 Sovellus piirtää kuvat itse.
 Tämän kansion kuvat ovat kopioita katselua varten.
@@ -196,6 +197,130 @@ md += table(MONTHS.map((m0, mi) => {
   write(file, personSvg(person(feel, { ...fxOf(s), sun: m.day && m.code <= 1 }, wear), `${m.name}. ${text.replace('<br>', ' ')}`));
   return cell(file, m.name, text, 130);
 }), 3);
+
+// --- Näkymien kaappaukset: piirretään samalla logiikalla kuin sovelluksen kortit ---
+const FONT = 'font-family="Segoe UI, system-ui, sans-serif"';
+const T = (x, y, s, o = {}) => {
+  const { size = 15, w = 400, col = INK, anchor = 'middle', italic = false } = o;
+  return `<text x="${x}" y="${y}" text-anchor="${anchor}" ${FONT} font-size="${size}" font-weight="${w}" fill="${col}"${italic ? ' font-style="italic"' : ''}>${esc(s)}</text>`;
+};
+// Riko pitkä teksti sanavälein riveille.
+const lines = (s, max) => {
+  const out = [];
+  let cur = '';
+  for (const word of String(s).split(' ')) {
+    const next = cur ? `${cur} ${word}` : word;
+    if (next.length > max && cur) { out.push(cur); cur = word; } else cur = next;
+  }
+  if (cur) out.push(cur);
+  return out;
+};
+// Upotetaan sovelluksen svg-kuvat isomman kuvan sisään <g>-ryhminä.
+const EMBED = {
+  icon: (inner, x, y, w) => inner.replace('<svg viewBox="0 0 64 64" aria-hidden="true">', `<g transform="translate(${x} ${y}) scale(${(w / 64).toFixed(4)})">`).replace(/<\/svg>\s*$/, '</g>'),
+  person: (inner, x, y, w) => inner.replace('<svg viewBox="0 0 120 140" aria-hidden="true">', `<g transform="translate(${x} ${y}) scale(${(w / 120).toFixed(4)})">`).replace(/<\/svg>\s*$/, '</g>'),
+  thermo: (inner, x, y, h) => inner.replace('<svg viewBox="0 0 24 64" aria-hidden="true">', `<g transform="translate(${x} ${y}) scale(${(h / 64).toFixed(4)})">`).replace(/<\/svg>\s*$/, '</g>'),
+};
+// Yhteenveto testisäästä (sama kaava kuin kuukausiesimerkeissä).
+const summaryOf = (v) => {
+  const o = { wind: 4, pop: 0, precip: 0, snow: 0, uv: 0, day: true, ...v };
+  return derive({
+    feelsMin: o.feels - 1, feelsMax: o.feels + 1, feelsAvg: o.feels, tAvg: o.t,
+    pop: o.pop, precip: o.precip, snow: o.snow, wind: o.wind, uv: o.uv,
+    codes: [o.code], daylight: o.day, anyDark: !o.day, mostlyDay: o.day,
+    clearish: o.code <= 2, mosquito: false, month: o.month,
+  });
+};
+
+const CARD_W = 500;
+const frame = (H, title) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${CARD_W} ${H}" width="${CARD_W}" height="${H}" role="img"><title>${esc(title)}</title>
+  <rect width="${CARD_W}" height="${H}" rx="18" fill="#eef5fd"/>
+  <rect x="8" y="8" width="${CARD_W - 16}" height="${H - 16}" rx="14" fill="#ffffff" stroke="#b9cfe9" stroke-width="3"/>`;
+
+// Illan kortin kaappaus: kello ja kuu, illan ukko, lämpötila, reppu ja puhe.
+const eveningCard = (e) => {
+  const sNow = summaryOf(e.now), sEve = summaryOf(e.eve);
+  const wearNow = wearFor(sNow);
+  const extra = eveningExtras(wearNow, sEve);
+  const feel = feelCat(sEve.feelsAvg);
+  const sky = periodSky(sEve);
+  const depLines = lines(`Lähtiessä: ${wearNow.map((i) => i.name.replace(' päälle', '')).join(', ')}.`, 64);
+  const sayLines = lines(laterText({ hour: e.hour, s: sEve, now: sNow, extra }), 72);
+  const p = [T(CARD_W / 2, 42, e.name, { size: 22, w: 700 })];
+  depLines.forEach((l, i) => p.push(T(24, 66 + i * 15, l, { size: 11.5, col: '#5a6b80', anchor: 'start' })));
+  const headY = 66 + depLines.length * 15 + 12;
+  p.push(EMBED.icon(clockPic(e.hour), 110, headY, 56));
+  p.push(T(CARD_W / 2, headY + 46, `${String(e.hour).padStart(2, '0')}:00`, { size: 30, w: 800 }));
+  p.push(EMBED.icon(UI.moon, 336, headY, 52));
+  const sceneY = headY + 64;
+  p.push(EMBED.person(person(feel, fxOf(sEve), [...wearNow, ...extra].map((i) => i.icon)), 46, sceneY, 172));
+  p.push(EMBED.icon(skyIcon(e.eve.code, e.eve.day !== false), 322, sceneY + 16, 74));
+  p.push(EMBED.thermo(thermometer(sEve.tAvg, feel), 334, sceneY + 104, 44));
+  p.push(T(376, sceneY + 152, deg(sEve.tAvg), { size: 30, w: 800, col: FEEL[feel].text }));
+  let y = sceneY + 232;
+  if (extra.length) {
+    p.push(EMBED.icon(UI.bag, 32, y, 60));
+    extra.slice(0, 5).forEach((it, i) => p.push(EMBED.icon(ICONS[it.icon], 128 + i * 68, y + 2, 56)));
+    p.push(T(128, y + 84, `Mukaan: ${extra.map((i) => i.name).join(', ')}`, { size: 13, anchor: 'start' }));
+    y += 100;
+  }
+  sayLines.forEach((l, i) => p.push(T(24, y + 26 + i * 18, l, { size: 13, col: '#5a6b80', anchor: 'start', italic: true })));
+  const H = y + 26 + sayLines.length * 18 + 16;
+  return frame(H, `Illan kortti: ${e.name}`) + `<g>${p.join('\n')}</g></svg>`;
+};
+
+// Etusivun kaappaus: sijainti, nyt-kortti ja vaatelista.
+const homeCard = () => {
+  const s = summaryOf({ t: 8, feels: 6, code: 61, wind: 5, pop: 60, precip: 2, month: 10 });
+  const wear = wearFor(s);
+  const feel = feelCat((s.feelsMin + s.feelsAvg) / 2);
+  const rows = Math.ceil(wear.length / 5);
+  const H = 396 + rows * 96 + 18;
+  const p = [];
+  p.push(EMBED.icon(UI.pin, 44, 26, 46));
+  p.push(T(104, 58, 'Helsinki', { size: 24, w: 700, anchor: 'start' }));
+  p.push(EMBED.icon(UI.search, 410, 26, 46));
+  p.push(`<rect x="14" y="86" width="${CARD_W - 28}" height="290" rx="16" fill="#ffffff" stroke="#d7e4f2" stroke-width="2.5"/>`);
+  p.push(EMBED.person(person(feel, { ...fxOf(s), rain: true }, wear.map((i) => i.icon)), 56, 108, 180));
+  p.push(EMBED.icon(skyIcon(61, true), 316, 128, 80));
+  p.push(EMBED.thermo(thermometer(s.tAvg, feel), 328, 232, 52));
+  p.push(T(374, 282, deg(s.tAvg), { size: 32, w: 800, col: FEEL[feel].text }));
+  p.push(EMBED.icon(UI.speaker, 296, 316, 44));
+  p.push(EMBED.icon(UI.dress, 356, 316, 44));
+  wear.slice(0, rows * 5).forEach((it, i) => {
+    const x = 44 + (i % 5) * 92, y = 406 + Math.floor(i / 5) * 96;
+    p.push(`<rect x="${x - 6}" y="${y - 12}" width="86" height="88" rx="12" fill="#f4f8fd" stroke="#d7e4f2" stroke-width="1.5"/>`);
+    p.push(EMBED.icon(ICONS[it.icon], x + 9, y - 2, 50));
+    p.push(T(x + 34, y + 66, it.name, { size: 10.5 }));
+  });
+  return frame(H, 'Mitä päälle? Etusivu') + `<g>${p.join('\n')}</g></svg>`;
+};
+
+fs.mkdirSync(path.join(out, 'kaappaukset'), { recursive: true });
+write('kaappaukset/etusivu.svg', homeCard());
+
+md += `
+
+## Näkymien kaappaukset
+
+Näin sovellus näyttää.
+Esimerkissä sataa, joten ukolla on sadetakki ja sateenvarjo.
+
+![Etusivu](kaappaukset/etusivu.svg)
+
+## Illan kortin esimerkit (?ilta)
+
+Nämä ovat samat esimerkit kuin sovelluksen ?ilta-esikatselussa.
+Ilta on eri säinen kuin lähtiessä, ja reppuun kannattaa ottaa tavaraa.
+
+`;
+const eveningCells = EVENINGS.map((e) => {
+  const file = `kaappaukset/illan-kortti-${slug(e.name)}.svg`;
+  write(file, eveningCard(e));
+  const take = eveningExtras(wearFor(summaryOf(e.now)), summaryOf(e.eve)).map((i) => i.name).join(', ');
+  return cell(file, e.name, `Kello ${String(e.hour).padStart(2, '0')}. Mukaan: ${take || 'ei mitään'}.`, 420);
+});
+md += table(eveningCells, 2);
 
 md += `
 
