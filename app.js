@@ -966,6 +966,21 @@ function outfit(s, chill = 0, rainPop = 50, sun = 'uv3', rainGear = 'both') {
 // Suositus tälle käyttäjälle: avustajan lämpösäätö ja piilotetut vaatteet huomioitu.
 const wearFor = (s) => outfit(s, settings.chill, settings.rainPop, settings.sun, settings.rainGear).filter((i) => !settings.hidden.includes(i.icon));
 
+// Illan kortin varusteet: mitä kannattaa ottaa mukaan, kun lähtee ylempien vaatteiden päällä.
+function eveningExtras(wearNow, sEve) {
+  const group = (icon) => CARRY_GROUP[icon] || icon;
+  const have = new Set(wearNow.map((i) => group(i.icon)));
+  const extra = wearFor(sEve).filter((i) => CARRY.has(i.icon)
+    && (!have.has(group(i.icon)) || (settings.eveningGear && EVENING_GEAR.includes(i.icon))));
+  // Sadetakki on vaihtoehto sateenvarjolle: sateella kumpi tahansa käy, joten molemmat ehdotetaan.
+  // Jos sadevarusteeksi on valittu vain sateenvarjo, sadetakkia ei ehdoteta illankaan.
+  if (sEve.rainy && !sEve.stormy && settings.rainGear !== 'umbrella' && !extra.some((i) => i.icon === 'raincoat') && !have.has('raincoat')) {
+    extra.push({ icon: 'raincoat', name: 'Sadetakki' });
+    extra.splice(0, extra.length, ...dressSort(extra));
+  }
+  return extra;
+}
+
 // ---------- Piirto ----------
 function drawScene(prefix, feel, fx, sky, temp, wear) {
   const p = $(prefix + 'Person');
@@ -1050,16 +1065,7 @@ function render() {
   if (w.evening.length) {
     const sEve = summarize(data, w.evening);
     if (veryDifferent(sNow, sEve)) {
-      const group = (icon) => CARRY_GROUP[icon] || icon;
-      const have = new Set(wearNow.map((i) => group(i.icon)));
-      const extra = wearFor(sEve).filter((i) => CARRY.has(i.icon)
-        && (!have.has(group(i.icon)) || (settings.eveningGear && EVENING_GEAR.includes(i.icon))));
-      // Sadetakki on vaihtoehto sateenvarjolle: sateella kumpi tahansa käy, joten molemmat ehdotetaan.
-      // Jos sadevarusteeksi on valittu vain sateenvarjo, sadetakkia ei ehdoteta illankaan.
-      if (sEve.rainy && !sEve.stormy && settings.rainGear !== 'umbrella' && !extra.some((i) => i.icon === 'raincoat') && !have.has('raincoat')) {
-        extra.push({ icon: 'raincoat', name: 'Sadetakki' });
-        extra.splice(0, extra.length, ...dressSort(extra));
-      }
+      const extra = eveningExtras(wearNow, sEve);
       // Kellonaika: ensimmäinen illan tunti, jona sää poikkeaa nykyisestä (sade, lumi, tuuli tai tuntuu-lämpötilan luokka).
       const hourState = (i) => {
         const h = data.hourly;
@@ -1447,6 +1453,95 @@ function renderMonths() {
   }
 }
 
+// ---------- Illan kortin esikatselu (?ilta) ----------
+// Esimerkkitilanteita, joissa ilta on selvästi eri säinen kuin lähtiessä.
+// Jokainen kortti piirretään samalla logiikalla kuin oikea illan kortti.
+const EVENINGS = [
+  { name: 'Sade alkaa illalla', hour: 18,
+    now: { t: 13, feels: 12, code: 2, wind: 4, month: 5 },
+    eve: { t: 9, feels: 7, code: 63, wind: 6, pop: 80, precip: 2, month: 5 } },
+  { name: 'Sade loppuu ja viilenee', hour: 19,
+    now: { t: 10, feels: 9, code: 61, wind: 6, pop: 80, precip: 2, month: 9 },
+    eve: { t: 4, feels: 1, code: 1, wind: 3, day: false, month: 9 } },
+  { name: 'Lunta illalla', hour: 17,
+    now: { t: 6, feels: 6, code: 2, wind: 3, month: 11 },
+    eve: { t: -4, feels: -9, code: 73, wind: 5, snow: 3, pop: 90, precip: 3, day: false, month: 11 } },
+  { name: 'Ukkoskuuro illalla', hour: 18,
+    now: { t: 24, feels: 24, code: 1, wind: 3, month: 7 },
+    eve: { t: 18, feels: 17, code: 95, wind: 8, pop: 90, precip: 6, day: false, month: 7 } },
+  { name: 'Kova tuuli illalla', hour: 19,
+    now: { t: 10, feels: 8, code: 3, wind: 3, month: 10 },
+    eve: { t: 7, feels: 2, code: 3, wind: 10, day: false, month: 10 } },
+  { name: 'Lämpenee, aurinko paistaa', hour: 20,
+    now: { t: 7, feels: 5, code: 61, wind: 4, pop: 70, precip: 2, month: 5 },
+    eve: { t: 16, feels: 15, code: 0, wind: 2, uv: 4, month: 5 } },
+];
+
+function renderEvening() {
+  document.querySelector('.location').hidden = true;
+  document.body.classList.add('months-mode');
+  const root = $('months');
+  root.hidden = false;
+  // Sivukohtainen yhteenveto samalla tavalla kuin kuukausiesikatselussa.
+  const side = (v) => {
+    const o = { wind: 4, pop: 0, precip: 0, snow: 0, uv: 0, day: true, ...v };
+    return derive({
+      feelsMin: o.feels - 1, feelsMax: o.feels + 1, feelsAvg: o.feels, tAvg: o.t,
+      pop: o.pop, precip: o.precip, snow: o.snow, wind: o.wind, uv: o.uv,
+      codes: [o.code], daylight: o.day, anyDark: !o.day, mostlyDay: o.day,
+      clearish: o.code <= 2, mosquito: false, month: o.month,
+    });
+  };
+  for (const e of EVENINGS) {
+    const sNow = side(e.now);
+    const sEve = side(e.eve);
+    const wearNow = wearFor(sNow);
+    const extra = eveningExtras(wearNow, sEve);
+    const feel = feelCat(sEve.feelsAvg - settings.chill);
+    const fx = fxOf(sEve);
+    const sky = periodSky(sEve);
+
+    const card = document.createElement('section');
+    card.className = 'card month later';
+    const h = document.createElement('h2');
+    h.textContent = e.name;
+    const dep = document.createElement('p');
+    dep.className = 'dep';
+    dep.textContent = `Lähtiessä: ${wearNow.map((i) => i.name).join(', ')}`;
+    const head = document.createElement('div');
+    head.className = 'later-head';
+    head.innerHTML = `<span class="clock">${clockPic(e.hour)}</span><span class="hour">${String(e.hour).padStart(2, '0')}:00</span><span class="moon">${UI.moon}</span>`;
+    const scene = document.createElement('div');
+    scene.className = 'scene';
+    const p = document.createElement('button');
+    p.className = 'person';
+    p.type = 'button';
+    p.innerHTML = person(feel, fx, [...wearNow, ...extra].map((i) => i.icon));
+    const words = [FEEL[feel].label, fx.wind && 'tuulinen', fx.rain && 'sataa', fx.snow && 'sataa lunta',
+      fx.thunder && 'ukkonen', fx.fog && 'sumua', fx.night && 'pimeää'].filter(Boolean);
+    p.setAttribute('aria-label', words.join(', '));
+    p.title = words.join(', ');
+    p.addEventListener('click', () => speak(laterText({ hour: e.hour, s: sEve, now: sNow, extra })));
+    const reading = document.createElement('div');
+    reading.className = 'reading';
+    reading.innerHTML = `<div class="sky" role="img" aria-label="${sky.name}">${sky.pic}</div>
+      <div class="temp" style="${tempVars(feel)}"><span class="thermo">${thermometer(sEve.tAvg, feel)}</span>${deg(sEve.tAvg)}</div>`;
+    scene.append(p, reading);
+    card.append(h, dep, head, scene);
+    if (extra.length) {
+      const take = document.createElement('div');
+      take.className = 'take';
+      take.innerHTML = `<div class="bag" role="img" aria-label="Ota mukaan illaksi" title="Ota mukaan illaksi">${UI.bag}</div>`;
+      const clothes = document.createElement('div');
+      clothes.className = 'clothes extra';
+      clothes.append(...clothesEls(extra));
+      take.append(clothes);
+      card.append(take);
+    }
+    root.append(card);
+  }
+}
+
 // ---------- Päivitys ----------
 // Päivitä ennuste (ja sijainti, ellei paikkaa ole valittu käsin) puolen tunnin välein ja kun sivulle palataan.
 let lastRefresh = Date.now();
@@ -1529,7 +1624,9 @@ function refresh() {
   // Asennettava sovellus: toimii ilman verkkoa viimeksi haetulla ennusteella.
   if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
 
-  if (new URLSearchParams(location.search).has('kuukaudet')) return renderMonths();
+  const params = new URLSearchParams(location.search);
+  if (params.has('kuukaudet')) return renderMonths();
+  if (params.has('ilta')) return renderEvening();
   applySettings();
 
   const saved = store.get('wtw.location', null);

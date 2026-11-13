@@ -107,6 +107,14 @@ input[type=search] {
 .month .clothes { margin: 14px 0 0; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); }
 .month .item { background: var(--tile); }
 .month .item b { font-size: .9rem; }
+
+/* Illan kortin esikatselu (?ilta): kortit näkyvät ruudukossa kuin kuukaudet */
+.month.later h2, .month.later .later-head, .month.later .dep { flex-basis: 100%; }
+.month.later .person { flex-basis: 170px; }
+.month.later .later-head { font-size: 2.6rem; }
+.month.later .scene { flex-basis: 100%; margin: 6px 0; }
+.month.later .clothes.extra { flex-basis: auto; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); }
+.month.later .dep { margin: 6px 0 0; font-size: .8rem; color: var(--muted); text-align: center; }
 footer .cal { font-size: 1.3rem; text-decoration: none; margin-right: 8px; }
 
 footer { margin-top: 18px; font-size: .75rem; color: var(--muted); text-align: center; }

@@ -329,6 +329,18 @@ Näet esimerkin jokaisesta kuukaudesta.
 Esimerkit eivät ole oikea sääennuste.
 Ne näyttävät, millainen sää Suomessa yleensä on.
 
+## Katso illan kortin esimerkkejä
+
+Avaa osoite, jonka perässä on `?ilta`, esimerkiksi: `https://oma-sivu.fi/?ilta`
+
+Näet esimerkkejä illasta, jolloin sää muuttuu:
+sade alkaa, sade loppuu, lunta, ukkosta, kova tuuli ja lämpimämpi ilta.
+Jokainen kortti on piirretty samalla tavalla kuin oikea illan kortti.
+Ukon kuva piirtää, mitä illalla on päällä ja mitä kannattaa ottaa mukaan.
+Paina ukkoa, niin sovellus kertoo saman ääneen.
+
+Esimerkit eivät ole oikea sääennuste.
+
 ## Ohje avustajalle
 
 Tämä osa on sinulle, joka autat sovelluksen käyttäjää.
@@ -608,9 +620,15 @@ Päivitys kestää noin minuutin.
 
 ## Versio ja muutokset
 
-Uusin versio on 1.3.7.
+Uusin versio on 1.3.8.
 
 Kaikki versiot ovat sivulla [Releases](https://github.com/kebabkenraali/what_to_wear_weather/releases).
+
+### 1.3.8
+
+- Uusi esikatselu: illan kortti eri säätiloissa. Avaa osoite, jonka perässä on ?ilta.
+- Esikatselussa kuusi esimerkkiä: sade alkaa, sade loppuu, lunta, ukkosta, kova tuuli ja lämpimämpi ilta.
+- Esimerkit piirtyvät samalla logiikalla kuin oikea illan kortti.
 
 ### 1.3.7
 
